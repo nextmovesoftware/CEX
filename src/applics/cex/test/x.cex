@@ -1,0 +1,21 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1M>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<REM>
+/_P<remark>
+/_V<Remark>
+/_S<1M>
+/_L<STRING>
+/_X<General purpose ASCII text>
+|
+$D<NAM>
+/_P<name>
+/_V<Name>
+/_S<1>
+/_L<STRING>
+/_X<General purpose name>
+|

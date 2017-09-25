@@ -1,0 +1,14 @@
+#!/bin/sh
+# make trymsg && trymsg
+# make trymsg && trymsg | $CX_ROOT/bin/printcex -oa
+# echo "--- making testsurf" &&
+# make testsurf &&
+# echo "--- running testsurf, output to file z" &&
+# testsurf > z &&
+# echo "--- file z" &&
+# cat z &&
+# echo "--- printcex z" &&
+# cat z | $CX_ROOT/src/applics/cex/printcex -me
+# make testmess testmessin && testmess > z.cex
+make testmessin && cat z.cex | testmessin
+# make testmess testmessin && testmess | testmessin

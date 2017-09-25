@@ -1,0 +1,28 @@
+<fn>
+cx_cex_eof \- is CEX input stream at EOF?
+<fp>
+cx_Integer cx_cex_eof(void);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_cex_eof(void);
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 ateof
+.br
+logical*4 cx_f_cex_eof()
+.br
+ateof = cx_f_cex_eof()
+<description>
+Returns TRUE if end-of-file was encountered
+on the CEX input stream during the last call to cx_receive().
+<returns>
+Returns TRUE or FALSE.
+<diagnostics>
+None.
+<seealso>
+cx_cex_receive(3cx)
+<bugs>
+None known.
+<objects>

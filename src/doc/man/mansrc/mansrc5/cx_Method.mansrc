@@ -1,0 +1,14 @@
+<pt>
+cx_Method \- CX primitive function
+<description>
+A cx_Method primitive represents a (possibly polymorphic) function.
+
+In the ANSI-C interface, a cx_Method is a void (*)(), e.g.,
+a generic function pointer.
+
+In the Fortran interface, a cx_Method is a FUNCTION name.
+However, CX methods are only used internally and since all the CX
+internals are written in ANSI C,
+there is no need for a CX-level Fortran application or function
+to deal with methods.
+<seealso>

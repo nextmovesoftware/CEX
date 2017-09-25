@@ -1,0 +1,349 @@
+{  This is the "official" cex datatype list.  Last modified for 033. }
+
+{ generic datatypes }
+
+$D<NAM>
+/_P<name>
+/_V<Name>
+/_S<1>
+/_L<STRING>
+/_X<Name as arbitrary ASCII text>
+|
+
+$D<REM>
+/_P<remark>
+/_V<Remark>
+/_S<1>
+/_L<STRING>
+/_X<General purpose ASCII text>
+|
+
+$D<SRC>
+/_P<source>
+/_V<Source>
+/_S<1>
+/_L<STRING>
+/_X<Source of object, e.g., program used to generate object>
+|
+
+$D<SRCALG>
+/_P<source-algorithm>
+/_V<Source algorithm>
+/_S<1>
+/_L<STRING>
+/_X<Method used to generate object>
+|
+
+{ Generic geometric datatypes (not usable for tuples) }
+
+$D<X>
+/_P<x>
+/_V<X>
+/_S<1>
+/_L<REAL>
+/_X<X coordinate, Angstroms>
+|
+
+$D<Y>
+/_P<y>
+/_V<Y>
+/_S<1>
+/_L<REAL>
+/_X<Y coordinate, Angstroms>
+|
+
+$D<Z>
+/_P<z>
+/_V<Z>
+/_S<1>
+/_L<REAL>
+/_X<Z coordinate, Angstroms>
+|
+
+$D<AREA>
+/_P<area>
+/_V<Area>
+/_S<1>
+/_L<REAL>
+/_X<Area, square Angstroms>
+|
+
+$D<VOL>
+/_P<volume>
+/_V<Volume>
+/_S<1>
+/_L<REAL>
+/_X<Volume, cubic Angstroms>
+|
+
+{ molecule-specific datatypes }
+
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+
+$D<XYZ>
+/_P<coordinates>
+/_V<Atomic coordinates>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+
+$D<RESNO>
+/_P<resno>
+/_V<Atom residue number>
+/_S<1A>
+/_L<INTEGER>
+/_X<Atom residue number>
+|
+
+$D<RESNA>
+/_P<resname>
+/_V<Atom residue name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom residue name, typically three upper case letters>
+|
+
+$D<ANAM>
+/_P<atomname>
+/_V<Atom name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom name as arbitrary ASCII text>
+|
+
+$D<BNAM>
+/_P<bondname>
+/_V<Bond name>
+/_S<1B>
+/_L<STRING>
+/_X<Bond name as arbitrary ASCII text>
+|
+
+{ Not! (use NAM)
+   $D<MNAM>
+   /_P<molname>
+   /_V<Molecule name>
+   /_S<1M>
+   /_L<STRING>
+   /_X<Molecule name as arbitrary ASCII text>
+   |
+}
+
+$D<CHAIN>
+/_P<chain>
+/_V<Atom chain ID>
+/_S<1A>
+/_L<STRING>
+/_X<Atom chain membership as ID>
+|
+
+$D<OCCUP>
+/_P<occupancy>
+/_V<Atom occupancy>
+/_S<1A>
+/_L<REAL>
+/_X<Atom occupancy>
+|
+
+$D<BVAL>
+/_P<bvalue>
+/_V<Atom B-value>
+/_S<1A>
+/_L<REAL>
+/_X<Atom B-value>
+|
+
+{ camera-specific datatypes }
+
+$D<CAMERA>
+/_P<camera>
+/_V<Camera>
+/_S<1>
+/_L<STRING>
+/_X<Named camera object>
+|
+
+$D<CAMCX>
+/_P<camera-x>
+/_V<Camera X>
+/_S<1>
+/_L<REAL>
+/_X<X-location of camera, Angstroms>
+|
+
+$D<CAMCY>
+/_P<camera-y>
+/_V<Camera Y>
+/_S<1>
+/_L<REAL>
+/_X<Y-location of camera, Angstroms>
+|
+
+$D<CAMCZ>
+/_P<camera-z>
+/_V<Camera Z>
+/_S<1>
+/_L<REAL>
+/_X<Z-location of camera, Angstroms>
+|
+
+$D<CAMSX>
+/_P<scene-x>
+/_V<Scene center X>
+/_S<1>
+/_L<REAL>
+/_X<X-location of camera, Angstroms>
+|
+
+$D<CAMSY>
+/_P<scene-y>
+/_V<Scene center Y>
+/_S<1>
+/_L<REAL>
+/_X<Y-location of camera, Angstroms>
+|
+
+$D<CAMSZ>
+/_P<scene-z>
+/_V<Scene center Z>
+/_S<1>
+/_L<REAL>
+/_X<Z-location of camera, Angstroms>
+|
+
+$D<CAMDF>
+/_P<focus>
+/_V<Focus distance>
+/_S<1>
+/_L<REAL>
+/_X<Camera focus distance, Angstroms>
+|
+
+$D<CAMDH>
+/_P<clip-hither>
+/_V<Clip hither>
+/_S<1>
+/_L<REAL>
+/_X<Distance from camera to hither clipping plane, Angstroms>
+|
+
+$D<CAMDY>
+/_P<clip-yon>
+/_V<Clip yon>
+/_S<1>
+/_L<REAL>
+/_X<Distance from camera to yon clipping plane, Angstroms>
+|
+
+$D<CAMVX1>
+/_P<view-xmin>
+/_V<View Xmin>
+/_S<1>
+/_L<REAL>
+/_X<Distance from center to left clipping at hither plane>
+|
+
+$D<CAMVX2>
+/_P<view-xmax>
+/_V<View Xmax>
+/_S<1>
+/_L<REAL>
+/_X<Distance from center to right clipping at hither plane>
+|
+
+$D<CAMVY1>
+/_P<view-ymin>
+/_V<View Ymin>
+/_S<1>
+/_L<REAL>
+/_X<Distance from center to left clipping at hither plane>
+|
+
+$D<CAMVY2>
+/_P<view-ymax>
+/_V<View Ymax>
+/_S<1>
+/_L<REAL>
+/_X<Distance from center to right clipping at hither plane>
+|
+
+$D<CAMRW>
+/_P<render-width>
+/_V<Render width>
+/_S<1>
+/_L<REAL>
+/_X<Width of image when rendered, arbitrary units>
+|
+
+$D<CAMRH>
+/_P<render-height>
+/_V<Render height>
+/_S<1>
+/_L<REAL>
+/_X<Height of image when rendered, arbitrary units>
+|
+
+$D<CAMBG>
+/_P<bg-rgb>
+/_V<Background color>
+/_S<1>
+/_L<INTEGER>
+/_X<Background color, RGB (orange = 255,165,0 = FFA500 = 16753920)>
+|
+
+{ surface-specific datatypes }
+
+$D<SURF>
+/_P<surface>
+/_V<Surface>
+/_S<1>
+/_L<SURFEX>
+/_X<Surface as vertex positions and optional triangular faces>
+|
+
+$D<ISMAN>
+/_P<is-a-manifold>
+/_V<Is a manifold>
+/_S<1>
+/_L<STRING>
+/_X<Is this (surface) a manifold? (T,F)>
+|
+
+$D<ISWELL>
+/_P<is-well-formed>
+/_V<Is well-formed>
+/_S<1>
+/_L<STRING>
+/_X<Are (surface) edges shared by at most two faces? (T,F)>
+|
+
+$D<VORD>
+/_P<vertex-order>
+/_V<Vertex order>
+/_S<1>
+/_L<STRING>
+/_X<Order of vertices in faces (CW, CCW, UNK)>
+|
+
+$D<CURVE>
+/_P<curvature>
+/_V<Curvature at vertex>
+/_S<1V>
+/_L<REAL>
+/_X<Curvature at vertex (unitless)>
+|
+
+$D<FAREA>
+/_P<facearea>
+/_V<Face area>
+/_S<1F>
+/_L<REAL>
+/_X<Surface area of face, square Angstroms>
+|

@@ -1,0 +1,5 @@
+C.. Number of atoms, molecules, residues, bonds...
+      PARAMETER (MAXAT=20000, MAXSEC=10, MAXSEG=2000, MAXBND=30000)
+
+C.. Number of atom types for assigning covalent and van der Waals radii
+      PARAMETER (MAXTYP=50)

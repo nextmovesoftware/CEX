@@ -1,0 +1,47 @@
+<fn>
+cx_send \- put object on CEX output stream
+<fp>
+cx_Integer cx_e_send(cx_Object, cx_Object, FILE *)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_e_send(cx_Object ob, cx_Object table, FILE *fpout)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 unit, table, ob, ok, cx_f_send()
+.br
+ok = cx_f_send(table, table, unit)
+<description>
+If object `ob' is visible, puts it (and all its visible descendents and
+properties) on the given CEX output stream, using the given datatype table
+to determine what gets written and how, using the current listfmt setting.
+Objects are visible if they have an associated datatype as per cx_dataype().
+If `table' is NULL, the default datatype table is used.
+
+Datatypes are automatically output in a def-before-ref fashion,
+using the datatype "_mark" property to determine if the datatype has
+already been written to the stream.  Marks are initially unset and get
+set as datatypes are written, but can be reset with cx_reset(table).
+To send all unmarked datatypes in a table,
+do a cx_send(table, table, fpout).
+
+In the current release only datatypes, datatype tables and molecules
+can be put on an output stream.
+<returns>
+Returns TRUE on success, FALSE on failure.
+<diagnostics>
+FALSE is quietly returned if tree can't be written for normal reasons
+(e.g., object `ob' is NULL or invisible).
+<seealso>
+cx_datatype(3cx)
+cx_molecule_pkg(3cx);
+cx_receive(3cx)
+cx_reset(3cx)
+cx_set_datatype(3cx)
+<bugs>
+None known.
+<objects>
+molecule
+datatype
+datatypetable

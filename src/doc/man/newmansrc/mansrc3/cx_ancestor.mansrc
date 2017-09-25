@@ -1,0 +1,49 @@
+<fn>
+cx_ancestor \- return ancestor of object of a given type
+<fp>
+cx_Object cx_ancestor(cx_Object, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_ancestor(cx_Object ob, cx_Integer type);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ob, typ, ancestor, cx_f_ancestor()
+.br
+ancestor = cx_f_ancestor(ob, typ)
+<description>
+Returns the most immediate ancestor (parent, grandparent, etc.) of the
+object `ob' which is of the given type.
+If `type' is CX_OB_ANY, returns the most immediate ancestor of any type,
+i.e., cx_ancestor(ob, CX_TYPE_ANY) is synonymous with cx_parent(ob).
+If `type' is CX_OB_INVALID, returns the ultimate (most distant) ancestor.
+
+The function cx_stream() is (sort of) used to do the converse function,
+e.g., obtain children of a given object.
+<returns>
+Returns the handle of an ancestor object or NULL.
+<diagnostics>
+NULL is quietly returned if ancestor of given type is not found,
+if the object has no parent,
+or on error (e.g., object is NULL or type is unknown).
+<seealso>
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+any
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+invalid
+molecule
+property
+sequence
+stream
+string

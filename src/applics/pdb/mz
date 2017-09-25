@@ -1,0 +1,5 @@
+#!/bin/sh
+
+infile=1gcn.pdbrun
+
+./pdb2cex 1gcn.pdbrun | connect

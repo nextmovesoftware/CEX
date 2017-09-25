@@ -1,0 +1,107 @@
+Stuff to do on CEX project
+
+CX CORE
+
+[ ] provide means of deallocating given property
+[ ] how about making integer/real parsers explicit & accessible
+[ ] make polymorphics less heavy-handed and callbase function if not specified?
+[ ] make prefix function for normal objects
+[ ] consider adding polymorphic "name" property
+[ ] create cx_malloc() utility and use it uniformly
+[ ] check pointer validity with vigilance
+
+CX INTERFACE
+
+[ ] stream of own class should return self
+[ ] consider generalizing property names, e.g., atomic symbol => symbol
+[ ] reshape cx_init(int *argc, char **argv)
+[ ] add "Parent class" property
+[ ] (deal with reserving property names)
+[ ] cx_properties() approach is pretty flaky
+[ ] add util function to return filename from path
+[ ] add ifdefs around TRUE/FALSE definition
+[o] change cx_cex_in to cx_cex_receive
+[ ] cx_cleanup should clear errors.
+
+CX DATATYPES
+
+[ ] add standard property names to cx_datatype.h
+[ ] consider a function which sets up standard datatypes sans files
+[ ] how about making root and children visible on input, but not grandchildren
+[ ] consider making object's datatypes referenced by name not value?
+[ ] resolve whether to send datatype datatypes or not
+[ ] make sure order of create_datatype(,,pname,vname,,,) is right everywhere
+[ ] cx_e_create_datatype should check for conflicting datatype in table
+
+CX MOLECULE
+
+[ ] deal with chirality
+[ ] more ringclosures, e.g. C1 C%12 C-12-3
+[ ] cx_smilin should accept SMILES<space>name on input
+[ ] dynamically allocate stringvalue(tuple) buffer, check buf's in general
+[ ] split out XSMILES parser
+[ ] consider splitting smiles support out of cx_molecule.c
+[ ] establish a sane smiles-bond-order
+[ ] implement stringvalue(bond) => "bond symbol";
+[ ] deal with atom symbol, perhaps as auto-function?
+[ ] tuplesum seems to be broken (sumarizes singletons)
+
+OTHER CX PACKAGES
+
+[ ] deal with pdb stuff
+[ ] deal with bondage
+[ ] pdb strangeness: TER records suppressed if no CONECT but could use resno
+[ ] pdb strangeness: if bvalue is mispelled it just dosn't show up ... OK?
+
+CX TESTING PROCEDURES
+
+[ ] check basic memory usage
+[ ] go through everything and add headers
+
+CX APPLICATIONS
+
+[ ] add -a (output all datatypes) to cex2cex type filters
+[ ] go through applications adding introductory line to help output
+
+PORTS
+
+[ ] port to SGI/Irix 4 and test
+[ ] port to SGI/Irix 5 and test
+[ ] port to HP/UX and test
+[ ] port to Macintosh and test
+[ ] port to Windows and test
+
+REMAINING WORK ON CORE CX LIBRARIES
+
+ABANDON
+
+[ ] consider (briefly) going to one-argument functions (sequences)
+
+DONE
+
+[x] implement datatypes
+[x] count lines
+[x] cx_prop_object, cx_property, cx_destroy(prop) names are confusing
+[x] should property objects ALWAYS be owned by their parents?
+[x] set atomic symbol properties
+[x] provide cx_set_iprop, cx_iprop, etc.
+[x] restore error functionality
+[x] make cu_spewob into cx_spewob
+[x] remove 2nd arg in xxxxx_parse(cx_Object par, cx_String type, cx_String str)
+[x] don't need first argument in cx_add_bond(mol, a1, a2, bo)
+[?] resolve conformation vs x,y,z dilemma
+[x] should there be only one property of given type per parent or many?
+[?] reshape cx_base_create(parent, type) to cx_base_create(type,parent)
+[x] change cextree to $ and / convention
+[x] helloworlds has developed a problem
+[?] how about a component_classes polyfunc?  or a special type like "Any"
+[x] add bondprops
+[x] test bondprops
+[x] write molecule_send()
+[x] consider simplifying properties to sprop rules
+[x] cx_init() should key on cx_types.h
+[x] make sure cx_create(ANY, ...) returns NULL
+[x] remove references to polymorphic create and parse functions
+[x] make initializations automatic
+[x] correct documentation
+[x] add cx_atof

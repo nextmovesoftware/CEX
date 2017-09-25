@@ -1,0 +1,50 @@
+<fn>
+cx_rprop \- return a named property as a real number
+<fp>
+cx_Real cx_rprop(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Real cx_rprop(cx_Object ob, cx_String pname);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4     ob
+.br
+character*(*) pname
+.br
+real*8        rval, cx_f_rprop()
+.br
+rval = cx_f_rprop(ob, pname)
+<description>
+Returns the real value of the object's property with
+the given property name.
+The returned real value is obtained from the string value of the
+property by as per cx_atof().
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+cx_rprop() is equivalent to cx_atof(cx_sprop(ob, pname)).
+<returns>
+Returns a cx_Real or 0.0 on error.
+<diagnostics>
+0.0 is quietly returned if either argument is NULL,
+if requested property does not exist,
+or if the stringvalue of the property cannot be interpreted as a real number.
+<seealso>
+cx_atof(3cx)
+cx_iprop(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_rprop(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+One can't distinugish between an error and a zero value using this
+function alone (use cx_sprop()).
+<objects>
+property
+string

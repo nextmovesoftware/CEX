@@ -1,0 +1,40 @@
+<fn>
+cx_binaryvalue \- return the binaryvalue of an object
+<fp>
+cx_Binary cx_binaryvalue(cx_Integer *, cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Binary cx_stringvalue(cx_Integer *plen, cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4     ob
+.br
+character*(*) bin, cx_f_binaryvalue()
+.br
+bin = cx_f_binaryvalue(ob)
+<description>
+Returns the binary value of the given object `ob' and its length.
+In principle this is a polymorphic function,
+but in this release it only operates on binary objects.
+<returns>
+Returns a cx_Binary and fills *plen with a cx_Integer length.
+<diagnostics>
+NULL is quietly returned and *plen is set to 0 if object `ob' is NULL
+or its object type does not have a defined stringvalue
+(i.e., ob is not a binary object).
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_binary(3cx)
+cx_create_string(3cx)
+cx_parse_binary(3cx)
+cx_stringvalue(3cx)
+<bugs>
+It would be more consistent if all object types had defined binaryvalue's,
+especially strings.
+<objects>
+binary
+string

@@ -1,0 +1,191 @@
+<HTML><HEAD>
+<TITLE>Cex Programming Hints</TITLE>
+<CENTER>
+<H2>Cex Programming Hints</H2>
+<P>
+Last modified: 23 Oct 1995
+</P>
+</CENTER>
+The <A HREF=cex-home.html>CEX Home Page</A>
+and a <A HREF=cex-doclist.html>documentation list</A> are available.
+</HEAD>
+<BODY>
+<HR>
+
+<BODY>
+These are some hints about programming with and developing the CEX interface.
+If you are not familiar with an oopish interface such as the Daylight Toolkit,
+you will probably need to carefully examine the provided code to see how it's
+done.  It's simple, but different from either procedural (e.g., C, Fortran)
+or object-oriented (C++, Smalltalk) programming.
+
+<HR>
+<H3><B>Table of contents</B></H3>
+
+<UL>
+
+<LI><A HREF=#PART1>
+Fortran programmers, do not fail to declare all functions
+</A></LI><P>
+
+<LI><A HREF=#PART2>
+Creating a user-level (cu_) utility intended for contribution
+</A></LI><P>
+
+<LI><A HREF=#PART3>
+Developers, simplify your interface as much as possible
+</A></LI><P>
+
+</UL>
+
+
+<HR>
+<A NAME=PART1>
+<H3>Fortran programmers, do not fail to declare all functions</H3>
+</A>
+In Fortran, "GOD is REAL unless declared otherwise."
+<P>
+The most common (and frustrating) errors encountered when using the
+CEX interface from Fortran are due to failure to declare functions.
+Names of the Fortran CEX function wrappers start "cx_f_" and are
+implicitly REAL but most of the return values aren't REAL, leading
+to unexpected results if not declared explicitly.  In practice, this
+seems to be a problem even for experienced programmers.
+<P>
+The Fortran wrappers (e.g., cx_f.inc) in the current version declare
+all CEX functions explicitly.  This is help, but has the disadvantage
+the function declarations take program space in Fortran programs.
+Also, you typically get a pile of warnings about unused functions.
+<P>
+Earlier versions did not declare functions, relying on the programmer
+to declare the ones that were used in each program segment.  This avoids
+the above disadvantages but leads to buggy code.  If you are using a
+a Fortran compiler which accepts "IMPLICIT NONE" command, you might
+choose to comment out all the function declarations in the cx_f_*.inc
+wrappers.
+<P>
+This isn't often a problem in ANSI-C since strong type-checking is
+default for most compilers.  But it can be a problem when using earlier
+(K&R) C compilers, or if type-checking is turned off.  (God is int in
+K&R-C unless declared otherwise.)
+<P>
+In any event, when something unexpected happens, check that every
+function is explicitly declared correctly!
+
+
+<HR>
+<A NAME=PART2>
+<H3>Creating a user-level (cu_) utility intended for contribution</H3>
+</A>
+READ THE CEX DEVELOPER'S MANUAL (cex-devman) FIRST!
+<UL>
+<LI>Create a directory in $CX_ROOT/src/cu, e.g., setpart or camera.
+</LI><P>
+<LI>Put the new source code into this directory.
+</LI><P>
+<LI>Create an ANSI-C header (.h) file which includes prototypes of the
+new public entry points with names starting "cu_", e.g., cu_camera.h.
+</LI><P>
+<LI>Write the Makefile such that "make install" adds .o files containing
+the new public entry points to $CX_ROOT/lib/libcu.a.  All other entry
+points in these .o files should be static (i.e., not public).  Also,
+"make install" should copy the .h file to $CX_ROOT/include.
+</LI><P>
+<LI>Edit $CX_ROOT/src/cu/cu.h to include the new .h file.  Programmers can
+then just #include "cu.h" to gain access to all cu-level functions.
+</LI><P>
+<LI>Create a Fortran-77 include file, e.g., "cu_f_camera.inc" and code
+which implements these entry points, e.g., "cu_f_camera_wrap.c".
+This is generally done in ANSI-C with .c and .h source code in
+$CX_ROOT/src/wrappers/f77.  Make sure that "make install" installs
+the .h file in $CX_ROOT/include and the wrapper entry points in
+$CX_ROOT/lib/libcx_f.a.
+</LI><P>
+</UL>
+
+
+<HR>
+<A NAME=PART3>
+<H3>Developers, simplify your interface as much as possible</H3>
+</A>
+
+For example, the camera object prototype used these properties:
+<PRE>
+     property name     language  example
+   ------------------  --------  ---------------------
+   "camera position"    STRING   "4.73,80.0,-0.1"
+   "scene center"       STRING   "0.0,0.0,0.0"
+   "focal length"       REAL     "80.0"
+   "clip hither"        REAL     "10.0"
+   "clip yon"           REAL     "100.0"
+   "view area"          STRING   "-5.0,5.0,-3.0,3.0"
+   "render size"        STRING   "640,480"
+   "background color"   STRING   "black"
+</PRE>
+Note that most of the above properties have values which are more complex
+than simple scalar values.  This means that each calling program must
+treat each property as a string, know the "shape" of each property and 
+implement parsers/generators.  Each of these steps introduces the
+possibility of error.  For instance, a C application would get the render
+size this way:
+<PRE>
+   cx_Object  camera;
+   cx_String *renderstr;
+   cx_Real    renderwidth, renderheight;
+   ...
+   if (NULL == (renderstr = cx_sprop(camera, "render size")) ||
+       2 != sscanf(renderstr, "%f,%f", &renderwidth, &renderheight)) {
+      renderwidth  = DEFAULT_WIDTH;
+      renderheight = DEFAULT_HEIGHT;
+   }
+   ...
+</PRE>
+Note that this is a pretty smart program: it knows how to interpret the
+stringvalue of the "render size" property, e.g., that there are two parts,
+what delimiter is used, whether width or height comes first, and that
+they are each encoded in fixed format (%f).
+<P>
+All of the above camera properties can be reformulated as simple, scalar
+properties, e.g.,
+<PRE>
+     property name     language  example
+   ------------------  --------  ---------------------
+   "camera x"           REAL     "4.73"
+   "camera y"           REAL     "80.0"
+   "camera z"           REAL     "-0.1"
+   "scene center x"     REAL     "0.0"
+   "scene center y"     REAL     "0.0"
+   "scene center z"     REAL     "0.0"
+   "focal length"       REAL     "80.0"
+   "clip hither"        REAL     "10.0"
+   "clip yon"           REAL     "100.0"
+   "view xmin"          REAL     "-5.0"
+   "view xmax"          REAL     "5.0"
+   "view ymin"          REAL     "-3.0"
+   "view ymax"          REAL     "3.0"
+   "render width"       REAL     "640.0"
+   "render height"      REAL     "480.0"
+   "background color"   INTEGER  "0"
+</PRE>
+Although this doubles the number of camera properties (8 to 16), such
+irreducable representations lead to simpler and more robust applications.
+For instance, an application would get render geometry in this way:
+<PRE>
+   cx_Object  camera;
+   cx_Real    renderwidth  = DEFAULT_WIDTH;
+   cx_Real    renderheight = DEFAULT_HEIGHT;
+   ...
+   if (NULL != cx_sprop(camera, "render width" ) &&
+       NULL != cx_sprop(camera, "render height"))
+         renderwidth  = cx_rprop(camera, "render width");
+	 renderheight = cx_rprop(camera, "render height");
+      }
+      ...
+</PRE>
+Note that this is a pretty dumb and robust program.  It doesn't need to
+know anything except that the two properties of interest are REAL (part
+of the datatype definition.)  Since there are many (4) fewer assumptions,
+there is that much less which can go wrong.
+<HR>
+</BODY>
+</HTML>

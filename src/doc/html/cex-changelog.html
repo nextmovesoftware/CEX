@@ -1,0 +1,309 @@
+<HTML><HEAD>
+<TITLE>CEX Change Log</TITLE>
+<CENTER>
+<H2>CEX Change Log</H2>
+<P>
+Last modified: 23 Oct 1995
+</P>
+</CENTER>
+The <A HREF=cex-home.html>CEX Home Page</A>
+and a <A HREF=cex-doclist.html>documentation list</A> are available.
+</HEAD>
+<BODY>
+<HR>
+
+<PRE>
+============================================================================
+CONCEPTUAL-CONTENT CHANGES (specific changes follow)
+============================================================================
+
+------------------------------------------------------------------------------
+
+CEX032->CEX033
+
+   o  objects are now read recursively by package (Dave Weininger)
+
+   o  standardized camera and surface objects (Dave Weininger)
+
+   o  standardized pdb and bondage Makefile's (Dave Weininger)
+
+   o  changed cu.h to include cu_camera.h
+
+------------------------------------------------------------------------------
+CEX031->CEX032
+
+   This version basically represents the results from the Beaverton meeting.
+   Purpose was to integrate work done so far, develop stable Makefiles on as
+   many target platforms as possible, and remove applications not-ready-for-
+   prime-time: dgeom/compare (awaiting license release from QCPE) and rasmol
+   (only make-s on two O/S's so far).  We ran out of time and didn't meet
+   these goals, so the 0.32 version isn't released.
+
+------------------------------------------------------------------------------
+CEX030->CEX031
+
+   o  Revised pdb support (now based on Midas PDB parser).
+      Contributed by Conrad Huang (UCSF).
+
+   o  Added camera object as root data object.
+      Contributed by Conrad Huang (UCSF).
+
+   o  Added surface object as root object.
+      Contributed by Anthony Nichols (Columbia) and Conrad Huang (UCSF).
+
+   o  Added bondage, a new application which deduces bond order from 3-D
+      geometry (atom "coordinates") property.  Contributed by Eric Swanson
+      (U. of Washington), Jeff Blaney (Chiron), and Scott Dixon (SKB),
+      ported to cex by David Spellmeyer (Chiron).
+
+   o  Added chains, a new application which deduces peptide chain and residue
+      identification from connectivity.  Contributed by Roger Sayle (Glaxo).
+
+   o  Added connect, a new application which deduces connectivity from
+      interatomic distances.  Contributed by Roger Sayle (Glaxo).
+
+   o  Added Rasmol-2.6, a version of rasmol which reads CEX streams.
+      Contributed by Roger Sayle (Glaxo).
+
+   o  Added dgeom, a version of DGEOM2 which reads and writes CEX streams.
+      Ported by David Spellmeyer (Chiron), not yet contributed.
+      (To be contributed by Jeff Blaney (Chiron), Gordon Crippen (U. Michigan),
+      Andrew Dearing (Shell), Scott Dixon (SKB), David Spellmeyer (Chiron).
+
+   o  Added compare, a new program which clusters conformations.
+      Ported by David Spellmeyer (Chiron), not yet contributed.
+      To be contributed by Jeff Blaney (Chiron).
+
+   o  Changed internal procedure for object-child instantiation to allow
+      constant-time object creation.  Broad objects like protein surfaces
+      (e.g., 15000 apexes, 30000 faces as children of single surface) can
+      now be read in quickly.  Contributed by Dave Weininger (Daylight)
+      and Conrad Huang (UCSF).
+
+   o  Target distribution extended to:
+      [o] SunOS-4.1
+      [o] SunOS-5.4
+      [o] Irix-4.1
+      [x] Irix-5.2
+     *[x] OSF-1 (alpha)
+     *[o] HP/UX (900)
+     *[x] Macintosh (MPW)
+      [o] Macintosh (Metroworks)
+      [o] Windows-95
+      [o] Windows-3.x
+
+------------------------------------------------------------------------------
+CEX029->CEX030
+
+   o  Target distribution extended:
+      [x] SunOS-4.1
+      [x] SunOS-5.4
+     *[x] Irix-4.1
+     *[x] Irix-5.2
+      [o] Macintosh (Metroworks)
+      [o] Windows-3.x
+
+
+============================================================================
+SPECIFIC CHANGES FOLLOW
+============================================================================
+
+------------------------------------------------------------------------------
+cex032->cex033  Dave Weininger
+
+Changed the way cex streams are read in:
+
+   o  Root objects are still read in by polymorphic function cx_cexin().
+
+   o  When a root object is encountered as part of an object (as an
+      identifier or dataitem) the polymorphic cx_cexin() function is used
+      to interpret that part of the object.  For instance, this object is
+      parsed by (m)olecule_cexin, (c)amera_cexin, and (s)urface_cexin:
+
+	 $MOL<CC>/REM<one>CAMERA<...>$SURF<...&...>CURVE<...>/REM<two>|
+	 mmmmmmmmmmmmmmmmmcccccccccccsssssssssssssssssssssssssssssssssm
+
+   o  The (semi-)public function cx_tag2roottype() was added to cx_cex_io.c
+      and cx_cex_io.h.  It returns the root type corresponding to a given
+      tag or CX_OB_INVALID if not valid or not a root type.
+
+   o  Code was added to cx_molecule.c, cx_surface.c, and cu_camera.c to
+      implement the above changes.
+
+   o  Definitions for CX_TUPLESHAPE() and CX_SHAPE_* added to cx_types.h:
+         #define CX_SHAPE_VERTEX 'V'
+
+------------------------------------------------------------------------------
+cex032->cex033  Dave Weininger
+
+Changed a number of things about surfaces:
+
+   o  Surfaces contain vertices and faces as normally invisible components
+      Vertex positions are no longer visible properties.
+      Faces are no longer visible children.
+
+   o  SURF surface objects are represented lexically in the SURFEX language.
+
+   o  Surfaces are sent as sub-id's if has_visible_children()
+
+   o  Changed datatype defs (cx_surface_define_datatypes(), datatypes.cex)
+
+   o  Changed property name macros in cx_surface.h to CX_PROP_ prefix, e.g.
+      old way:   #define CX_PROP_TAG_CURVE  "curvature"
+      new way:   #define CX_PROP_CURVE  "curvature"
+
+   o  Replaced interactive test program trysurface with simpler testsurface.
+      old way:   $ trysurf 63
+      new way:   $ testsurf | printcex -63
+
+------------------------------------------------------------------------------
+cex032->cex033  Dave Weininger
+
+Changed a number of things about camera support:
+
+   o  Included cu_camera.h in cu.h
+
+   o  Changed a camera property definitions to have primitive values
+      in cu_camera_define_datatypes() and datatypes.dts
+
+   o  Replaced interactive test program trycamera with simpler cameraone.
+      old way:   $ trycamera 63
+      new way    $ cameraone | printcex -63
+
+------------------------------------------------------------------------------
+cex032->cex033  Dave Weininger
+
+Changed $CX_ROOT/data/dts.cex to $CX_ROOT/data/datatypes.cex:
+   o added comments
+   o removed unused/obsolete/unapproved entries: MP, CONF, ORI
+   o added surface and camera datatypes
+
+------------------------------------------------------------------------------
+cex031->cex032  Dave Weininger
+Changed makefile.mdep.sun5 RANLIB definition to true (disabled ranlib)
+
+------------------------------------------------------------------------------
+cex031->cex032 ???
+
+There were some last-minute changes by Roger Sayle?  Dave Spellmeyer?
+
+------------------------------------------------------------------------------
+cex031->cex031
+src/cobweb/cx_basics.c
+Corrected the code to functions returning NULL as a cx_Integer!
+
+
+------------------------------------------------------------------------------
+cex031->cex031 -- Roger Sayle
+src/wrappers/f77/cx_f_wrappers.c
+Solved memory deallocation problem in _cx_f_sprop which was "free"ing
+memory that it shouldn't be in the stack frame or common blocks!
+
+
+------------------------------------------------------------------------------
+cex031->cex031 -- Roger Sayle
+src/cobweb/cx_utils.c
+src/cobweb/cx_cex_io.c
+Changed references of "strdup" to "cx_strdup" [For MacOS]
+
+
+------------------------------------------------------------------------------
+cex030->cex031 -- Conrad Huang
+
+Nesting level set too low when parsing SMILES.
+
+src/molecule/cx_molecule.c:140
+   Changed:
+      #define MX_NESTING         40
+   to
+      #define MX_NESTING         4096
+
+------------------------------------------------------------------------------
+cex030->cex031 -- Conrad Huang
+
+Compile error on OSF1 because preprocessor line begins with whitespace
+instead of #
+
+src/cobweb/cx_cex_io.c:864
+   Changed line to:
+       #ifdef OLDWAY
+   to:
+      #ifdef OLDWAY
+
+src/cobweb/cx_cex_io.c:869
+   Changed line to:
+       #endif
+   to:
+      #endif
+------------------------------------------------------------------------------
+cex030->cex031  -- Dave Weininger, Conrad Huang
+
+   Changed internal procedure for object-child instantiation to allow
+   faster object creation.  All changes are in cobweb/cx_basics.c, most are
+   in cx_e_set_parent().  Effects: object size increased by 4 bytes, object
+   creation (initial parenting) is now constant-time rather than linear in
+   the number of siblings.  (Object reparenting and deletion still linear.)
+
+------------------------------------------------------------------------------
+cex030->cex031 -- Conrad Huang
+
+Tested on OSF1
+
+src/etc/makefile.mdep.osf1
+   New file containing OS dependencies for OSF1
+
+src/etc/cx_install:63
+   Added lines:
+       OSF1)
+         systype="osf1"
+         ;;
+
+src/etc/makefile.mdep.*:
+   Added definition for RANLIB
+
+src/cobweb/Makefile:
+src/molecule/Makefile:
+cu/setpart/Makefile:
+   Replaced "make" constructs of (LIBRARY)(OBJECT) and use ar/RANLIB explicitly
+
+------------------------------------------------------------------------------
+cex029->cex030 -- Jack Delany (via dw):
+
+
+Link error on Irix because a static function (normh(), in cx_molecule.c)
+wasn't declared before use.  Strange, since default prototype should have
+been ok.
+
+src/molecule/cx_molecule.c:187
+Add line:
+static int normh(cx_Object);
+
+------------------------------------------------------------------------------
+cex029->cex030 -- Jack Delany (via dw):
+
+src/applics/mol/amw.c:88
+   Change:
+      return sprintf(buf, "%.*f", p, amw);
+   to:
+      sprintf(buf, "%.*f", p, amw);
+      return (buf);
+
+Now, CEX compiles on IRIX4 also.  
+
+------------------------------------------------------------------------------
+cex029->cex030 -- Jack Delany (via dw):
+
+CX_ROOT:sh = pwd
+
+is not a generally supported make directive (only SUN).  Remove d
+it from two different makefiles.  One needs to set the environment 
+variable CX_ROOT onesself.
+
+------------------------------------------------------------------------------
+cex029->cex030 -- Jack Delany (via dw):
+
+In the makefile.mdep.sgi5, there are a couple of places where a rule-line 
+doesn't start with <tab>, so make complains.  Pretty minor.  Fixed.
+</PRE>
+</BODY>
+</HTML>

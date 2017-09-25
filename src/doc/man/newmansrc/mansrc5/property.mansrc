@@ -1,0 +1,22 @@
+<on>
+property \- object representing a named string attribute
+<description>
+A property object represents a named attribute of another object.
+Both the property name and the property value are stored as strings.
+An object can have at most one property of a given name.
+
+The property object type is CX_OB_PROPERTY
+and its typename is "Property".
+
+The property object is typically not used directly.
+In an application, properties are universally accessed by higher level
+functions:
+cx_sprop() which returns a named property as a string and
+cx_set_sprop() which sets (or resets) an object's property.
+The functions cx_iprop() and cx_set_iprop() allow property values to be
+manipulated as integers.
+The functions cx_rprop() and cx_set_rprop() allow property values to be
+manipulated as real numbers.
+The format used to represent real numbers
+by cx_set_rprop() is accessed by cx_realformat() and cx_set_realformat().
+<seealso>

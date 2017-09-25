@@ -1,0 +1,32 @@
+<fn>
+cx_scratchpad \- an efficient string concatenation utility
+<fp>
+cx_String cx_scratchpad(cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_scratchpad(cx_String str);
+<ff>
+(not applicable)
+<description>
+When called with a non-NULL argument, appends `str' to the scratch space
+and returns it, possibly reallocating the scratch space as needed.
+When called with a NULL argument once, resets to the start of the scratch
+space; when called with NULL twice in a row, also frees the scratch space.
+
+This is someehat similar to cx_strcat() but is does its work with
+dynamically allocated memory and much more efficient with long strings.
+<returns>
+Returns a cx_String.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_strcat(3cx)
+<bugs>
+This could be promoted from a C-utility to a CX utility operating on string
+(and binary?) objects,
+making it accessible from all languages,
+The functionality cound be delivered via
+cx_append, cx_reset, and cx_destroy messages.
+<objects>

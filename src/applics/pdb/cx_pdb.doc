@@ -1,0 +1,691 @@
+[ ] fix & similar   5.1.  cx_invent_atomnames()
+
+-------------------------------------------------------------------------------
+
+                                  cx_pdb.doc
+
+                         Chemical Exchange PDB Support
+
+                           Last modified: 24 Mar 1995
+-------------------------------------------------------------------------------
+
+                                 TABLE OF CONTENTS
+
+1. Introduction
+   1.1. Version information
+   1.2. Intended audience
+   1.3. Scope and goals
+   1.4. Disclaimer
+   1.5. Legal notice
+   1.6. Request for comments and contributions
+
+2. The Brookhaven Protein Data Bank Format
+   2.1. Record types and order
+   2.2. Header records
+   2.3. ATOM and HETATM records
+   2.3. CONECT records
+   2.4. TER records
+   2.5. Language compatibility
+
+3. PDB reader -- cx_pdb_read()
+   3.1. Specification
+   3.2. Example usage
+   3.3. Bugs
+
+4. PDB writer -- cx_pdb_write()
+   4.1.  Specification
+   4.2. Example usage
+   4.3. Bugs
+
+5. Related programs
+   5.1.  cx_mol_add_hydrogens(), cx_mol_zap_hydrogens()
+   5.2.  cx_3d_place_hydrogens()
+   5.3.  cx_3d_to_connectivity()
+   5.4.  cx_3d_to_chirality()
+
+6. cx_pdb distribution
+
+7. Credits & references
+
+-------------------------------------------------------------------------------
+
+1. Introduction
+
+The Brookhaven PDB (Protein Data Bank) format is a data exchange format
+originally designed for exchange of large 3D chemical structures such as
+peptides.  Although not well-suited for modern chemical information
+exchange, the PDB format has become a lowest common denominator for many
+extant chemical information programs, data, and modeling systems.
+
+This package ("cx_pdb") provides support for the PDB format as a chemical
+information exchange language.
+
+
+1.1. Version information
+
+This documents CX_PDB version 0.10, a prototype of the proposed system.
+The first full release of CEX will be version 1.11, expected mid-1995.
+
+
+1.2. Intended audience
+
+This file (cx_pdb.doc) documents the CX_PDB languages and program interfaces.
+It contains information of interest to people writing or using programs which
+exchange chemical information via this interface.  The first two sections
+(Introduction and Languages) should be of interest to all users.  The rest
+of the document contains information which will be important to chemical
+information programmers.
+
+
+1.3. Scope and goals
+
+The cx_pdb package is designed for data exchange purposes only.
+
+A program which needs to read in PDB format calls a function (cx_pdb_read)
+to do so (producing a molecule object), obtains required information via
+a functional interface (typically moving it into internal data structures),
+then destroys the molecule object and continues with normal processing.
+
+Conversely, a program which needs to write in PDB format creates a molecule
+using the underlying cx_mol package, calls on cx_pdb_write() to write the
+PDB, then destroys the molecule object and continues with normal processing.
+
+In both cases, the role of the cx package is data exchange only, providing
+robust machine- and language-independent communication.  Once communication
+tasks are completed, it's just like the cx functions never existed, i.e.,
+all memory used by the cx functions is returned (to the heap) and there are
+no global side effects.
+
+The cx_pdb package is specifically not designed (nor is it suitable) for
+general chemical information processing.  For instance, there are no
+provisions for modifying molecules once they are completed.  (This allows
+the implementation to be greatly simplified, an important goal for a package
+which must be delivered as source code.)
+
+Target operating systems are Unix System V, Macintosh OS System 7, and
+Windows 3.0.  Target application languages are C and Fortran.
+
+A separate goal of the cx_pdb package is to provide an example of how the
+CX utilities may be used for data exchange.  Note that CX utilities are
+*not* primarily intended to be file format converters -- one of the main
+ideas of CX is to avoid the limitations of file formats by providing a
+extensible data exchange utility in the public domain.  In any case, the
+code provided in cx_pdb for PDB support illustrates most of the techniques
+used for CX data exchange.
+
+1.4. Disclaimer
+
+We categorically deny that this software is good for anything at all.
+If you find that it does something useful, that's your problem, not ours.
+
+
+1.5. Legal notice
+
+All code in the current cx_pdb version (0.10) carries this notice:
+
++---------------------------------------------------------------------------+
+|                                                                           |
+| This code was written by Dave Weininger at Daylight Chemical Information  |
+| Systems, Inc. and is contributed by Daylight to the public domain.        |
+|                                                                           |
+| This code may be freely copied and redistributed for research, profit,    |
+| fun or any other reason -- there are only two restrictions:               |
+|                                                                           |
+|    (1) Unmodified or functionally equivalent code derived from CX code    |
+|        must contain this notice.                                          |
+|                                                                           |
+|    (2) The functional definition of all constants, typedefs, and entry    |
+|        points starting CX_ and cx_ may *not* be changed.  If you need     |
+|        to change a function, you may do so if you CHANGE THE NAME.        |
+|        The prefix CU_ or cu_ is suggested for user-modified functions.    |
+|                                                                           |
++---------------------------------------------------------------------------+
+
+Although specific wording may change before release, the basic intent of this
+will be preserved, i.e., keep CX code free and keep the entry points stable.
+
+
+1.6. Request for comments and contributions
+
+Comments about any aspect of CEX are invited.
+
+You are encouraged to submit improved or additional functions for inclusion
+in the CX standard.  Submit such code to the Chemical Information Alliance
+site or info@daylight.com.
+
+
+-------------------------------------------------------------------------------
+
+2. The Brookhaven Protein Data Bank Format
+
+The "original" and "official" PDB format is used to deliver data from the
+Brookhaven Data Bank, an important repository of 3D information.  The PDB
+format has many shortcomings which make it unsuitable for general purpose
+exchange of chemical information.  In general, given a PDB file, it is not
+possible to deduce what molecule is represented since bonding and hydrogens
+are not required.  Linguistically, the PDB language represents a language
+with "poorly-defined semantics".  This doesn't present too much of a problem
+when representing proteins composed of the standard 20 amino acid residues
+(the structure is "obvious") but becomes problematic when representing
+general chemical structures.
+
+Consequently, there have been many unofficial modifications of the PDB format
+which now form a large body of data and code in the chemical information and
+modelling communities.  A "de facto" standard has evolved which is probably
+even more important than the original format.  It is this de facto standard
+which is implemented in the cx_pdb package and which is documented in the
+following sections.
+
+
+2.1. Record types and order
+
+All PDB files consist of multiple lines of ASCII text ("records") with the
+first 6 characters ("record type") indicating what is represented in the
+rest of the line.  The general form of a PDB file is:
+
+          header records  (HEADER, COMPND, REMARK, etc.)
+          ATOM and/or HETATM records for first disconnected component
+ optional +----
+ may      | TER record
+ repeat   | ATOM and/or HETATM records for next disconnected component
+          +----
+ optional +----
+          | TER record
+          | CONECT records
+          +----
+          END
+
+In the original PDB format, ATOM/HETATM records for atoms in disconnected
+components are separated by TER records.  Connectivity is (optionally)
+specified by CONECT records which follow all ATOM/HETATM records, separated
+by a TER record.  An END record is always the last line.  The original format
+does not provide for storing multiple sets of molecules.
+
+As implemented in cx_pdb_write(), the CX PDB output language:
+
+    o  A COMPND record always appears first on output, containing the given
+       compound name starting in column 8 or "(no name)" if none is provided.
+
+    o  A REMARK record appears second only if a remark is provided,
+       containing the given remark string starting in column 8.
+
+    o  ATOM record specifications appear next, with disconnected components
+       separated by an unnumbered TER record.   HETATM records are not used.
+
+    o  ATOM records for all atoms in a disconnected component are written
+       together.  Internal atom index order is maintained within components.
+
+    o  CONECT records appear after all ATOM records, separated by an
+       unnumbered TER record.
+
+    o  An END record is always written as the last record of an entry.
+
+    o  Multiple entries are concatenated (delimited by END records).
+
+    o  No limits are imposed on the length of output lines (e.g. REMARKs)
+       but be aware that many PDB readers expect only short (80 char?) lines.
+
+As implemented in cx_pdb_read(), the CX PDB input language:
+
+    o  Input of an entry is terminated by an END record or end-of-file.
+
+    o  A single COMPND record is recognized anywhere in the entry.
+       Text begins in column 7; leading and trailing blanks are removed.
+
+    o  A single REMARK record is recognized anywhere in the entry.
+       Text begins in column 7; leading and trailing blanks are removed.
+
+    o  ATOM and HETATM records are treated as identically and may appear
+       anywhere in the entry before CONECT records which refer to them.
+    
+    o  TER records are ignored.
+
+    o  CONECT records may appear anywhere in the entry following the ATOM
+       or HETATM records to which they refer.
+
+    o  Multiple entries may be concatenated (separated by END records).
+
+    o  Records are truncated to 2047 chars.
+
+
+2.2. Header records
+
+This implementation recognizes two types of header records: COMPND and REMARK.
+
+COMPND records are contain the name of the entry.
+
+REMARK records contain other useful information.
+
+On input, only one instance of each record type is expected per entry
+(subsequent entries supercede previous ones) and text is truncated to
+2000 characters.  No length limit is imposed on output, but be aware that
+many PDB readers expect only short lines (80 characters or less).
+
+
+2.3. ATOM and HETATM records
+
+In the original PDB format, ATOM records are used for atoms in pre-defined
+residues and HETATM records are used for all other atoms.  There is no field
+which identifies which element an ATOM represents (i.e., atomic number),
+but rather a four character atom label field, intended to be unique within
+a residue.  The ATOM record format is the most complex, misunderstood, and
+widely abused part of the PDB format.
+
+The format for ATOM and HETATM records is:
+
+                  111111111122222222223333333333444444444455555555556666666
+columns: 123456789012345678901234567890123456789012345678901234567890123456
+example: ATOM   1169  O   LEU A 157      37.237  39.482  45.376  1.00 30.00
+         ------.----.----.--- -.---.---.------- ------- ------- ----- -----
+field:   1      2    3    4   5 6   7   8       9       10      11    12
+
+    #   COLS  MEANING
+    --- -- -- -------------------------------------------------------------
+    1    1- 6  record type flag, i.e., ATOM or HETATM
+    2    8-11  atom index, monotonically increasing ordinal integers
+    3   13-16  atom label, 1st 2 chars are right-justified atomic symbol
+    4   18-20  residue name (upper case alphabetic characters)
+    5   22-22  chain designator, alphanumeric character
+    6   24-26  residue number, ascending integers
+    7   28-30  mystery field
+    8   32-38  x-coordinate in Angstroms
+    9   40-46  y-coordinate in Angstroms
+    10  48-54  z-coordinate in Angstroms
+    11  56-60  occupancy, real number in range 0.0 to 1.0
+    12  62-66  B-value (temp), real number in range 0.0 to 100.0 (99.99?)
+
+As implemented in cx_pdb_write(), the CX PDB ATOM record output language:
+
+   o  The record type ATOM is always used in field 1; HETATM is never used.
+
+   o  Field 2 (atom index) contains the ordinal number of the ATOM record
+      (ATOM records are numbered with sequential integers starting with 1).
+
+   o  Field 3 (atom label) contains either user-specified atom labels or
+      invented labels.
+      
+      Invented labels for all atoms except "simple" hydrogens consist of a
+      right-justified atomic symbol in the first two characters followed
+      by a left-justified identifier corresponding to the sequential number
+      of atoms.  If there are more than 99 atoms, an ad hoc identifier is
+      used, i.e., [1,2,..98,99,aa,ab,..,ay,az,aA,aB,..ZY,ZZ], with alpha
+      labels repeating after 2803 atoms.
+
+      "Simple" hydrogens are those attached to exactly one non-hydrogen atom.
+      Labels for such hydrogen consist of the letter H, D, or T in position
+      2 followed by the 2-character identifier of the atom to which they are
+      attached.  If more than one hydrogen is attached to an atom, a
+      sequential digit appears in position 1.
+
+   o  Field 4 (residue name) contains a user-specified residue name,
+      or the string "RES" if none is specified.
+
+   o  Field 5 (chain designator) contains a user-specified character,
+      or blank if none is specified.
+
+   o  Field 6 (residue number) contains a user-specified integer, or a
+      sequential number of the disconnected component if not specified.
+
+   o  Field 7 is always blank (does anyone know what it was for?)
+
+   o  Fields 8, 9, and 10 contain user-specified coordinates,
+      or blank if not specified.
+
+   o  Field 11 contains a user-specified real number "occupancy",
+      or blank if not specified.
+
+   o  Field 12 contains a user-specified real number "bvalue",
+      or blank if not specified.
+
+As implemented in cx_pdb_read(), the CX PDB ATOM record input language:
+
+   o  In field 1 (record type), "ATOM" and "HETATM" are treated as synonyms.
+
+   o  Field 2 (atom index), is required and is interpreted as an integer
+      which is used to interpret CONECT records (which are optional).
+      Atom indicies must be unique, but there is no requirement that they
+      have increasing or sequential values.
+
+   o  Field 3 (atom label) is used literally as an atom name and also
+      interpreted as an atomic symbol.  The first two characters are
+      interpreted as a standard atomic symbol, ignoring the first
+      character if it is not an upper case letter and ignoring the case
+      of the second character.  "D" and "T" are recognized as atomic
+      symbols for deterium and tritium.  ATOM records with unrecognizable
+      atomic symbols result in "wildcard" atoms (atomic number 0).
+
+   o  Fields 4 (residue name) and 5 (chain designator) are used literally.
+
+   o  Field 6 (residue number) is interpreted as an "%d" integer.
+
+   o  Fields 7 to 12 (coordinates, occupancy, and bvalue) are interpreted
+      as "%lf" real numbers.  Missing data are indicated by blank fields.
+
+
+2.3. CONECT records
+
+In the original PDB format, CONECT records are used only to indicate
+connections (with no provision for bond order information) and are
+omitted for all atoms in pre-defined residues.  In the evolved de facto
+standard, many programs (ALADDIN, CONCORD, DGEOM) use repeated connections
+to indicate multiple bonds, i.e., a double bond is indicated by a repeated
+atom index in a CONECT record, a triple bond by an index repeated three times.
+This convention is used by the CX PDB languages.
+
+CONECT records specify connections by redundant lists of atom indicies,
+i.e., the second field of ATOM and HETATM records.  As used by Brookhaven,
+these are also the sequential line numbers of atom specifications.  A number
+of extant PDB readers use the ordinal numbers of atoms, but this is incorrect
+because Brookhaven numbers intervening TER records in their PDB files.  The
+CX PDB languages use atom indicies for reading and unnumbered TER records 
+for writing, so they should work either way.
+
+The CONECT record format is:
+
+                  111111111122222222223333333333444444444455555555556666666
+columns: 123456789012345678901234567890123456789012345678901234567890123456
+example: CONECT    8    7    9   13   13
+         ------.----.----.----.----.----.----.----.----.----.----.---- ...
+field:   1      2    3    4    5    6    7    8    9    10   11   12
+
+    #   COLS  MEANING
+    --- -- -- -------------------------------------------------------------
+    1    1- 6  record type flag, always "CONECT"
+    2    8-11  "from" atom index
+    3   13-16  first  "to" atom index
+    4   18-21  second "to" atom index
+    5   23-26  third  "to" atom index
+        ...    etc
+
+Note, the above example means:
+   "atom 8 is singly bonded to atoms 7 and 9, and doubly bonded to atom 13".
+
+As implemented in cx_pdb_write(), the CX PDB CONECT record output language:
+
+   o  Atom indicies correspond to the specified atom index (second field
+      of ATOM records).  This is also the ordinal number of ATOM records.
+
+   o  Atom indicies for "to" atoms are listed in increasing value.
+
+   o  Connections are written in a redundant fashion (both ways).
+
+   o  Double bonds are indicated by a repeated "to" atom index, triple bonds
+      by an atom index repeated three times.
+
+As implemented in cx_pdb_read(), the CX PDB input language:
+
+   o  Atom indicies correspond to the specified (and required) atom index
+      (the second field of ATOM records).  This may or may not be the
+      ordinal number of ATOM records.
+
+   o  "To" atom indicies may be listed in any order.
+
+   o  Redundant bonding information is ignored (only connections with the
+      "to" index greater than the "from" index are used).
+
+   o  A "to" atom index listed twice is interpreted as a double bond.
+      A "to" atom index listed three times is interpreted as a triple bond.
+
+
+2.4. TER records
+
+In the original PDB format, numbered TER records appear between groups of
+ATOM/HETATM records for disconnected components and before the CONECT records.
+This convention creates some ambiguity when writing PDBs for structures where
+neither connections nor hydrogens are known, e.g., one can't differentiate
+between PDBs corresponding to "CO" (methanol) and "C.O" (methane and water)
+except by examining the coordinates.  The CX function cx_3d_to_connectivity()
+may be used to resolve this ambiguity when good geometries are available,
+but it is an an unfortunate convention.  Also, Numbering TER records breaks
+up the atom index number in a way which many existing PDB readers don't
+handle very well.
+
+On input, cx_pdb_read() ignores TER records completely.
+
+On output, cx_pdb_write() writes unnumbered TER records after each group of
+ATOM records for a disconnected component only if there is at least one
+CONECT record to be specified (i.e., cx_mol_bondcount() is not zero).
+
+
+2.5. Language compatibility
+
+The CX PDB languages are compatible with both the original Brookhaven format
+and a large majority of modified PDB formats which currently exist.
+
+The CX PDB input language as implemented in cx_pdb_read() has the following
+known incompatibilities:
+
+   o  PDB variants which do not contain END record(s) are not readable by
+      cx_pdb_read().
+
+   o  PDB variants which delimit multiple entries with something other than
+      the END record are not readable by cx_pdb_read().  One example known 
+      (allows COMPND record as a delimiter).
+
+   o  Some PDB variants contain additional information after the END record.
+      The first entry in such files will be read correctly by cx_pdb_read()
+      (usually there is only one entry per file) but additional information
+      will not be interpreted.
+
+The CX PDB output language as implemented in cx_pdb_write() has the following
+known incompatibilities:
+
+   o  Programs which require HETATM records will not be able to read files
+      produced by cx_pdb_write().  No examples are known.
+
+   o  Programs which require numbered TER records will not be able to
+      correctly read files produced by cx_pdb_write().  No examples are known.
+
+-------------------------------------------------------------------------------
+
+3. PDB reader -- cx_pdb_read()
+
+The CX PDB reader consists of the functions cx_pdb_read() and cx_pdb_eof().
+
+Other CX packages used by cx_pdb include:
+
+   cx_mol ..... molecule object support
+   cx_err ..... error messages
+   cx_array ... array utility
+   cx_util .... general purpose utility functions
+
+
+3.1.  Specification
+
+The prototype of the PDB reader is:
+
+   cx_Object cx_pdb_read(FILE *fp);
+
+which reads the next pdb entry on the given stream `fp' and returns a
+molecule as a cx_Object with the following properties set:
+
+    "name" ........... molecule name (string molecule property)
+    "remark" ......... arbitrary remark (string molecule property)
+    "name" ........... atom name (string atom property)
+    "resname" ........ residue name (string atom property)
+    "chain" .......... chain designator (string atom property)
+    "resno" .......... residue number (integer atom property)
+    "coordinates" .... (x,y,z) coordinates (real array(3) atom property)
+    "occupancy" ...... location occupancy (real atom property)
+    "bvalue" ......... temperature B-value (real atom property)
+
+NULL is returned on error, which may be due to invalid input or EOF.
+If not due to EOF, error messages will be queued (see cx.doc).
+
+An additional function is provided for error revovery:
+
+   cx_Integer cx_pdb_eof(void);
+
+which returns TRUE if and only if an EOF was encountered during the last
+call to cx_pdb_read().
+
+
+3.2. Example usage
+
+   (not done yet)
+
+
+3.3. Bugs
+
+   None known.
+
+-------------------------------------------------------------------------------
+
+4. PDB writer -- cx_pdb_write()
+
+The CX PDB writer consists of the single function cx_pdb_write().
+An additional function, cx_pdb_set_atomnames() is also avalable.
+
+Other CX packages used by cx_pdb include:
+
+   cx_mol ..... molecule object support
+   cx_err ..... error messages
+   cx_array ... array utility
+   cx_util .... general purpose utility functions
+
+
+4.1.  Specification
+
+The prototype of the PDB writer is:
+
+   cx_Integer cx_pdb_write(FILE *fp,
+                           cx_Object molecule,
+                           cx_String name,
+                           cx_String remark,
+                           cx_String alabs_prop,
+                           cx_String resid_prop,
+                           cx_String chain_prop,
+                           cx_String resno_prop,
+                           cx_String coord_prop,
+                           cx_String occup_prop,
+                           cx_String bvalu_prop);
+ 
+which writes a PDB entry to given stream for the given molecule.
+
+Strings provided for `name' and `remark' are output if not NULL.
+
+Atom labels are taken from the atom property named by the `alabs_prop'
+argument; simple atomic symbols are used for atoms with missing names.
+If the `alabs_prop' argument is NULL, PDB-style atomic labels are invented.
+
+Residue labels are taken from the atom property named by the `resid_prop'
+argument; if NULL or missing, the string "RES" is used.
+
+Chain designators are taken from the atom property named by the `chain_prop'
+argument; if NULL or missing, chain designators are not output.
+
+Residue numbers are taken from the atom property named by the `resno_prop'
+argument; if this argument is NULL and any bonds exist, the disconnected
+component number is used, otherwise this field is left blank.
+
+Coordinates are obtained from the atom property named by the `coord_prop'
+argument; if NULL or missing, coordinates of (0,0,0) are used.
+
+Occupancy data are taken from the atomic property named by the `occup_prop'
+argument, if NULL, the occupancy field is left blank.
+
+B-value data are taken from the atomic property named by the `bvalu_prop'
+argument, if NULL, the B-value field is left blank.
+ 
+FALSE is returned on error, in which case error messages will be queued.
+
+
+The following function is also provided for general use:
+
+   cx_Integer cx_pdb_set_atomnames(cx_Object mol, int *ord);
+
+Invent PDB-style four-character names for all atoms in `mol' and attach as
+the atom property "name".  If not NULL, the integer array `ord' is assumed
+to contain 0-origin indicies (i.e., ord[0] is the index of the logically
+first atom) and is used for atom naming.  Returns 0 on error, 1 on success,
+and 2 if successful but atom names are not unique (i.e., more than 2803
+atoms or an atom has more than 61 attached hydrogens).
+
+Invented labels for all atoms except hydrogens consist of a right-
+justified atomic symbol in the first two characters followed by a
+left-justified 2-character identifier corresponding to the sequential
+number of atoms.  If there are more than 99 atoms, an ad hoc identifier
+is used, i.e., [1,2,..98,99,aa,ab,..,ay,az,aA,aB,..ZY,ZZ], with alpha
+id's repeating after 2802 atoms.
+
+Invented hydrogen atom labels consist of the letter H, D, or T in
+position 2 followed by the 2-character identifier of the atom to which
+they are attached; if more than one hydrogen is attached to an atom,
+a sequential digit appears in position 1.  Hydrogen atoms bonded to
+other than one other non-hydrogen are given normal atom identifiers.
+
+
+4.2. Example usage
+
+   (not done yet)
+
+
+4.3. Bugs
+
+   None known.
+
+-------------------------------------------------------------------------------
+
+5. Related programs
+
+A number of additional CX functions may useful to people dealing with
+the PDB format.
+
+
+5.1.  cx_mol_add_hydrogens(), cx_mol_zap_hydrogens()
+
+Add/remove implicit hydrogen atoms, i.e., uncharged, non-isotopic hydrogens
+bonded to one non-hydrogen atom.
+
+This function is not available yet.
+
+
+5.2.  cx_3d_place_hydrogens()
+
+Create explicit hydrogen atoms and deduce their 3-D coordinates.
+
+This function is not available yet.
+
+
+5.3.  cx_3d_to_connectivity()
+
+Deduce bonds and bond order from atomic numbers and 3-D coordinates.
+This is expert system is very effective for most structures of interest
+(oligomers, small organics) if reasonably good geometry is available.
+
+This function is particularly useful when dealing with PDB files where
+connectivity is not available or not reliable (e.g., most PDB files).
+
+This function is not available yet.
+
+
+5.4.  cx_3d_to_chirality()
+
+Deduce 2-D chirality (tetrahedral and orientation around double bonds) for
+a molecule from 3-D atom coordinates.  This function can be called right
+after cx_pdb_read() to obtain chiral assignments.
+
+This function is not available yet.
+
+
+-------------------------------------------------------------------------------
+
+6. cx_pdb distribution
+
+The cx_pdb distribution is available in the $CX_HOME/cx_pdb directory.
+It consists of:
+
+    makefile ....... installation
+    cx_pdb.doc ..... this file
+    cx_pdb.h ....... C header file, all definitions & prototypes
+    cx_pdb.c ....... source code
+    cx_f_pdb.inc ... Fortran include file
+    cx_f_pdb.c ..... fortran wrappers
+    SAMPLE.pdb ..... sample pdb file for testing
+    SAMPLE.cex ..... sample cex file for testing
+
+-------------------------------------------------------------------------------
+
+7. Credits & references
+
+Thanks, Jeff.

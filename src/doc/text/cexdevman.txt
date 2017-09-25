@@ -1,0 +1,506 @@
+
+
+                            CEX Developer's Guide
+                                 Version 0.28
+
+
+                                    AUTHOR
+
+                                Dave Weininger
+                              Daylight CIS, Inc.
+
+
+                                   ABSTRACT
+
+	This developer's guide contains information about the CX
+	development system itself and instructions for programmers
+	who are interested in doing low-level things like inventing
+	their own object classes.
+
+
+                                    NOTICE
+
+        This document is contributed to the public domain and may
+        be freely copied, modified, and redistributed for research,
+        profit, fun or any other reason.  Proper acknowlegement of
+        the author and institution is expected in accordance with
+        normal academic standards.
+
+----------------------------------------------------------------------------
+
+                               TABLE OF CONTENTS
+
+   1. Introduction
+   2. The CX development system
+   3. CX package overview
+   4. Adding a new datatype to the CX system
+   5. Adding a new kind of object to the CX system
+   6. Adding a new kind of root object to the CX system
+   7. A note about object class numbers
+
+----------------------------------------------------------------------------
+
+1. Introduction
+
+This document is basically a collection of README's which document how the
+CX development system is put together and instructions about how to dink it.
+It isn't particularly coherent and needs a rewrite before release.
+
+----------------------------------------------------------------------------
+
+2. The CX development system
+
+Unix development tools aren't incorporated in the CX distribution, e.g.,
+makedepend, imake (or jake), sccs, purify, etc.  The idea is that there
+should be no assumption that such tools are available.  However,
+contributors are strongly encouraged to use such tools, particularly purify
+or a similar product.  Contributions will not be incorporated in the
+standard distribution until they are "clean", e.g., no access violations
+and (in the case of contributed functions) no memory leaks.
+
+CX development support essentially consists of one Makefile per source
+directory and an installation with machine-dependent include files in
+$CX_ROOT/src/etc.  The organization is simple:
+
+   o  The top level Makefile ($CX_ROOT/Makefile) invokes the script
+      $CX_ROOT/src/etc/cx_install which attempts to figure out which
+      supported environment is running and copies the appropriate machine-
+      dependent makefile include file to $CX_ROOT/include/makefile.mdep.
+      This file is included in all others.  Supported environments include:
+
+         makefile.mdep.hp ..... HP/UX 9.x running on an HP 9000/7xx
+         makefile.mdep.sgi4 ... Irix 4.x.x running on an SGI machine
+         makefile.mdep.sgi5 ... Irix 5.x.x running on an SGI machine
+         makefile.mdep.sun4 ... SunOS 4.1.x running on a Sun or compatible
+         makefile.mdep.sun5 ... SunOS 5.2.x running on a Sun or compatible
+
+   o  Each directory contains a Makefile which contains the machine-dependent
+      file but otherwise knows only about itself and its subdirectories (the
+      directories immediately below it).  Its job is to make itself and its
+      subdirectories.  After the initial installation, it is OK to run make
+      from any directory (but be sure CX_ROOT is set correctly!).
+
+   o  Each Makefile contains these targets:
+
+         (default) ... default is generally the same as `install'
+         `all' ....... makes everything, including test programs
+         `install' ... make & install everything except testprograms
+         `clean' ..... cleans everything
+
+   o  To create the initial system, set the environment variable CX_ROOT, and:
+
+         $ cd $CX_ROOT
+         $ make install     (or just make)
+
+   o  To completely clean up the system,
+
+         $ cd $CX_ROOT
+         $ make clean
+
+   o  To change how compilations or linkages are done, don't change the
+      machine-dependent include files in $CX_ROOT/src/etc, but rather:
+
+         $ cd $CX_ROOT/src
+         $ make clean            # cleans out only the source
+         $ cd $CX_ROOT/include
+         $ vi makefile.mdep      # e.g., change CFLAGS option -O to -g
+         $ cd $CX_ROOT/src
+         $ make install          # rebuilds everything
+
+   o  To create purified programs, do the above, but edit the line defining
+      the symbol PURIFY to equal the path of the purify executable, e.g.,
+
+         $ vi makefile.mdep      # PURIFY = /home/local/purify/purify
+
+   o  To create a new application, e.g., a hypothetical program `brainstorm':
+
+         $ cd $CX_ROOT/src/applics
+         $ mkdir brainstorm
+         $ vi Makefile           #  add brainstorm to SUBDIRS list
+         $ cd brainstorm
+         $ cp ../cex/Makefile .
+         $ vi Makefile           #  modify to suit your needs
+
+   o  To create a new function, e.g., cu_figger() in the file `cu_figger.c':
+
+         $ cd $CX_ROOT/src/cu
+         $ mkdir figger
+         $ vi Makefile           #  add figger to SUBDIRS list
+         $ cd figger
+         $ cp ../Makefile .
+         $ vi Makefile           #  modify to suit your needs
+
+      Note: to be included in the cx distribution, visible entry points
+            must start "cu_", must be declared in header file, and must be
+            added to $CX_ROOT/lib/libcu.a.
+
+----------------------------------------------------------------------------
+
+3. CX package overview
+
+The CX system is designed to be shipped as source code, to be supportable,
+and to be extensible by the adding new packages.  In general, you do NOT
+need to create a new package to create new CX applications or to port an
+exiting application to CEX.  The reason to create a new package is to
+support a new object classs, e.g., a binary spectrum object or a root object
+other than a molecule.
+
+The CX code is organized as three kinds of packages ... actually all three
+kinds are identical in function, they just appear in different places.
+
+   o  Internal packages (e.g., support for strings, streams, properties,
+      datatypes, etc.) are part of the underlying object support system
+      and appear in the directory $CX_ROOT/src/cobweb (chemical object web).
+      Internal packages are automatically initialized and explicitly
+      cleaned up by cx_cleanup().
+
+   o  Supported packages (e.g., support for molecules) appear in other
+      directories (e.g., $CX_ROOT/src/molecule), have reserved object
+      classes (0-9999), and are explicitly initialized and cleaned up
+      by the calling program (e.g., cx_molecule_pkg()).
+
+   o  Unsupported ("exotic") packages (i.e., support for user-defined
+      objects) is intended to go in the $CX_ROOT/src/cu directory (but may
+      appear anywhere), have user-defined object classes (>9999), and are
+      explicitly initialized and cleaned up by the calling program
+      (e.g., cu_custom_pkg() or whatever).
+
+The idea of exotic packages is to allow anyone to add new functionality to
+CX and to share them without being dependent on an "official" CX release.
+
+----------------------------------------------------------------------------
+
+4. Adding a new datatype to the CX system
+
+If you are adding a new datatype which can be described with existing CX
+languages you don't need to create a package -- just do it as described in
+this section and skip all the packaging details that follow.
+
+First decide if the information best described as a property, an object, or
+an identifier.  Properties are simple pieces of information which help
+describe other things, e.g., "Remark" or "pH of measurement" are properties.
+Objects typically used to describe most chemical data and can have properties,
+e.g., "Measured partition coefficient" is an object which has properties such
+as "Reference", "Temperature of measurement", "pH of measurement", etc.
+Identifiers (especially "pure" identifiers) are used mainly (or exclusively)
+to identify an entity for which information is known, e.g., a "Registration
+Number" is an identifier.
+
+Next, determine the information's shape (dimensionality) and language.
+
+Shape refers to how many pieces of information make up a single entity.
+For instance, all scalar properties such as a melting point have a shape
+of "1".  An (X,Y,Z) coordinate has a shape of "3".  (It would be acceptable,
+but not very natural, to store coordinates as three separate properties of
+shape "1".)  A rotation-translation matrix has a shape of "6".  Shapes can
+also have alphabetic suffixes which indicate semantic limitations, e.g.,
+remark has a shape of "1" (no suffix, goes anywhere), bond order has a shape
+of 1B (shape 1, bond parent), and "atomic coordinate" has "3A" (atoms).
+
+The "language" property of a datatype indicates how the data is stored and
+interpreted.  Most things use the STRING langugage (printable ASCII strings),
+but some make more natural numbers (e.g. INTEGER and REAL languages).  For
+numeric properties, decision about language to isn't usually critical, since
+most numbers are managed as strings anyway.  The language BINARY is also
+available for data which has no natural string equivalent (e.g. fingerprints
+or sets of structural keys).
+
+Finally, make up a datatype.  You will ultimately be calling this function:
+
+   cx_create_datatype(table, tag, pname, vname, shape, lang, desc);
+
+E.g., for a registration number you might specify:
+
+   tag ............ "XRN"
+   verbose name ... "X Registration Number"
+   property name .. "xregno"
+   shape .......... "1"
+   language ....... "STRING"
+   description .... "Company X's registration Number"
+
+Other examples:
+
+   tag   prop name   verbose name   shape language  description
+   ----  ----------  -------------- ----- --------  --------------------------
+   XRN   xregno      X Reg Number   1     STRING    X's registration Number
+   MVOL  molvol      Molal volume   1     REAL      Molal volume at normal BP
+   ACH   charge      Atom charge    1A    REAL      Atomic charge
+   ALAB  atomlabel   Atom label     1A    STRING    Atom label
+   ALAB  coordinates Atom coords    3A    STRING    Atomic XYZ coordinates, A
+   BLAB  bondlabel   Bond label     1B    STRING    Bond label
+
+If you are creating a property, once you have defined the datatype, you're
+done.  For an object, you will need to attach the dataype to each object
+that is to be transmitted.  Also, since objects can have properties, you
+should think about what an object's natural properties are and define
+datatypes for them.
+
+That's all, unless you are creating a type of object which will either
+(1) be used as a root identifier or (2) contain propertied components,
+or (3) will be represented in a special lanaguage.  In these cases, you
+will need to create a package so that the polymorphic messages (functions
+such as cx_destroy()) get dispatched to your procedures.
+
+----------------------------------------------------------------------------
+
+5. Adding a new kind of object to the CX system
+
+OK, you've read the above section and decided that you need to make a new
+kind of object, perhaps because you know that this kind of data is super
+important to you and there's only right way to describe it (your way).
+For the purposes of discussion, let's say it is "raw electrophoresis data".
+Before you charge ahead, get a cup of coffee (or something stronger), sit
+down, and think about how you might generalize your solution in terms of
+information exchange.  Chemists always seem to be ready to work hard on
+special-purpose systems to solve their particular problems without doing
+much in the way of reviewing existing solutions.  (I know, I'm one of them.)
+In this case, raw electrophoresis images look a lot like photographs.
+It just so happens that there are already a variety of good protocols to
+store such images (TIFF, GIF, PICT, JPEG, RGB, PSL2, etc.)  Consider the
+pros and cons of each and don't be mislead by the fact that one of them
+works really well on the kind computer you're using this week.  When you
+write for CEX, you're writing for posterity.  My personal favorite among
+the pixmap formats is JPEG, because it's efficient, flexible, and there are
+good public-domain interpreters, generators, and viewers available.
+Assume we get our hands on (or create) a set of JPEG algorithms and
+convince ourselves that we can represent our data in JPEG.  With that,
+we're already 90% done.
+
+The rest is teaching CEX about JPEG.  The intent is to create a functional
+system which can be tested and shared right away.  If generally useful, it
+may be incorporated into the mainstream CX system.  Here's how it's done.
+
+
+   A. Select a name for the language.
+      -- In this case it's obvious, "JPEG".
+
+
+   B. Select symbolic and text names for the object class (type of object).
+      -- Here, we will use CU_OB_PHOTO and "Photo".
+
+
+   C. Select a number for your object class that is unlikely to conflict
+      with others.  Read the section below about inventing class numbers.
+      -- in this case, we'll use 879340201
+
+
+   D. Create a directory to contain code which will support photo objects.
+      -- Here we use $CX_ROOT/src/cu/photo
+
+      IMPORANT: all entry points and symbols in this directory must use
+      prefixes other than  "cx_" and "CX_" ... "cu_" and "CU_" are
+      recommended, but you can pick anything else, e.g., your initials.
+      A programmer's life is tough enough without symbol conflicts.
+
+
+   E. Edit the file $CX_ROOT/src/include/cx_types.h ... add the symbolic
+      name(s) of your object class(es) under the comment, e.g.:
+
+         /*** Exotic package classes. ***/
+       
+         #define CU_OB_PHOTO 879340201
+
+
+   F. Edit the file $CX_ROOT/src/include/cx_exotic.h ... add a line which
+      includes a header file which defines your interface, e.g., any flags
+      and prototypes of non-polymorphic functions, e.g.,
+
+         #include "cu_photo.h"
+
+      Your header file will be included in any program that includes "cx.h".
+
+      It's a good idea to add this line to $CX_ROOT/src/include/cu.h also
+      (for programs which explicitly include cu, e.g., test programs).
+
+
+   G. Edit the file $CX_ROOT/src/cu/Makefile ... add the name of your
+      subdirectory to the SUBDIRS symbol, e.g.,
+
+         SUBDIRS = setpart photo
+
+      Your directory will automatically be made with the rest of the system
+
+
+   H. Create a Makefile, source code, and test programs in your directory
+      $CX_ROOT/src/cu/photo which support the PHOTO object.  The Makefile
+      and source file cx_molecule.c in $CX_ROOT/src/molecule are good
+      starting points.
+
+      Makefile should provide the targets "install" (the default), "all",
+      and "clean".  Add your object support functions (e.g., cu_photo.o) to
+      the CU library $CX_ROOT/lib/libcu.a, called $(CULIB) in Makefiles.
+      
+      If you are supplying application programs, the "install" target should
+      copy stripped versions to $CX_ROOT/bin, e.g., you might provide programs
+      such as `jpeg2cex and `cex2jpeg, converters such as `pict2cex' and
+      `cex2pict', filters such as `addphoto2cex', and a viewer `photocex'.
+
+      You must provide an initialization function (e.g., cu_photo_pkg()).
+      It's OK to auto-initialize (i.e., automatically do the initialization
+      the first time an object is created), but to protect against future
+      shock it's very important to provide an initialization and make sure
+      that users call it.  (Otherwise there is no guarantee that your code
+      will get linked in if accessed only via polymorphic functions like
+      cx_receive()).  You will probably want to provide a cleanup function
+      also, e.g., cu_photo_cleanup().
+
+      The initialization function must declare a typename, e.g.,
+
+         cx_set_typename(CU_OB_PHOTO, "Photo");
+
+      and must declare certain polymorphic methods for the dispatcher, e.g.,
+
+         cx_set_method(CU_OB_PHOTO, "binaryvalue", photo_binaryvalue    );
+         cx_set_method(CU_OB_PHOTO, "cexin",       NULL                 );
+         cx_set_method(CU_OB_PHOTO, "count",       cx_e_base_count      );
+         cx_set_method(CU_OB_PHOTO, "destroy",     photo_destroy        );
+         cx_set_method(CU_OB_PHOTO, "reset",       NULL                 );
+         cx_set_method(CU_OB_PHOTO, "send",        NULL                 );
+         cx_set_method(CU_OB_PHOTO, "setproperty", cx_e_base_setproperty);
+         cx_set_method(CU_OB_PHOTO, "stream",      cx_e_base_stream     );
+         cx_set_method(CU_OB_PHOTO, "stringvalue", photo_stringvalue    );
+
+      Note that your new object class does not have to respond to all
+      messages, e.g., cexin and send as per above (these are normally
+      defined only for root objects).  The class can use base methods if
+      they are appropriate, e.g., setproperty, count, and stream as per
+      above.  Class-specific methods must be specified when special
+      behavior is needed -- these are non-public functions, e.g.,
+      photo_stringvalue, photo_binaryvalue and photo_destroy.
+
+      NOTE: the prototype of these functions is defined by the CI_CLASS
+      structure in $CX_ROOT/src/cobweb/cx_basics.c, *not* by the public
+      function prototypes in cx_basics.h.
+
+      You will almost certainly want to provide a function to create an
+      object by interpreting a string (e.g., cu_e_photo_parse()) and may
+      want to provide a function to create an empty object if it makes
+      sense to do so (it doesn't for photo objects, but if it did, the
+      entry point would be named cu_e_photo_create()).
+
+   I. That's all that's required for most packages.  If the package is
+      useful to you, it'll probably be useful to others, so you are
+      invited to submit it for inclusion in the standard CX distribution.
+      If you do so, please:
+
+         o  Send us author's name(s) (and organization(s), as applicable)
+            We will be sure that credits are attached to the work unless
+            instructed otherwise.
+
+         o  Send us something stating that you have clear rights to the
+            code and that you are contributing it to the public domain.
+            You will fall under the standard liabilty clause (basically,
+            "We think this code isn't good for anything and we're not
+            at fault even if we're right.")
+
+         o  Don't try to do anything clever when sending us the code.
+            Back it up.  Go to $CX_ROOT and "make clean", then go up one
+            directory and tar the whole CX root directory.  Compress it if
+            you like, uuencode it if you have to, but send everything,
+	    including at least one functional test program.
+
+----------------------------------------------------------------------------
+
+6. Adding a new kind of root object to the CX system
+
+OK, OK, you've thought twice about it, and decided that molecule-based data
+trees don't fit your chemical data exchange needs.  You may need to make a
+new kind of root object, or maybe not.  Some valid reasons for doing so are:
+
+   (a) the molecular structure is not known even at a valence-model level
+   (b) the molecular structure isn't represented well by a valence model
+   (c) you want to exchange data which is not molecule-based.
+   
+If (a) or (b), be aware that we are considering adding new root object
+classes to the standard CX distribution in future releases.  Right now,
+these include allowing strings to be root objects (e.g., for exchange of
+analytical chemistry data, where the root is something like "unknown 47")
+and a root class for combinatorial mixtures.
+
+If (c), ask yourself, "Am I really exchanging chemical information?".
+If not, there are probably better ways to get the job done.  The molecular
+model is such an underpinning of current chemical information systems that
+most non-molecule-based information doesn't seem chemical.  However, there
+are certainly kinds of non-molecule-based information that chemists might
+want to exchange, e.g., space-charge fields, surfaces, etc.  In such cases,
+it is reasonable to build a new root object.  But remember that CEX is
+designed for *exchange* of chemical information and (here's the catch),
+if your information is not molecule-based, you might have a hard time
+finding someone to exchange it with.
+
+Convincing yourself that you need a new kind of root object is a lot
+harder than actually implementing one.  Simply create a new class which
+responds to "cexin" and "send" messages and define a distinguished datatype.
+Here are the steps, assuming (for the sake of example only!) that Photo
+objects are going to be allowed as root objects:
+
+
+   Create a new object class as per (A) to (H) above, then,
+
+
+   H1. The class initialization must define a non-NULL "cexin" method,
+
+          cx_set_method(CU_OB_PHOTO, "cexin", photo_cexin);
+
+       where photo_cexin() is a function which interprets an entire
+       photo-based tree (creates datatypes, children, and properties).
+       See molecule_cexin() in $CX_ROOT/src/molecule for an example.
+
+
+   H2. The class initialization must define a non-NULL "send" method, e.g.,
+
+          cx_set_method(CU_OB_PHOTO, "send",  photo_send);
+
+       where photo_send() is a function which transmits a photo object,
+       including its datatypes, properties, visible descendents, and
+       their properties.  This sounds complex, but in fact can be done
+       quite simply with a combination of iteration and recursion.
+       See molecule_send() in $CX_ROOT/src/molecule for an example.
+
+
+   H3. Modify the function cx_e_receive() in $CX_ROOT/src/cobweb/cx_cex_io.c
+       to do a cexin with your object type when needed.  This can be done
+       by hardcoding a distinguished datatype (that's how datatypes are
+       recognized; the tag "D" is special) or by recognizing a language,
+       which is even better (molecule-based trees are recognized by having
+       root objects with datatypes with language XSMILES.
+       
+       For this example, we'd need to add these two lines:
+
+          } else if (0 == strcmp("JPEG", lang)) {
+             rootob = cx_cexin(cex, CU_OB_PHOTO, table);
+
+       This is the ONLY case in which you need to edit distributed cex code
+       (and probably won't be needed future releases).
+
+----------------------------------------------------------------------------
+
+7. A note about object class numbers
+
+Object class numbers have to be unique.  These ranges are reserved:
+   
+   The numbers    0 -  999 are reserved for core system use.
+   The numbers 1000 - 1999 are reserved for core application use.
+   The numbers 2000 - 9999 are reserved for contractor use.
+
+If you need to make a new object class, give it a number higher than 9999
+so it won't conflict with others which may be contributed. 
+
+Valid user-defined object numbers are 10000 to 2147483648 (2^31).
+To avoid conflicts (e.g., everyone using 10000 and 10001), multiply your
+phone number (no area code, just the last 6 or 7 digits) by 100 and use
+this as the first number in a block of 100 numbers.  If your phone number
+is 988-7934 extension 13, use the numbers 879341300 - 879341399, e.g.,
+you might add the following lines to your copy of this file:
+
+   #define CU_OB_SPECTRUM 879341300
+   #define CU_OB_UVSPEC   879341301
+   #define CU_OB_NMRSPEC  879341302
+
+If you contribute the code, the next "official" release might contain:
+
+   #define CX_OB_SPECTRUM 107
+   #define CX_OB_UVSPEC   108
+   #define CX_OB_NMRSPEC  109
+
+Always, always use symbolic names (e.g., CU_OB_SPECTRUM) in your code.

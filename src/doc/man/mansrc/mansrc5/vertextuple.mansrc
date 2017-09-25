@@ -1,0 +1,18 @@
+<on>
+vertextuple \- object representing a property of all vertices
+<description>
+An vertextuple object represents a given property of all vertices in a surface \-
+the vertex property name is the name of the vertextuple.
+The string value of an vertextuple is the semicolon-delimited string values of
+the corresponding vertex properties in object creation order.
+Vertextuples are always children of a surface.
+Destroying vertextuples destroys the corresponding vertex properties.
+Associating a datatype with an vertextuple makes the corresponding vertex
+properties visible.
+
+The vertextuple object type is CX_OB_VERTEXTUPLE and its typename
+is "Vertextuple".
+<seealso>
+vertex(5cx)
+facetuple(5cx)
+surface(5cx)

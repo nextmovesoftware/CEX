@@ -1,0 +1,40 @@
+<fn>
+cx_create_bondtuple \- create an bondtuple for molecule
+<fp>
+cx_Object cx_create_bondtuple(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_bondtuple(cx_Object mol, cx_String name);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) name
+.br
+integer*4     btuple, mol, cx_f_create_bondtuple()
+.br
+btuple = cx_f_create_bondtuple(mol, name)
+<description>
+Creates an bondtuple object with given parent molecule and property name.
+
+Note that bond properties don't "need" bondtuples ... bondtuples exist
+only when one needs to refer to a given bond property for all bonds in
+a molecule (e.g., to delete them or output them as a molecule property).
+<returns>
+Returns a newly-created bondtuple object or NULL.
+<diagnostics>
+Returns NULL quietly if `mol' is not a molecule or if `name' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_bondtuple_name(3cx)
+cx_create_atomtuple(3cx)
+cx_prefix2btuples(3cx)
+<bugs>
+None known.
+<objects>
+bond
+bondtuple
+molecule
+property

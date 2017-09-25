@@ -1,0 +1,29 @@
+<fn>
+cx_strdup \- robust duplication of zero-terminated string
+<fp>
+cx_String cx_strdup(cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_strdup(cx_String str);
+<ff>
+(not applicable)
+<description>
+Returns a zero-terminated duplicate of cx_String `str'.
+
+This function is similar to the C library function strdup(3),
+differing only in how it handles NULL arguments.
+<returns>
+Returns a cx_String.
+<diagnostics>
+NULL is quietly returned if the argument `str' is NULL.
+<seealso>
+cx_strcat(3cx)
+cx_strcmp(3cx)
+cx_strlen(3cx)
+cx_strncmp(3cx)
+cx_strndup(3cx)
+cx_strqbrk(3cx)
+<bugs>
+A Fortran wrapper for this function should be available.
+<objects>

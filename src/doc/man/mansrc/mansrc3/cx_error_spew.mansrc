@@ -1,0 +1,37 @@
+<fn>
+cx_error_spew \- write formatted error messages of requisite severity
+<fp>
+cx_Integer cx_error_spew(FILE *, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_error_spew(FILE *fp, cx_String severity);
+<ff>
+include 'cx_f.inc'
+.br
+character*() severity
+.br
+integer*4    unit, nout, cx_f_error_spew()
+.br
+nout = cx_f_error_spew(unit, severity)
+<description>
+Prints error messages of given severity or worse to the given stream
+then destroys all messages (whether printed or not).
+Unconditionally prints all messages if `severity' is NULL.
+Doesn't print any messages if `severity' is CX_ERR_NONE
+(used to destroy all messages without printing any).
+
+This is one of the three high level CX error functions which are designed
+to work together, i.e., cx_err_count, cx_error_save, cx_error_spew.
+<returns>
+Returns the number of messages printed.
+<diagnostics>
+None.
+<seealso>
+cx_error_count(3cx)
+cx_error_save(3cx)
+cx_errorqueue(3cx)
+<bugs>
+None known.
+<objects>
+errorqueue

@@ -1,0 +1,17 @@
+#!/bin/sh
+# make printmol && printmol $* $CX_ROOT/src/data/cextest/*.cex
+# make hydrogenate && hydrogenate $* $CX_ROOT/src/data/cextest/bbb.cex
+# make hydrogenate && hydrogenate $* $CX_ROOT/src/data/cextest/c.cex | printmol
+
+# make progs  \
+# && cat $CX_ROOT/src/data/cextest/bb.cex | hydrogenate $* | printmol -ov
+
+# make hydrogenate && cat $CX_ROOT/src/data/cextest/bb.cex | hydrogenate $*
+# make hydrogenate && hydrogenate $* $CX_ROOT/src/data/cextest/bb.cex
+
+# make progs && cat z.cex | ./hydrogenate $* | ./printmol -ov
+# make amw && cat z.cex | amw $*
+
+# make amw && cat y.cex | hydrogenate $* | amw | printmol -ov
+
+make amw && catcex -oa x.cex y.cex | hydrogenate $* | amw

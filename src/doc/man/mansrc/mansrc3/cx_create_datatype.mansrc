@@ -1,0 +1,53 @@
+<fn>
+cx_create_datatype \- create a datatype object
+<fp>
+cx_Object cx_create_datatype(cx_Object,
+cx_String, cx_String, cx_String, cx_String, cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_datatype(cx_Object table, cx_String tag,
+cx_String pname, cx_String vname, cx_String shape, cx_String lang,
+cx_String desc);
+<ff>
+include 'cx_f.inc'
+.br
+character*() tag, pname, vname, shape, lang, desc;
+.br
+integer*4    dt, table, cx_f_create_datatype()
+.br
+dt = cx_f_create_datatype(table, tag, pname, vname, shape, lang, desc);
+<description>
+Creates a new datatype with datatype table parent `table'
+(or default table, if NULL) and the six standard datatype properties:
+"tag", "property name",
+"verbose name", "shape", "language", and "description".
+
+Datatypes are usually created by reading a datatype-containing CEX stream
+rather than hardcoding them in a program with cx_create_datatype().
+
+Datatypes created with cx_create_datatype()
+may be deallocated with cx_destroy() but are typically
+deallocated by destroying the parent table
+(or by cx_cleanup() if the default datatype table is used).
+<returns>
+Returns the handle of a newly created datatype object
+or NULL on error.
+<diagnostics>
+NULL is quietly returned if `table' is neither NULL nor a datatype table.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_datatypetable(3cx)
+cx_datatype(3cx)
+cx_default_datatypetable(3cx)
+cx_pname2datatype(3cx)
+cx_reset(3cx)
+cx_set_datatype(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

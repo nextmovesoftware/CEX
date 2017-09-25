@@ -1,0 +1,37 @@
+<fn>
+cx_create_binary \- create a binary object from binary data
+<fp>
+cx_Object cx_create_binary(cx_Object, cx_Integer, cx_Binary);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_binary(cx_Object parent, cx_Integer len, cx_Binary str);
+<ff>
+include 'cx_f.inc'
+.br
+character*() bin
+.br
+integer*4    parent, length, ob, cx_f_create_binary()
+.br
+ob = cx_f_create_binary(parent, length, bin)
+<description>
+Creates a binary object with given binaryvalue `bin', length `len',
+and `parent' (or NULL parent).
+Binary objects created with cx_create_binary() or cx_parse_binary() are
+identical, they have both stringvalues and binaryvalues,
+and may be deallocated with cx_destroy().
+<returns>
+Returns the handle of a newly-allocated object or NULL on error.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_binaryvalue(3cx)
+cx_destroy(3cx)
+cx_parse_binary(3cx)
+cx_stringvalue(3cx)
+<bugs>
+None known.
+<objects>
+binary
+string

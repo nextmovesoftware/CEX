@@ -1,0 +1,42 @@
+<fn>
+cx_count \- count object's children of a given type
+<fp>
+cx_Integer cx_count(cx_Object, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_count(cx_Object ob, cx_Integer type);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ob, typ, count, cx_f_count()
+.br
+count = cx_f_count(ob, typ)
+<description>
+Returns the number of children of given object which are of a given type,
+or the total number of children if the given type is CX_OB_ANY.
+The returned value is always equal to the number of objects that would
+be in a stream produced by cx_stream(ob,type).
+<returns>
+Returns the number of children as a cx_Integer or zero.
+<diagnostics>
+Zero is quietly returned if no children the given type exist
+or on error (i.e., `type' is invalid).
+<seealso>
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

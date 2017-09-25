@@ -1,0 +1,30 @@
+<fn>
+cx_bond \- return bond joining two atoms
+<fp>
+cx_Object cx_bond(cx_Object, cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_bond(cx_Object a1, cx_Object a2);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 a1, a2, bond, cx_f_bond()
+.br
+bond = cx_f_bond(a1, a1)
+<description>
+Returns the bond joining the two given atoms.
+<returns>
+A bond object or NULL.
+<diagnostics>
+NULL is quietly returned if no bond exists between the given atoms
+or on error (a1 and a2 are not both atoms).
+<seealso>
+cx_create_bond(3cx)
+cx_xatom(3cx)
+<bugs>
+None known.
+<objects>
+atom
+bond
+stream

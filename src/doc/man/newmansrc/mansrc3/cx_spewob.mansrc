@@ -1,0 +1,46 @@
+<fn>
+cx_spewob \- print object as a formatted datatree
+<fp>
+void cx_spewob(FILE *, cx_Object, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+void cx_spewob(FILE *fpout, cx_Object ob, cx_Integer verb);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 unit, ob, verb
+.br
+call cx_f_spewob(unit, ob, verb)
+<description>
+Prints the given object as a datatree to the given output stream
+in a simple lineprinter-like format.
+Depending on the setting of argument `verb', all properties, descendents,
+and descendents' properties can be displayed.
+
+The argument `verb' is interpreted as bitwise output controls:
+
+ 	bit	meaning
+ 	---	----------------------------
+ 	1	show primary data
+ 	2	show descendents
+ 	4	show properties
+ 	8	show property names
+ 	16	show raw datatags
+ 	32	show object types (classes)
+ 	64	summarize tuples
+
+There is no default value for `verb':  the "normal" display is generated
+with verb == 7, i.e., "show data, descendents and their properties".
+<returns>
+No return value.
+<diagnostics>
+None.
+<seealso>
+cx_send(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable
+molecule

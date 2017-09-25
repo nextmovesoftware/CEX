@@ -1,0 +1,38 @@
+<pn>
+printcex \- print cex stream objects as datatrees
+<ps>
+printcex [-me|-mn|-mw] [-oa|-or] [-#] [in.cex [out.txt]]
+<description>
+printcex formats and prints objects on a CEX stream as datatrees,
+generating simple, 80-character-wide lines of printable ASCII output.
+
+Input is read from standard input if `in.cex' is omitted.
+Output is written to standard output if `out.txt' is omitted.
+Error messages are sent to standard error.
+<options>
+Error message control options (at most one of):
+  \-me: show ERROR messages only (default)
+  \-mn: show NOTE, WARNING and ERROR messages
+  \-mw: show WARNING and ERROR messages
+
+Ouput content control options (at most one of):
+  \-oa: (o)utput (a)ll objects, including datatypes
+  \-or: (o)utput (r)oot objects only (default)
+
+Output format control option:
+  \-<#>: print data at level #,
+    where # is bitwise print level (sum of):
+      1 = data  	  16 = raw datatags
+      2 = children  	  32 = object classes
+      4 = properties  	  64 = summarize tuples
+      8 = property names                      
+
+Default option settings are:  -me -or -7, i.e.,
+   "print data, children & properties; show errors only"
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., catcex -help.
+<seealso>
+printmol(1cx)
+<bugs>
+The output looks pretty primitive.

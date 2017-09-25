@@ -1,0 +1,34 @@
+<fn>
+cx_typename2type \- return type corresponding to object typename
+<fp>
+cx_Integer cx_typename2type(cx_String)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_typename2type(cx_String typename)
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) typename
+.br
+integer*4     typ, cx_f_type()
+.br
+typ = cx_f_typename2type(typename)
+<description>
+Returns the (integer) object type corresponding to a
+given (string) typename, e.g.:
+
+   CX_OB_MOLECULE <= cx_type2typename("molecule");
+<returns>
+Returns one of the integer type flags in cx_types.h.
+<diagnostics>
+CX_OB_INVALID is quietly returned if argument `typename' is NULL or unknown.
+<seealso>
+cx_type(3cx)
+cx_type2typename(3cx)
+cx_typename(3cx)
+<bugs>
+None known.
+<objects>
+any
+invalid

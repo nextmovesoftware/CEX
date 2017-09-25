@@ -1,0 +1,33 @@
+<fn>
+cx_fopen \- Open a file
+<fp>
+FILE *cx_fopen(cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+FILE *cx_fopen(cx_String fn, cx_String fa);
+<ff>
+include 'cx_f.inc'
+.br
+character*() fn, fa;
+.br
+integer*4    unit, cx_f_fopen()
+.br
+unit = cx_f_fopen(fn, fa)
+<description>
+Opens the file given by file path name `fn' with file access per
+string `fa'.
+Like the C standard library function fopen() except cx_fopen()
+expands environment variables in `fn' as needed.
+<returns>
+Returns a (FILE *) to an open stream or NULL.
+<diagnostics>
+NULL is quietly returned if either argument is NULL or
+if the file failed to open.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<bugs>
+The environment variable expansion method uses getenv,
+which is probably Unix-specific despite its presence in "stdlib.h".
+<objects>

@@ -1,0 +1,17 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<XYZ>
+/_P<coordinates>
+/_V<Atomic coordinates>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$MOL<[N]C=1[C]=[C]C(C(=O)[O])=[C][C]1>
+XYZ<"-3.499,-0.385,-0.029;-2.108,-0.229,-0.017;-1.547,1.037,0.193;-0.156,1.193,0.204;0.675,0.083,0.007;2.165,0.253,0.020;2.664,1.384,0.207;2.968,-0.816,-0.168;0.114,-1.182,-0.202;-1.277,-1.338,-0.214">
+|

@@ -1,0 +1,33 @@
+<fn>
+cx_create_bond \- create an bond in a molecule
+<fp>
+cx_Object cx_create_bond(cx_Object, cx_Object, cx_Integer)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_bond(cx_Object a1, cx_Object a2, cx_Integer bo)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 bond, a1, a2, bo, cx_f_create_bond()
+.br
+bond = cx_f_create_bond(a1, a2, bo)
+<description>
+Creates a new bond of bondorder `bo' between existing atoms `a1' and `a2'.
+<returns>
+Returns a newly-created bond object or NULL.
+<diagnostics>
+Returns NULL quietly if `a1' and `a2' are not both atoms,
+or if bondorder `bo' is not in [0,1,2,3].
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_atom(3cx)
+cx_create_molecule(3cx)
+<bugs>
+None known.
+<objects>
+atom
+bond
+molecule

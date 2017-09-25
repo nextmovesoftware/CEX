@@ -1,0 +1,4 @@
+#!/bin/sh
+# make trymsg && trymsg | $CX_ROOT/src/applics/cex/printcex
+make trylog && trymsg | trylog -e "hello, sweet world"
+#| $CX_ROOT/src/applics/cex/printcex

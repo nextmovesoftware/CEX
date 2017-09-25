@@ -1,0 +1,37 @@
+<fn>
+cx_e_mol_zaph() \- remove explicit normal hydrogens
+<fp>
+void cx_e_mol_zaph(cx_Object);
+<fc>
+#include "cx.h"
+.br
+void cx_e_mol_zaph(cx_Object mol);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, cx_f_zaph()
+.br
+call cx_f_zaph(mol)
+<description>
+Removes all normal explicit hydrogen and corrects the attached atoms'
+"implicit hcount" property, leaving the molecule in 
+a "hydrogen suppresed" representation.
+
+Explicit hydrogens which have a non-zero charge, a specified non-zero mass,
+or are connected to other than one other non-hydrogen atom are considered
+to be "abnormal" and are not destroyed.
+<returns>
+No return value.
+<diagnostics>
+None.  No-op if argument is NULL.
+<seealso>
+cx_mol_addhall(3cx)
+cx_mol_heavycopy(3cx)
+cx_mol_setimph(3cx)
+cx_mol_zaph(3cx)
+<bugs>
+None known.
+<objects>
+atom
+molecule
+property

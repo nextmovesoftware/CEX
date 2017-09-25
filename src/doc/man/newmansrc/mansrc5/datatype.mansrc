@@ -1,0 +1,36 @@
+<on>
+datatype \- object representing internal-to-external data mapping
+<description>
+A datatype object specifies how internal objects are represented externally
+and vise-versa.
+
+The dataype object type is CX_OB_BINARY and its typename is "Datatype".
+
+Datatypes have six standard properties:
+
+(1) "tag" (CX_PROP_TAG), a short unique tag,
+e.g., "MP".
+
+(2) "property name" (CX_PROP_PNAME), name used as a property,
+e.g., "melting point"
+
+(3) "verbose name" (CX_PROP_VNAME), visible name,
+e.g., "Melting point"
+
+(4) "shape" (CX_PROP_SHAPE), dimensionality (how many primitive data
+represent a single item and an optional letter to restrict usage),
+e.g., "1" for melting point, "3A"  for atomic coordinates
+
+(5) "language" (CX_PROP_LANG), the name of the language used for external
+representation,
+e.g., "STRING" (CX_LANG_STRING) and "XSMILES" (CX_LANG_XSMILES)
+
+(6) "description" (CX_PROP_DESC), an English description of the type,
+e.g., "Melting Point, C"
+
+Datatypes are always owned by a datatype table and are created by
+cx_create_datatype().
+Datatypes are directly associated with an object by cx_set_datatype() and
+indirectly associated with a property by property name.
+<seealso>
+datatypetable(5cx)

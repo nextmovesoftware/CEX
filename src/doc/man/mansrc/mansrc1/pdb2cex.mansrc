@@ -1,0 +1,43 @@
+<pn>
+pdb2cex \- write molecules from .pdb file to CEX stream
+<ps>
+pdb2cex [options] [in.pdb [out.cex]]
+<description>
+pdb2cex reads molecule(s) from a Brookhaven PDB (Protein Data Bank)
+file as robustly and flexibly as possible.
+The .PDB format is a very limited format for exchange of chemical
+information and has been frequently modified (and abused)
+by many software authors.
+It is so widely used that a de facto pseudo-standard has evolved
+which is probably more imporant than the original Brookhaven format.
+
+pdb2cex reads both Brookhaven-compatible and extended .pdb files
+using a fairly complicated (read "Byzantine") method described in 
+in $CX_ROOT/doc/README.pdb.
+It attempts to record exactly what is described in the
+input file and no more, which often results in an incomplete
+molecular specification for molecules other than peptides.
+A number of tools are available to help this problem, e.g.,
+the CEX filter `bondage'
+(an expert system which deduces hybridization from geometry).
+<options>
+  -fd ................. write dump format (eot newlines)
+  -fl ................. write list format (eod & eot newlines)
+  -fr ................. write raw format (no newlines)
+  -i in.pdb ........... specify .pdb input file 
+  -o out.cex .......... specify .cex output file
+  -t datatypes.cex .... specify .cex datatypes file
+
+  If in.pdb  unspecified, input is from standard input.
+  If out.cex unspecified, output is to standard output.
+  If no datatypes.cex, PDB datatypes are generated.
+  If format  unspecified, list format is used (-fl).
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., pdb2cex -help.
+<bugs>
+In the following, out.pdb is not necessarily identical to in.pdb:
+
+   $ cat in.pdb | pdb2cex | cex2pdb > out.pdb
+<seealso>
+cex2pdb(1cx)

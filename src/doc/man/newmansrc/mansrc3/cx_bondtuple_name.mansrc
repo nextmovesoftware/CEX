@@ -1,0 +1,32 @@
+<fn>
+cx_bondtuple_name \- return bondtuple's property name
+<fp>
+cx_String cx_bondtuple_name(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_bondtuple_name(cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) name, cx_f_bondtuple_name()
+.br
+integer*4     ob;
+.br
+name = cx_f_bondtuple_name(ob)
+<description>
+Returns the name of the bond property that the given bondtuple represents.
+<returns>
+Returns a cx_String or NULL.
+<diagnostics>
+Returns NULL quietly on error (`ob' is not a bondtuple).
+<seealso>
+cx_atomtuple_name(3cx)
+cx_create_bondtuple(3cx)
+cx_prefix2btuples(3cx)
+<bugs>
+None known.
+<objects>
+bond
+bondtuple
+string

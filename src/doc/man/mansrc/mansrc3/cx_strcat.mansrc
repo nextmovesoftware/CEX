@@ -1,0 +1,32 @@
+<fn>
+cx_strcat \- robust string concatenation
+<fp>
+cx_String cx_strcat(cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_strcat(cx_String s1, cx_String s2);
+<ff>
+(not applicable)
+<description>
+cx_strcat() appends a copy of string `s2' to the end of string `s1'
+and returns a zero-terminated result.
+
+This function is similar to the C library function strcat(3),
+differing only in how it handles NULL arguments.
+<returns>
+Returns a cx_String or NULL.
+<diagnostics>
+NULL is quietly returned if the argument `s1' is NULL.
+`s1' is quietly returned if the argument `s2' is NULL.
+<seealso>
+cx_scratchpad(3cx)
+cx_strcmp(3cx)
+cx_strdup(3cx)
+cx_strlen(3cx)
+cx_strncmp(3cx)
+cx_strndup(3cx)
+cx_strqbrk(3cx)
+<bugs>
+A Fortran wrapper for this function should be available.
+<objects>

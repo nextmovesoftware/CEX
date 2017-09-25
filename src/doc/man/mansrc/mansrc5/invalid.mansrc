@@ -1,0 +1,32 @@
+<on>
+invalid \- an invalid object
+<description>
+A invalid object is represented by NULL or 0.
+
+The invalid object type is CX_OB_INVALID
+and its typename is "Invalid".
+
+The invalid object may appear anywhere any other type of object can be used,
+with defined results ... in most cases a fast no-op or error return.
+
+For instance, when called with NULL, cx_parent(ob) and cx_stringvalue(ob)
+return the NULL object and NULL string, respectively, so it's acceptable
+to do:
+
+   cx_stringvalue(cx_parent(ob))
+
+on any object, including the
+invalid object NULL, without checking intermediate results.
+Be aware that standard library functions don't share this robust behavior,
+e.g.:
+
+   strlen(cx_stringvalue(cx_parent(ob)))   /* WRONG */
+
+with a NULL ob is a serious mistake
+(your program will crash if you're lucky)
+since strlen(NULL) is undefined.
+Utilities are provided with the CX distribution to help with this problem,
+e.g., cx_strlen(3cx):
+
+   cx_strlen(cx_stringvalue(cx_parent(ob)))   /* RIGHT */
+<seealso>

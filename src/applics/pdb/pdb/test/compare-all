@@ -1,0 +1,15 @@
+#! /bin/csh -f
+# $Id: compare-all,v 1.1.1.1 2000/01/13 22:24:14 scott Exp $
+set	tempdir	= /usr/tmp
+set	strip	= `pwd`/strip-pdb
+set	idem	= `pwd`/idem
+set	diff	= `pwd`/pdbdiff
+cd	/usr/mol/pdb
+foreach	f (????)
+#	$strip < $f > $tempdir/pdbfile
+	echo	$f
+#	$idem $f > $tempdir/pdbfile2
+#	spiff -q $tempdir/pdbfile2 $tempdir/pdbfile
+	$diff $f
+end
+rm $tempdir/pdbfile $tempdir/pdbfile2

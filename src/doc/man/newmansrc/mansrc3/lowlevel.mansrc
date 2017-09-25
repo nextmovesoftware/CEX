@@ -1,0 +1,266 @@
+<fn>
+lowlevel \- low-level CX library functions (3cx)
+<description>
+
+Access to low-level CX library functions is provided for
+programmers who are creating new object classes in the CX system.
+Although creating new CX object classes is not difficult,
+it is not something that you need to do for most chemical information
+exchange tasks and shouldn't be undertaken lightly.
+Read the "CX Programmers Guide" twice before embarking.
+
+Low-level functions are accessible only by their raw entry point
+(names starting "cx_e_") -- language-independent wrappers are not provided,
+and you can only access them via ANSI-C or C++.
+Unlike the high-level CX interface, there is no guarantee of the
+stability of these low-level entry points (though we'll try...)
+
+Many of the following visible entry points are intended for use in one
+place only, e.g., cx_e_child() and cx_e_sibling() are used to implement
+streams.  Since streams are available, it wouldn't make much sense to
+reinvent them, so it's very unlikely that these two functions should be
+used by any other program (unless it was another stream implementation).
+The fact that they are visible at all is a side-effect of the CX package
+design (streams are implemented on top of raw object support).
+So beware:  just because a function is listed here doesn't mean you
+should use it.
+
+All visible low-level entry points are briefly described below.
+The code header comments contain more information.
+
+.br
+===== cx_e_base_append =====
+.br
+Append one object to another object's OBLIST.
+Only makes sense for stream and sequence objects.
+Publically accessible as cx_append() which only responds to sequences.
+Internally used for stream-building.
+
+.br
+===== cx_e_base_binaryvalue =====
+.br
+Base method for polymorphic binaryvalue message.
+Always returns NULL.
+
+.br
+===== cx_e_base_content =====
+.br
+Returns object's content set with cx_e_base_set_content(),
+typically a pointer to the internal object struct,
+but can be anything, including NULL.
+
+.br
+===== cx_e_base_count =====
+.br
+Base method for polymorphic count message.
+Returns the count of children of a given type
+and is the normally-declared method (via cx_set_method)
+unless defining a count of subtypes against eachother
+e.g., cx_count(atom, CX_OB_BOND).
+
+.br
+===== cx_e_base_create =====
+.br
+Creates the base object and header.
+This must be called by a non-polymorphic creation function each time
+an object is created.  Destroyed with cx_e_base_destroy.
+
+.br
+===== cx_e_base_datatype =====
+.br
+Base method for cx_datatype(), universally used.
+
+.br
+===== cx_e_base_delete =====
+.br
+Delete a given object from another object's OBLIST.
+Publically accessible as cx_delete() which only responds to sequences.
+In the current implementation, this message only makes sense
+for sequence objects.
+Might be used to provide non-standard stream messages.
+
+.br
+===== cx_e_base_destroy =====
+.br
+Unparents and destroys base object created by cx_e_base_create()
+and all the object's children.
+
+.br
+===== cx_e_base_reset =====
+.br
+Base method for polymorphic reset message.
+Always returns FALSE.
+
+.br
+===== cx_e_base_set_content =====
+.br
+Set's an object's content, which is
+typically a pointer to the internal object struct,
+but can be anything, including NULL.
+May be retrieved with cx_e_base_content().
+
+.br
+===== cx_e_base_set_datatype =====
+.br
+Base method for cx_set_datatype();
+sets an object's datatype and returns success;
+universally used.
+
+.br
+===== cx_e_base_setproperty =====
+.br
+Sets low-level property name and value,
+creating the property as needed.
+This is the normally-declared method (via cx_e_set_method)
+and should be used unless you really need to intercept the message
+(e.g., are doing some fancy cacheing).
+For general purposes, use cx_set_sprop() instead of this one.
+
+.br
+===== cx_e_base_stream =====
+.br
+Base method for polymorphic cx_stream message.
+Returns a stream of children of a given type
+and is the normally-declared method (via cx_e_set_method)
+unless defining an enumeration of subtypes against eachother,
+e.g., cx_stream(atom, CX_OB_BOND),
+or enumerating pseudotypes,
+e.g., cx_stream(mol, CX_OB_SMIATOMS).
+
+.br
+===== cx_e_base_stringvalue =====
+.br
+Base method for polymorphic stringvalue message.
+Always returns NULL.
+
+.br
+===== cx_e_cex_read =====
+.br
+Read CEX datatree from input stream.
+Used by polymorphic cx_receive() message;
+never used otherwise except for debugging.
+
+.br
+===== cx_e_cex_write =====
+.br
+Write CEX datatree to output stream.
+Used by polymorphic cx_send() message;
+never used otherwise except for debugging.
+
+.br
+===== cx_e_cex_xtagdata =====
+.br
+Extract next dataitem from CEX datatree as
+a triple containing context, tag, and datum.
+Used by cx_receive() for dispatching polymorphic cx_e_cexin() function;
+needed when writing new instantiations of cx_e_cexin().
+
+.br
+===== cx_e_cexin =====
+.br
+The polymorphic function called by cx_receive() to create a root object
+(and all descendents) from a CEX datatree.
+If you create a new root object type, you'll need to provide an
+object-specific cexin message and set it with cx_e_set_method().
+
+.br
+===== cx_e_child =====
+.br
+Returns the first child of an object.
+Used by cx_e_stream() but never otherwise.
+
+.br
+===== cx_e_create_stream =====
+.br
+Creates and returns an empty stream object.
+Useful only to build nonstandard streams:
+enumerating of subtypes against eachother,
+e.g., cx_stream(atom, CX_OB_BOND),
+or enumerating pseudotypes,
+e.g., cx_stream(mol, CX_OB_SMIATOMS),
+cx_e_base_stream() is the normal stream-building method
+(builds streams of children).
+
+.br
+===== cx_e_deregister_root_types =====
+.br
+Undo work done (and resources used) by cx_e_register_root_type().
+Normally used only by cx_cleanup().
+
+.br
+===== cx_e_dt_mark =====
+.br
+Returns TRUE iff given datatype has a non-NULL "_mark" property defined.
+
+.br
+===== cx_e_dt_setmark =====
+.br
+Sets a given datatype's mark by setting the "_mark"
+property to "x", or unsets it by setting the "_mark" property to NULL.
+
+.br
+===== cx_e_dt_table_setmarks =====
+.br
+Sets or unsets the marks of all datatypes in a given datatype table.
+The public function cx_reset(table) is equivalent to
+cx_e_dt_table_setmarks(table, FALSE).
+
+.br
+===== cx_e_property =====
+.br
+Return a named property of an object as a property object.
+The property object itself isn't very useful, normally
+the high-levl function cx_sprop() is used to get the value instead.
+
+.br
+===== cx_e_register_root_type =====
+.br
+"Root" datatypes are types which represent the root object of a datatree
+on a CEX stream.
+The tag and object type of such datatypes must be registered so that
+cx_receive() can dispatch the datatree interpretation to the appropriate
+cexin method.
+Only one root datatype is registered in the current release (MOL/molecule).
+
+.br
+===== cx_e_retype =====
+.br
+Change the type (class) of an object.
+Useful when two object classes differ only in their class (capabilities)
+but not in their contents.
+E.g., a stream is created as a retyped sequence.
+
+.br
+===== cx_e_set_method =====
+.br
+Specify the class-specific method used for certain polymorphic messages.
+Every object class must automatically initialize its methods using this
+function
+(normally done the first time an object of that class is created).
+The cx_e_base* functions are used for most methods, but not always.
+For instance, the message "reset" does one thing for streams and sequences
+and another thing altogether for datatypetables.
+
+.br
+===== cx_e_setproperty =====
+.br
+Set a named property of an object by providing the property object.
+Dealing with property object itself isn't very useful, normally
+the high-level function cx_set_sprop() is used to set the value instead.
+cx_e_setproperty() is a polymorphic function: special instantiations
+may be useful if you need to intercept setproperty messages.
+For instance, when certain molecule properties are reset,
+molecule_setproperty discards the
+cached stringvalue of a molecule (the generated XSMILES).
+
+.br
+===== cx_e_sibling =====
+.br
+Returns the next child of an object.
+Used by cx_e_stream() but never otherwise.
+<seealso>
+CX Programmer's Guide
+<objects>
+cx_Method
+stream
+sequence

@@ -1,0 +1,53 @@
+<fn>
+cx_smilin /- create a molecule by parsing XSMILES
+<fp>
+cx_Object cx_smilin(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_smilin(cx_Object parent, cx_String xsmi);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) xsmi
+.br
+integer*4 mol, parent, cx_f_smilin()
+.br
+mol = cx_f_smilin(parent, xsmi)
+<description>
+Interprets given XSMILES and, if valid, creates a molecule with
+given parent (or NULL parent).
+The returned molecule contains atoms and bonds
+complete with all standard properties.
+<returns>
+Returns a molecule or NULL.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+
+The XSMILES interpreter produces a number of error messages,
+generally marking the erroneous position in the input string:
+
+   "atoms already bonded"
+   "bond order conflict"
+   "charge not in [ ]'s"
+   "charge precedes atomic symbol"
+   "conflicting closure"
+   "expect two digits after `%'"
+   "invalid character"
+   "mismatched parentheses"
+   "missing [ bracket"
+   "missing ] bracket"
+   "missing closing `]'"
+   "ring bond direction conflict"
+   "symbol needs [ ]'s"
+   "unknown atomic symbol"
+   "unmatched ring closure"
+   "unsuitable chirality specification"
+<seealso>
+cx_create_molecule(3cx)
+cx_stringvalue(3cx)
+<bugs>
+None known.
+<objects>
+molecule

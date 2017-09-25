@@ -1,0 +1,18 @@
+<on>
+vertex \- object representing an vertex in a surface
+<description>
+A vertex object represents a point on a three-dimensional surface,
+and always contains the standard property
+"coordinates" (whose symbolic name is CX_PROP_SURF_COORDINATES).
+A vertex may also contain the optional property
+"surface curvature" (CX_PROP_CURVATURE).
+
+Each vertex also has an integer identifier which is unique among
+vertices on the same surface.  The unique identifier is used by
+in sets to identify faces on the surface.
+
+The vertex object type is CX_OB_VERTEX and its typename is "Vertex".
+<seealso>
+vertextuple(5cx)
+face(5cx)
+surface(5cx)

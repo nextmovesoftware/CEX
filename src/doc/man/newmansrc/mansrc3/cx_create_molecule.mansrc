@@ -1,0 +1,31 @@
+<fn>
+cx_create_molecule \- create an empty molecule
+<fp>
+cx_Object cx_create_molecule(cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_molecule(cx_Object parent)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, parent, cx_f_create_molecule()
+.br
+mol = cx_f_create_atom(parent)
+<description>
+Creates a new, empty molecule with given parent (or NULL parent).
+The returned molecule contains no atoms, bonds, or properties:
+they must be created explicitly.
+<returns>
+Returns a newly-created molecule or NULL.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_atom(3cx)
+cx_create_bond(3cx)
+<bugs>
+None known.
+<objects>
+atom
+molecule

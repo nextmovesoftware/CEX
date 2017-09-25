@@ -1,0 +1,35 @@
+<fn>
+cx_errorqueue \- return the errorqueue object
+<fp>
+cx_Object cx_errorqueue(void)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_errorqueue(void)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4  errq, cx_f_errorqueue()
+.br
+errq = cx_f_errorqueue()
+<description>
+cx_errorqueue() returns the existing errorqueue object if it exists or
+creates and returns a new one if not, e.g., initially or after the
+errorqueue is destroyed.
+At most one errorqueue object exists at a given time.
+
+This function provides the errorqueue object which is the basis of the
+low-level CX error message interface (see errorqueue(5cx)).
+It is not a high-level CX error message interface function.
+<returns>
+A handle to the current errorqueue object.
+<diagnostics>
+None.
+<seealso>
+cx_error_count(3cx)
+cx_error_save(3cx)
+cx_error_spew(3cx)
+<bugs>
+None known.
+<objects>
+errorqueue

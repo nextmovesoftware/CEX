@@ -1,0 +1,1413 @@
+
+
+                            CEX Programmer's Guide
+                          Last modified: 23 Oct 1995
+
+
+                                    AUTHOR
+
+                                Dave Weininger
+                              Daylight CIS, Inc.
+
+
+                                   ABSTRACT
+
+        This document describes the high-level CX interface.  It is
+        oriented to the CX application programmer, i.e., someone who
+        is writing (or porting) a CEX-compatible application.
+
+
+                                    NOTICE
+
+        This document is contributed to the public domain and may
+        be freely copied, modified, and redistributed for research,
+        profit, fun or any other reason.  Proper acknowlegement of
+        the author and institution is expected in accordance with
+        normal academic standards.
+
+
+
+
+1. Introduction to the chemical exchange problem
+
+There are a large number of existing producers and consumers of chemical
+information, e.g., molecular editors, chemical databases, modeling systems,
+computational chemistry and property estimation programs.  New programs
+(and new kinds of programs) are being introduced at an increasing rate.
+Most existing chemical information programs communicate via specialized
+file formats.  In general, they do so very poorly compared to other
+information sciences.  The problem of data conversion has largely
+superceded the problems of limited machine capacity and speed as the major
+obstacle to practical chemical information problem solving.  The effects of
+this trend are going to become more severe with time until a general
+solution becomes available.
+
+
+1.1. How did this happen?
+
+Although a full analysis is beyond the scope of this document, it is worth
+examining some of the reasons for our extant dilemma.  Three of the most
+basic issues are discussed here:  molecular representation, linguistic
+considerations, and information content.
+
+
+1.1.2. Molecular representation
+
+The most fundamental task of chemical information exchange is to transmit
+the identity of a chemical substance.  Since the underlying molecular model
+is the fundamental basis for most modern chemical information, the exchange
+of molecular identity typically consists of exchanging information about a
+molecular structure at some level.  Most of the current difficulties in
+chemical information exchange arise from this simple fact:  it is not
+obvious how to represent a molecule in digital form (compare with primitive
+entities such as credit card balances or airline reservations).  As a
+result, chemical information processing was developed in a hundred
+different ways; anything that worked at all was used by some subset of the
+community.  Information exchange was mainly done by expressing the internal
+machine data structure as an external format (often a connection table
+representing the contents of one or more arrays).  This approach has the
+advantage of extreme simplicity -- but only as long as a single internal
+representation is desired.  The universal tendency of such formats is to
+externally represent internal conventions without regard to the objectivity
+of such data.  It is not surprising that this leads to disastrous
+consequences in communication between programs.
+
+For example, the CAS registry system internally represents some molecules
+with "tautomeric bonds".  The CAS "external distribution format" naturally
+contains tautomeric bonds as a bond type which seems convenient and correct
+to those using the CAS internal representation of a molecule.  The problem
+is that there is no such thing as a "tautomeric bond" in valence theory (or
+any other rigorous chemical theory) -- tautomeric bonds are just a way of
+expressing an information-deficient molecular representation that CAS finds
+(found?) convenient to used for registration purposes.  Although it is
+quite easy to convert a conventional molecular representation to a
+tautomeric one based on an arbitrary rule set, it is unfortunately not
+possible to do the reverse since information has been irretrivably lost.
+Even if this were not so, the tautomeric form of a molecule is
+fundamentally unsuitable for most chemical information processing purposes
+other than registration with one specialized shortcut.  The net effect is
+that one gets a choice between two evils: either build a tautomer
+unscrambler (hard to do at all and theoretically impossible to do
+correctly) or not use CAS structures which contain tautomeric bonds.
+
+Another example of the problems associated with molecular representation is
+the Daylight SMILES language, which represents certain delocalized ring
+systems as aromatic.  A molecular representation must rigorously represent
+electron delocalization if it is to be powerful enough to express a
+molecule uniquely.  In the Daylight system, this is used to generate a
+unique SMILES for molecule such as orthofluorophenol, i.e., "Oc1ccccc1F".
+As useful as this is, it is ultimately based on internal conventions rather
+than external reality.  To understand this, consider the myriad meanings that
+the word "aromaticity" connotes to different chemists:  reactivity to a
+synthetic chemist, ring current to an NMR spectroscopist, planarity to
+a molecular modeller, resonance structures to a student of valence theory,
+taste and odor to a food chemist.  Although almost everyone agrees that
+benzene is "aromatic", disinctly different sets of molecules apply to each
+classification, e.g., azulene, cyclobutadiene, furan, coumarin, tropolone,
+and borazene are some distinguishing examples.  The net effect is that
+programs which don't use Huckel's aromaticity must do more work to
+interpret Daylight SMILES which contain aromatic specifications.  The
+alternative is to avoid externally representing anything based on internal
+conventions, e.g., OC1=CC=CC=C1F.  This is not a unique representation
+(e.g., OC1=C(F)C=CC=C1 is equally valid) but is unambigous and more
+suitable for information exchange.
+
+
+1.1.3. Information content
+
+A problem related to that of molecular representation is defining what
+actual information content is to be recorded or transmitted in the digital
+representation of a molecule.  One might argue that the previous problem
+(selecting a molecular representation) is ultimately subjective, i.e.,
+since different representations are useful for different purposes, there
+can be no correct answer except in the context of a particular usage.
+However, in the real world of chemical information, the vast majority of
+problems are much more pedantic.  When information exchange works poorly,
+it is usually because input and output conventions are poorly described
+(or, in some cases, are poorly understood by the authors and are therefore
+indescribable).
+
+Examples abound in molecular computation and molecular modeling software.
+Most input formats for such software use the concept of an atom's "type"
+which is different from, and contains more information than, the atomic
+number (i.e., elemental identity).  For instance, there are usually
+several different "types" of nitrogen:  an amide nitrogen is input
+differently from a primary amine nitrogen or a that in a pyridine-N-oxide.
+Tripos' SYBYL MOL format, an amine nitrogen is atom type 17, in MM2 it is 23,
+in AM1 it is 84, etc, &etc. [CHECK THIS]  Other than the general confusion,
+opportunities for error and extra work arising from having various atomic
+classification schemes, there is nothing theoretically wrong about using
+atom types -- if they are rigorously defined.  Unfortunately, atom types
+are rarely defined rigorously.  In the example of amide nitrogens, every
+one would probably input alanine correctly (although sometimes amino acid
+nitrogens are special).  Trouble arises when one moves away from simple
+amides, e.g., are the planar nitrogens in lactams, cyclic urea derivitives
+(barbituric acid), and aromatic amides (1,2-dihydro-2-oxo-quinoline)
+considered to be normal amide nitrogens?  Are non-planar (quaternary)
+amides considered normal amides?  How about planar, but non-amido
+nitrogens?  In most cases, the authors do not provide enough information to
+decide what to do (or, for that matter, to decide which molecules the
+program can manage at all).  Even in the unusual cases which do, one has
+to know a lot about all possible choices before assigning types to atoms in
+uncommon environments -- it's not enough to know what you've got.
+
+Although atom typing (as described above) is the most common sort of problem
+associated with "hidden" information content, it is by no means the only one.
+Many formats include extra information, usually inadvertently, and usually
+because it reflects some local data structure.  Any time extra information
+appears unneccesarily in external formats, it's a problem waiting to happen.
+
+Many formats which have been "written by committee" suffer from this problem.
+Until recently, the SMD format was the best example, but the newly proposed
+CAS CXF format goes even farther with a seemingly infinite heirarchical
+data structure.  For example, here is how CXF specifies that there are two
+hydrogens on water (excerpted from CAS CXF Version 1.0, 8/94, Example 1):
+
+   {
+     supAtsRxnsStrs {
+       supAtsRxnOrStr {
+         structure {
+           exprCmpnts {
+             ExprCmpnt {
+               exprCmpntValu {
+                 exprCmpntFrag {
+                   fragDesc {
+                     cxfCT {
+                       ctNodLst {
+                         Node {
+                           nodValu {
+                             atom {
+                               atmAtrs {
+                                 hydrSpec {
+                                   casReg3HydrSpec {
+                                     casReg3Val {
+                                       normValInStr {
+                                         atrSpec {
+                                           atrDatum {
+                                             atrOperator equalTo,
+                                             atrValue 2
+                                           }
+                                         }
+                                       }
+                                     }
+                                     hydrCnt {
+                                       hdtCnt {
+                                         exaHydrCnt {
+                                           exaHCnt {
+                                             2
+                                           }
+   }}}}}}}}}}}}}}}}}}}}
+
+This amazingly deep heirarchical structure is an example of hidden
+information content which works to the detriment of information exchange.
+A tiny bit of information ("hydrogen count is 2") is buried in the
+tremendous amount of information represented by the heirarchy.  Aside from
+issues of expressive efficiency and required interpreter complexity,
+recording and retransmitting such information becomes an excercise in
+maintaining the validity of the overhead!  Although old-fashioned, it is
+not particularly damning that CAS uses a complex data structure -- how the
+CAS programs work internally is their own business.  The thing that makes
+this format unsuitable for practical information exchange is the semantic
+overhead imposed by the external expression of this data structure.  How
+much of the heirarchy affects the semantics (the meaning) of the data?  All
+of it ?  None of it?  Some of it?  If so, which part of it?  What would it
+mean if the casReg3Val...atrValue differed from the hydrCnt...exaHCnt?  How
+would the meaning change if some of the heirarchy differed, e.g., if
+supAtsRxnOrStr became supAtsRxnAndStr (or whatever)?  If written by a
+non-CAS source, would casReg3HydrSpec be replaced by something different,
+and if so, would it remain valid?  What other heirarchies must one check to
+find the "real" hydrogen count?  In this case, the chemical information
+content is effectively buried in the overhead noise.
+
+There is only one correct way to handle this problem:  each chemical
+information processing program must provide conversion to its internal
+format from external input containing only objective information (e.g.,
+atomic number and connectivity) rather than from conventional assignments
+(e.g., atom types).  Such converters should ideally be written by the
+program author to provide an authoratative input route.  If neccessary,
+this converter can be implemented as one (or more) separate programs to be
+used for various purposes.
+
+A more subtle aspect of this problem is that most existing chemical
+information formats can only represent a fixed number of kinds of data
+which are "hard coded" into the format specification.  To have any chance
+of successfully representing chemical information in general, an exchange
+language must be able to be arbitrarily extensible.  To be extensible and
+useful in practice is something of a trick.  Fortunately, much work has
+been done in the area of generic data exchange outside chemistry; we don't
+have to break new ground here.
+
+For example, the program BONDAGE (part of QCPE's DGEOM95) is an expert
+system for deducing connectivity and bond orders from atomic number and
+geometry in the absence of explicit hydrogens.  Actually, what it really
+does is deduce hybridization and hydrogen presence.  But since it operates
+to and from PDB files (at least in its initial incarnation) all that
+information is lost because the PDB file has no mechanism for recording
+hybridization directly.  A less primitive output format would provide a
+mechanism to record deduced hybridization, making it a reusable property.
+
+
+1.1.4. Linguistic considerations
+
+Compounding the underlying problem of molecular representation is that
+virtually all extant formats have "poorly-defined semantics".  This is a
+linguist's way of saying that you can't tell what is being represented by
+a given sequence of characters which form a valid entity in a given
+language.  In other other words, even assuming you know what you want to
+say, existing formats don't let you say it rigorously.  It's hard to
+believe, but it's true.
+
+The most blatant examples of chemical formats with poorly-defined semantics
+are those which don't provide any semantic rules at all, i.e., a way of
+interpreting what a file means in terms of chemistry.  To be fair, it must
+be said that such formats were normally designed for purposes other than
+chemical information exchange.  Graphics metalanguages such as Cambridge
+Scientific's .CT (or ChemDraw) format, Brookhaven's .PDB format, and the
+WIMP format are examples of formats which outgrew their roots and are
+inappropriately used for general chemical information exchange.  In each of
+these cases, there is no way to rigorously intepret an "atomic label"
+(e.g., does "CA" in a .PDB represent an alpha carbon or calcium; does "HO"
+in a .CT represent holmium or hydroxyl moiety, etc.)
+
+If one digs deeply enough, one finds that most extant formats have this
+sort of problem at one level or another.  Just having a rigorous language
+for atoms and bonds isn't enough to ensure well-defined semantics.
+
+For instance, the MDL ".MOL" file format does not require that all hydrogen
+atoms are specified.  Like many formats (CAS, Daylight, etc.), the number
+of hydrogens attached to certain atoms is implicitly specified based on
+normal valence assumptions.  E.g., a .MOL file containing just one sulfur
+atom would normally represent H2S (hydrogen sulfide), since the lowest
+normal valence of sulfur consistent with no explicit bonds is normally set
+to two.  Pretty handy, but how do you specify atoms with lower-than normal
+valences, e.g., molecular sulfur?  Instead of providing a method for
+explicit valence specification, MDL allowed users to modify the default
+valence table. This probably seemed to solve the problem once and for all.
+And it in fact does, but only for users who exclusively use one MDL
+system.  Linguistically, it makes the .MOL format have poorly-defined
+semantics.  Given a .MOL file containing a single sulfur atom
+specification, we can no longer tell what chemical substance it represents
+without also knowing the state of the user-defined valence table.  Worse
+yet, the .MOL file format does not provide a way of transmitting this
+table.  Transmitting the table is certainly possible (e.g., one can do it
+in MDL's REACCS .RD format), but it is so much simpler to define a language
+which doesn't need such kludges.  The net effect is that anyone moving .MOL
+files from an MDL system to a non-MDL system (or from one MDL system to
+another) has to externally track and restore the state-dependent tables or
+to live with a little uncertainty.  In any case, the fact that the meaning
+of a .MOL file is dependent on the state of a particular program makes it
+unsuitable for information exchange.
+
+
+1.2.  The CEX solution
+
+The CX utilities provide a general interface for exchange of chemical
+information that is designed to work in the long term.  The function of CEX
+is specifically to provide information exchange -- only the most basic
+kinds of data are supported specifically (e.g., datatypes and a molecular
+valence model), while providing the ability to describe all kinds of data
+in general.  Dictating the kinds of data to be exchanged has been carefully
+avoided (which is the purview of the "interoperability" group).
+
+Information is transmitted as objects in self-defining CEX (chemical
+exchange) streams.  An object-oriented interface is used to provide machine
+and language independence and to allow full extensibilty.  Target operating
+systems are Unix, MacOS and Windows.  Target application languages are
+ANSI-C and Fortran-77.  All CEX support is designed to be provided as
+freely available, public domain binaries, object libraries and source code.
+
+
+1.2.1  CEX at the user-level
+
+This is the way CEX works, from the "top down".
+
+At the highest level, users simply plug CEX-compatible programs together.
+Although unlikely to be a popular mechanism in the long term, CEX streams
+may be stored in conventional disk files and treated as a vendor-independent
+chemical information format for which conversion programs to and from other
+formats are available.  In a workstation environment (e.g., TK/TCL, sh, ksh,
+etc.), CEX-compatible programs may be plumbed together to do high-level
+chemical information processing tasks.  In networked environments (e.g., WWW)
+the source and/or destination of CEX streams will usually be a network
+connection rather than a disk file.  Chemical information end-users are not
+expected to go below this highest level nor to ever need to "see" CEX's
+presence except to satisfy their curiosity.
+
+
+1.2.2  CEX at the application-level
+
+At the application level, CEX-compatible programs read and write CEX
+streams by receiving and sending objects.  Software is provided (the CX
+interface) which makes porting an existing application to use CEX I/O an
+extremely simple and robust process.  Typically, a molecule is received
+with all information represented as properties (e.g., molecule name),
+children objects (e.g., atoms) and child properties (e.g., atomic
+coordinates).  The program obtains such information via the provided
+functional interface (either from C or Fortran) and moves it to the
+program's internal data structure.  If the program is using CEX for input
+only, the CX utilities may be cleared, returning all resources (e.g.,
+memory) to the calling process with no side effects.  The program then does
+its thing in its normal manner.  To write CEX output, the program creates
+an object, sets its properties (possibly creating new data types in the
+process), and puts it on the CEX output stream.  That's it.  Application
+programers typically do not need to work below this level.
+
+Note that application programs are entirely responsible for creating their
+own internal data structure.  In some cases this might require writing new
+code.  For instance, CEX atoms are identified by atomic number, not by
+arbitrary atom type.  If an application program expects amide nitrogens to
+be identified as atom type 84, this must either be deduced in the program
+or a CEX filter written to deduce and output atom type as an atomic property.
+
+
+1.2.3  CEX at the object-level
+
+At the object-level, programmers can invent their own object types.  This
+might be needed if the basic object types (e.g., string, binary, etc.) are
+inadequate for special purposes.  For instance, if one needed to express
+data as digital audio, it would be reasonable to invent an audio object
+class and an external representation language for the purpose.  Creating
+new object classes can only be done using C.  It's unlikely that one would
+need to create new object classes when porting existing programs, but the
+door is left open for future software.
+
+
+1.2.4  CEX at the root-object-level
+
+Finally, at the lowest (root) level, one can define a new kind of object
+to be exchanged via CEX streams which uses a completely different basis
+for chemical information exchange.  This might be needed if one needs to
+exchange data which can not be reasonably related to the valence structure
+of a molecule.   Since the vast majority of modern chemical information
+processing is based upon molecular structure, working at this level is not
+expected to be needed very often.  Possibilities include representions of
+chemical substances for which a molecular model is awkward, e.g., natural
+products and combinatorial libraries.  Creating a root object class is
+done in the same way as any other object class, except that functional
+receive and send methods must be provided.
+
+Note:  As of CEX version 0.33, support for two additional object classes
+have been contributed: camera and surface.  Camera objects (basically, a
+point-of-view) naturally exist outside molecules (and surfaces) and will
+typically be instantiated as root objects.   Surfaces can represent a
+molecular surface (in which case they will be children of a molecule) or
+can exist independently (in which case they will be root objects).
+
+
+2.  Caveat
+
+The CX utilities are intended to be used for communication purposes.
+Although they form a medium-performance toolset which can be (ab)used
+for general chemical information processing purposes, the CX system is
+not designed for this purpose and such use is discouraged.  There are
+much better systems available (such as the Daylight Toolkit) which
+provide a comprehensive and high-perfomance set of tools.  Although
+such tools are not free (except for academic and educational use), they
+are much less expensive than a CX-kludge in the long run (i.e., if you
+value your time at all or expect to maintain the software for years).
+
+
+3.  Overall scheme
+
+In general, CEX-compatible programs are expected either use CX functions to
+modify a CEX stream (e.g., a filter) or to independently read CEX input
+and/or write CEX output (e.g. a normal application).  Creating either type
+of interface is intended to be extremely simple for the programmer given
+the CX toolset.
+
+The CX principles are few and straight-forward:
+
+   o  CX utilities are organized as packages which must be initialized.
+      So far there is only one such initialization, cx_molecule_pkg().
+      It's OK, but unneccessary, to initialize a package more than once.
+      Built-in packages auto-initialize (e.g., the datatypes package).
+
+      Note: as of v033, cx_camera_pkg() and cx_surface_pkg() also exist.
+
+   o  Input from the CEX stream is done by cx_receive() which returns a single
+      object (a "root" object") containing all available information in the
+      form of children objects and properties.
+
+   o  In this release there are only two kinds of root objects: a molecule
+      and a datatype.  cx_receive() silently loads datatype objects from the
+      input stream into a datatype table, so the only kind of object that
+      cx_receive() will deliver to the caller is a molecule.
+
+      Note: as of v033, camera and surface objects also exist.
+
+   o  Any new information (or modification of existing information) that is
+      to be transmitted must be done by storing it in an object or an object
+      property.  New objects intended to be transmitted must have a datatype
+      associated with them (objects without datatypes are "invisible").
+
+   o  Output to the CEX stream is done by cx_send(ob) which puts the given
+      root object on the CEX stream along with all visible children and
+      their visible properties.
+
+   o  CX objects are universally deallocated with cx_destroy().  Temporary
+      storage otherwise used by the cx_ utilities is deallocated with
+      cx_cleanup().  If all created objects are destroyed and cx_cleanup()
+      is called, the caller is guaranteed that there will be no leaked
+      memory and that all but a very small amount (<1K) of allocated heap
+      will be returned to the user process.
+
+
+4.  A note on the CX data interface.
+
+The cx_ interface uses a very small number of primitive types, defined in
+$(CX_ROOT)/include/cx_types.h:
+
+   cx_Integer .. a 32-bit 2's-complement integer
+   cx_Real ..... a 64-bit IEEE floating point number
+   cx_String ... ASCII string with implicit length (zero-terminated)
+   cx_Binary ... binary string with explicit length (not actually used yet)
+   cx_Method ... function pointer
+   cx_Object ... opaque handle to an object
+
+Note that no complex data types (e.g., arrays or structs) are supported.
+CX communication is done entirely via these six types of variables.
+
+Note also that the contents of the primitive types are specifically defined,
+i.e., defined to the bit level.  The CX interface does NOT use local type
+definitions (e.g., C/int or Fortran/INTEGER).  This allows communication
+between machines of different architecture, but also implies that the
+interface provides a translation of the programmer's input.  Such translators
+are called "wrappers" and in theory are respondsible for converting the
+programmer's input into the standard data format.  In practice, this is
+accomplished by environment specific typedef's in cx_types.h, e.g.:
+
+    in most 16 bit environments:   typedef cx_Integer long;
+    in most 32 bit environments:   typedef cx_Integer int;
+
+The actual entry point of functions is typically not what is published here,
+e.g., the entry point for function cx_type() is actually cx_e_type().  This
+allows multiple wrappers (e.g., for various compilers) to access a single
+entry point.
+
+Bottom line: Always use typedef's (e.g., cx_Integer rather than int)
+and published function names (e.g., cx_type() rather than cx_e_type()).
+
+
+5.  CX objects
+
+CX objects are referenced by cx_Object handles.  These are opaque references
+to the object and cannot be dereferenced.  Each object has an integral type,
+defined in $CX_ROOT/include/cx_types.h with the symbolic names:
+
+   Basics:
+
+      CX_OB_STRING ............ ASCII string with implicit length
+      CX_OB_BINARY ............ binary string with explicit length
+      CX_OB_ERRORS ............ a queue of error messages
+      CX_OB_STREAM ............ an ordered list of children of a parent
+      CX_OB_SEQUENCE .......... an ordered list of objects
+      CX_OB_PROPERTY .......... a name-value pair belonging to an object
+      CX_OB_DATATYPE .......... internal/external data mapping
+      CX_OB_DATATYPE_TABLE .... object containing datatypes
+
+   Molecule package:
+
+      CX_OB_MOLECULE .......... a valence model of a molecule
+      CX_OB_ATOM .............. an atom component of a molecule
+      CX_OB_BOND .............. an bond component of a molecule
+      CX_OB_ATOMTUPLE ......... represents a given property of all atoms
+      CX_OB_BONDTUPLE ......... represents a given property of all bonds
+
+   Surface package:
+
+      CX_OB_SURFACE ........... a surface of vertices and triangular faces
+      CX_OB_VERTEX ............ points on the surface
+      CX_OB_FACE .............. triangular faces on the surface
+      CX_OB_VERTEXTUPLE ....... represents a given property of all vertices
+      CX_OB_BONDTUPLE ......... represents a given property of all faces
+
+   Camera package:
+
+      CX_OB_CAMERA ............ a valence model of a molecule
+
+Several "pseudotypes" are also defined, which are not true object classes
+but which are used in their stead for various reasons:
+
+   CX_OB_INVALID ........... the object type of NULL
+   CX_OB_ANY ............... represents all possible types
+   CX_OB_SMIATOMS .......... atoms in SMILES order
+   CX_OB_SMIBONDS .......... bonds in SMILES order
+
+The function cx_type(ob) returns an integral type for any object and may be
+compared with the above symbolic names.  The function cx_typename(ob) returns
+the name of an object's type as a string (convenient for debugging).
+
+[Note:  If you have a strong object-orientation, you may feel more comfortable
+if you read "class" whenever you see the word "type" in CX code.  "type" is
+used instead of "class" for the simple reason that "class" is a keyword in
+many useful languages (in particular most C++ capable debuggers) and it's an
+easier problem to avoid than to fix.]
+
+
+6.  CX functions are polymorphic messages
+
+The content of an object is accessed exclusively via function calls, the
+operation of which are defined for all types of objects.  In object-oriented
+terms, the CX functions are "polymorphic messages".  Along with cx_type()
+and cx_typename() described above, the most important are:
+
+   cx_create ......... create an empty object with given type and parent
+   cx_parse .......... create an object with given string value (interpret it)
+   cx_stringvalue .... return an object's string value
+   cx_destroy ........ destroy an object and its children
+   cx_parent ......... return an object's parent
+   cx_ancestor ....... return an object's ancestor of given type
+   cx_count .......... count an object's children of a given type
+   cx_stream ......... enumerate an object's children of a given type
+   cx_reset .......... reset a stream (or sequence) to the start
+   cx_next ........... return the next object in a stream or sequence
+   cx_datatype ....... return the datatype associated with an object
+   cx_set_datatype ... associate a datatype with an object
+   cx_receive ........ receive an object from a CEX input stream
+   cx_send ........... put an object onto a CEX output stream
+   cx_sprop .......... return a property value by name (also _iprop, _rprop)
+   cx_set_sprop ...... (re)set a property value by name (also _iprop, _rprop)
+
+There are more, but most chemical information exchange can be done with the
+above functions.
+
+
+7.  CX parents and children
+
+CX objects (e.g., molecules) may have children.
+
+Children are objects which "belong" to a parent object, e.g., atom and bond
+objects are always children of a molecule object.  Except for objects used
+very temporarily, a parent is typically specified an object is created to
+record their relationship or to simplify object management.
+
+Destroying an object destroys its children and their descendents.
+
+
+8.  Streams and sequences
+
+The CX toolset provides an enumeration object (a "stream" object) which
+allows enumeration of children.  The following code fragment illustrates
+a common idiom in C:
+
+   cx_Object mol, atom, atoms;
+   ...
+   atoms = cx_stream(mol, CX_OB_ATOM);      /* create stream of atoms */
+   while (NULL != (atom = cx_next(atoms)))  /* NULL <- cx_next() when done */
+      ... do something with this atom ...
+   cx_destroy(atoms);                       /* destroy stream `atoms' */
+
+The function cx_stream() returns a stream of an object's children of a given
+type (or all children if type CX_OB_ANY is specified).  A stream is initially
+position at the start (to the first object) and cx_reset() resets it to that
+condition.  cx_next() returns the next object in the stream or NULL if done.
+
+Note that everything enumeratable in CX is enumerated with streams, e.g.,
+
+   cx_stream(mol,  CX_OB_ATOM) ... returns molecule's atoms
+   cx_stream(mol,  CX_OB_BOND) ... returns molecule's bonds
+   cx_stream(atom, CX_OB_BOND) ... returns atom's bonds
+   cx_stream(bond, CX_OB_ATOM) ... returns bond's atoms
+
+Note also that it is not possible to affect the content of a stream (streams
+are "readonly snapshots") except by adding or removing an object's children
+and getting another stream.
+
+Sequences are just like streams except that they hold arbitrary objects.
+Sequences respond to the same messages as streams plus cx_append() and
+cx_delete() which are used to add objects to, or remove objects from a
+sequence (you can't append to or delete from a stream).  Sequences are
+created by cx_create(parent, CX_OB_SEQUENCE) and are handy for all sorts
+of user-defined manipulations.
+
+Note:  Since cx_next() returns NULL at the end of a sequence, NULL makes a
+a very convenient end-marker as long as NULL is never put into the sequence.
+Doing so is not forbidden, however.  The function cx_atend(seq) (returns TRUE
+if at the end of sequence) is provided to allow use of such a tactic.  Streams
+respond to this function also (though streams never contain NULL) to allow
+user functions to be polymorphic over streams and sequences.
+
+
+9.  CX properties
+
+Properties are name-value object attributes, e.g., the "atomic symbol"
+property of carbon atoms has the value "C"; the "atomic number" is "6".
+
+Although properties are really objects, they are most commonly accessed via
+convenience functions such as cx_sprop(ob) and cx_set_sprop(ob, str).
+
+Property values are are ultimately strings, but convenience functions are
+provided to get and set them as integers and real numbers, e.g., for
+a carbon atom, cx_iprop(atom, "atomic number") returns the integer 6.
+For exchange purposes, it preferable to keep all numbers in their string
+form to avoid round off errors and overflow problems.  This is usually
+possible when working in a CEX-to-CEX environment, but usually not possible
+when converting to or from other formats (e.g., if fixed fields are used).
+
+Property names are also strings.  One can invent new properties at will.
+However, standard properties, e.g., "atomic number", are defined in header
+files, e.g., cx_molecule.h specifies:
+
+   #define CX_PROP_ATNUMB "atomic number"
+
+Since properties of an object are its children, they may be enumerated:
+
+   props = cx_stream(ob, CX_OB_PROPERTY);
+   while (NULL != (prop = cx_next(props)))
+      printf("prop %-20s = %s\n", cx_prop_name(prop), cx_stringvalue(prop));
+
+Each property has a single property name and each property name has a single
+property (which may be NULL).  This is fine for most properties, e.g., "atomic
+number", but sometimes more than one of a given property must be processed,
+e.g., "hydrophobicity".  The convention used is to follow the property name
+with a unique identifier, e.g., "hydrophobicity.1", "hydrophobicity.2", etc.
+The function cx_prefix2propnames(ob,prefix) returns the names of an object's
+properties which start with the given prefix, as sequence of strings.
+
+
+10.  Atomtuples, bondtuples, and other tuples
+
+Molecules, atoms and bonds are all normal objects and may be given properties
+in the normal manner.  Tuples are a mechanism which allow referencing a given
+property of all constituents as a single entity, e.g., a molecule's atomtuple
+with the name "coordinates" refers to all the "coordinates" properties of all
+atoms of that molecule.  A tuple's string value is the semicolon-delimited
+list of all properties in SMILES order.  Tuples are created and enumerated in
+the normal manner.  Destroying a tuple destroys all corresponding properties.
+
+Note that the existance of atomtuples (or bondtuples) is independent of the
+existance of the corresponding atom (or bond) properties.  Such properties
+can exist without a tuple, and tuples can exist when such properties do not.
+
+The surface package supports vertextuples and facetuples, which act almost
+exactly like atomtuples and bondtuples.  (In most ways, surfaces act like
+molecules, vertices act like atoms, and faces act like bonds.)
+
+
+11.  Datatypes
+
+Datatypes are objects which contain information relating internal and external
+data representation, and as such, are critical to CEX information transmission.
+
+Datatypes are simple objects with six standard properties:
+
+   symbolic name  property name    remark
+   -------------  ---------------  --------------------------------------
+   CX_PROP_TAG    "tag"            short, unique tag, e.g., "MP"
+   CX_PROP_PNAME  "property name"  name as property, e.g. "melting-point"
+   CX_PROP_VNAME  "verbose name"   visible name, e.g., "Melting Point"
+   CX_PROP_SHAPE  "shape"          dimensionality, e.g., "1", "3A", etc.
+   CX_PROP_LANG   "language"       "STRING", "INTEGER", "XSMILES"
+   CX_PROP_DESC   "description"    e.g., "Melting Point, C"
+
+Datatypes are children of datatype tables, from which they may be retrieved
+by tag via cx_tag2datatype() or property name via cx_pname2datatype().  The
+CEX system is designed so that tag and property name are unique identifiers
+of datatypes.  The stringvalue of a datatype is its "tag".
+
+Datatype tables are the parents of datatypes.  In most cases, there is only
+one datatype table of interest, the "unnamed" or "default" datatype table.
+Specifying the NULL datatype table always refers to the default table. The
+function cx_dt_table_default() returns this table (if ever needed).  The only
+reason multiple datatype tables are supported is for hypothetical future
+applications which manage multiple concurrent CEX streams.
+
+One other datatype property, "_mark" is reserved for internal use (symbolic
+name CX_PROP_MARK).  The CEX object transmitter, cx_send(), is uses this
+property to insure that datatypes and objects are transmitted in a strict
+def-before-ref fashion.
+
+
+12.  Object visibility
+
+CX objects are "visible" or "invisible" depending on whether a datatype is
+associated with them or not.  "Visible" objects (those with an associated
+datatype) are written to output either as a CEX stream (i.e., via cx_send())
+or when printed by a program such as printcex (i.e., via cx_spewob()).
+"Invisible objects" (those with no associated datatype) are not output.
+
+Visible objects are the entities which explicitly participate in information
+exchange.  Invisible objects either do not participate at all (e.g., used
+like temporary variables) or do so indirectly (e.g., atoms and bonds).
+
+Datatypes are associated with objects ("objects are made visible") with
+cx_set_datatype(ob, datatype) and disassociated ("objects are made invisible")
+with cx_set_datatype(ob, NULL).  The datatype associated with any object is
+returned by cx_datatype(ob).
+
+CX properties are "visible" or "invisible" depending on whether a datatype
+exists with a matching "property name" or not.  It is not necessary to attach
+a datatype directly to a property -- properties of visible objects are always
+transmitted if their datatypes are available.
+
+All objects read in as CEX input (which by definition must be visible) have
+datatypes associated with them automatically (they stay visible).
+
+Advanced note: The visibility of properties is dependent on the state of the
+datatype table being used, i.e., the content of the datatype table can be
+used to control output behavior of properties.  This is not normally an issue
+unless multiple concurrent output streams are used.
+
+
+13.  Reading from CEX streams, "receiving objects"
+
+The function cx_receive() is used to get objects from a CEX stream.
+Its ANSI-C function prototype is:
+
+   cx_Object cx_receive(cx_Object table, FILE *fp);
+
+This returns the first non-datatype object it receives (in this release,
+it will be a molecule) or NULL if no such object is received before EOF.
+
+The stream `fp' can be any file, pipe, or a socket which is open for reading.
+
+The object `table' is a datatype table which will receive all datatypes
+encountered on the stream.  cx_receive() of a CEX file containing only
+datatypes is a perfectly acceptable way of reading datatypes into a table.
+
+In practice, the normal call is
+
+    ob = cx_receive(NULL, stdin);
+
+i.e., "receive an object from standard input using the default table".
+If you need a molecule, test for it, e.g.,
+
+    if (CX_OB_MOLECULE != cx_type(ob)) { ob isn't a molecule }
+
+because future versions will almost certainly transmit other kinds of
+root objects besides molecules.
+
+
+14.  Writing to CEX streams, "sending objects"
+
+The function cx_send() is used to put objects to a CEX stream.
+Its ANSI-C function prototype is:
+
+   cx_Integer cx_send(cx_Object ob, cx_Object table, FILE *fp);
+
+which sends the object (if visible) to the named stream.  Sending the object
+includes sending its visible properties and all visible descendents (and
+their visible properties).  Datatypes are automatically put on the stream
+as needed to maintain the strict CEX def-before-ref protocol.  It returns
+its success (returns TRUE quietly if successful; if not, returns FALSE with
+error messsage(s) queued).
+
+The stream `fp' can be any file, pipe, or a socket which is open for writing.
+
+The object `table' is a datatype table used to determine what gets sent
+and how.  It's perfectly acceptable to send a datatype table, e.g.,
+cx_send(table, table, fp) sends the contents of a datatype table.
+
+Note that cx_send and cx_receive are related, e.g.,
+
+   cx_send(cx_receive(NULL, stdin), NULL, stdout);
+
+receives one non-datatype object and sends it with all supporting datatypes.
+
+
+15.  Error handling
+
+Although the CX low level error interface is not hard to work with, the high
+level interface is satisfactory for most purposes, and is described here.
+
+Error messages are string objects with two properties, severity and source.  
+Severity is a string specified by symbolic names in cx.h with these semantics:
+
+   CX_ERR_FATAL .... condition which will cause program termination
+   CX_ERR_ERROR .... program or function cannot perform task correctly
+   CX_ERR_WARN ..... unexpected (but possibly correct) condition encountered
+   CX_ERR_NOTE ..... an informational message
+
+Source is a string containing the name of the function producing the message.
+Message lists look nicer if the source is limited to 10 characters.
+
+Three high-level interface functions are provided:
+ 
+   cx_Integer cx_error_save(cx_String msg, cx_String severity, cx_String src);
+ 
+      Saves an error message with given severity (flags per cx.h) and
+      source (name of function generating error).  Returns success.
+
+   cx_Integer cx_error_count(cx_String severity);
+ 
+      Returns the number of error messages queued which are at least as
+      severe as the given `severity' (or all, if `severity' is NULL).
+ 
+   cx_Integer cx_error_spew(FILE *fp, cx_String severity);
+ 
+      Prints error messages of given severity or worse to the given stream
+      then destroys all messages.  Prints all messages if `severity' is NULL.
+      Returns the number of messages printed.
+ 
+Note: Here's a C-idiom to print all messages if any are ERRORs or worse
+and to clear the error message queue in any event:
+ 
+   cx_error_spew(stderr, cx_error_count(CX_ERR_ERROR) ? NULL : CX_ERR_FATAL);
+
+If you need more flexible access to error messages, see the error object
+documentation for information on the low-level interface,
+
+
+16. Example applications
+
+16.1.  Converting a CX molecule to an internal program structure
+
+The following is a prototype function which converts a CX object to an
+internal struct.  This is a purely invented example, but it illustrates
+several important points about such conversion.
+
+Example 1:
+
+ 1: /*** Include standard libraries, CX basics, and CX molecule support. ***/
+ 2:
+ 3: #include <stdio.h>
+ 4: #include "cx.h"
+ 5: #include "cx_molecule.h"
+ 6:
+ 7: /*** Local representation. ***/
+ 8:
+ 9: #define MAXATM 256
+10: ...
+11: typedef struct {
+12:   char *myname;
+13:   int   natoms, nbonds;
+14:   int   atno[MAXATM];
+15:   ... etc ...
+16: } MYMOL;
+17:
+18: /*=========================================================================
+19:  *  cxmol2mymol() -- convert CX molecule object to (MYMOL *) struct
+20:  */
+21:
+22: static MYMOL *cxmol2mymol(cx_Object cxmol)
+23: {
+24:    cx_Object  atom, atoms, bond, bonds;
+25:    cx_String  name;
+26:    MYMOL     *mymol     = NULL;
+27:    int        firstpass = TRUE;
+28:    int        na, nb;
+29:
+30:    /*** Initialize cx_ methods once. ***/
+31:
+32:    if (firstpass) {  cx_molecule_pkg();  firstpass = FALSE; }
+33:
+34:    /*** Check that we've been given a molecule object. ***/
+35:
+36:    if (CX_OB_MOLECULE != cx_type(cxmol)) return NULL;
+37:
+38:    /*** Check that local limits won't be exceeded. ***/
+39:
+40:    if (MAXATM > (na = cx_count(cxmol, CX_OB_ATOM))) {
+41:       fprintf(stderr, "Too many atoms in molecule, %d > %d\n", na, MAXATM);
+42:       return NULL;
+43:    }
+44:
+45:    /*** Convert CX molecule to local struct. ***/
+46:
+47:    mymol         = (MYMOL *) malloc(sizeof(MYMOL));
+48:    mymol->myname = cx_strdup(cx_sprop(cxmol, "name"));
+49:    mymol->natoms = na;
+50:    atoms         = cx_stream(cxmol, CX_OB_ATOM);
+51:    for (i = 0; NULL != (atom = cx_next(atoms)); i++)
+52:       mymol->atno[i] = cx_iprop(atom, "atomic number");
+53:       ... etc ...
+54:    }
+55:    cx_destroy(atoms);
+56:    ... etc ...
+57:
+58:    /*** Clean up and return (MYMOL *) or NULL. ***/
+59:
+60:    cx_destroy(cxmol);
+61:    return mymol;
+62: }
+
+Notes about Example 1:
+
+   o (line 24) All objects to be used must be declared as cx_Object's.
+
+   o (line 32) Ensure that initializations are called before other cx_
+     functions.  It's OK, but wasteful, to call them more than once.
+
+   o (line 36) Always check the object type unless you are certain of it.
+     If your function can handle more than one object type (e.g., it's
+     polymorphic) you will usually do a switch on cx_type(ob).
+
+   o (line 40) You may need to check that local limits won't be exceeded.
+     The CX system has extremely high limits on things like the number of
+     atoms per molecule (in theory, 2147483648, but actually limited by
+     virtual memory), so save yourself some grief and check everything at
+     the earliest convenience.  See cx_limits.h.
+
+   o (line 47) Testing here for a NULL return from malloc() (i.e., out
+     of memory) would be probably be a good idea.  It's not unreasonable
+     to treat out-of-memory errors as fatal.
+
+   o (line 48) Property strings are delivered as static variables; they're
+     good for the life of the property (or molecule).  Since we'll be
+     blowing the molecule object away here, save it as a strdup copy.
+     Actually, the utility cx_strdup() is used here, which handles NULL.
+
+   o (lines 50-55) This is the C-idiom for looping over atoms in a molecule
+     (also works for bonds, etc.  The CX interface has no property like atom
+     indicies so one is invented on the fly (`i').  The stream `atoms' is
+     destroyed on line 55 as a matter of good form, but it would be destroyed
+     at line 60 anyway since it is a child of `cxmol'.
+
+   o (line 60) Destroy the molecule as soon you are done with it: memory is
+     returned to your process and you avoid leaks.  Note that you can't
+     completely deinitialize CX at this point (i.e., call cx_cleanup()),
+     because the datatype table contents may be needed for futher processing.
+
+
+16.2.  Converting an internal program structure to a CX molecule
+
+The following is a prototype function which converts an internal struct to
+a CX object.  The converse of Example 1, this is another purely invented
+example to illustrate how its done.
+
+Example 2:
+
+ 1: /*** Headers and local struct same as Example 1, above. ***/
+...
+18: /*=========================================================================
+19:  *  mymol2cxmol() -- convert (MYMOL *) struct to CX molecule object
+20:  */
+21: 
+22: static cx_Object mymol2cxmol(MYMOL *mymol)
+23: {
+24:    cx_Object *aa, dt, cxmol;
+25:    int        i, firstpass = TRUE;
+26: 
+27:    /*** No-op on NULL. ***/
+28: 
+29:    if (NULL == mymol) return NULL;
+30: 
+31:    /*** Initialize cx_ methods once. ***/
+32: 
+33:    if (firstpass) {  cx_molecule_pkg();  firstpass = FALSE; }
+34: 
+35:    /*** Create empty molecule object. ***/
+36: 
+37:    cxmol = cx_create(NULL, CX_OB_MOLECULE);
+38: 
+39:    /*** Create atoms and load into array. ***/
+40: 
+41:    aa = (cx_Object *) malloc(mymol->natoms * sizeof(cx_Object));
+42:    for (i = 0; i < mymol->natoms; i++) {
+43:       aa[i] = cx_create(cxmol, CX_OB_ATOM);
+44:       cx_set_iprop(aa[i], "atomic number",   mymol->atno  );
+45:       cx_set_iprop(aa[i], "charge",          mymol->charge);
+46:       cx_set_iprop(aa[i], "mass",            mymol->mass  );
+47:       cx_set_iprop(aa[i], "implicit hcount", mymol->charge);
+48:    }
+49: 
+50:    /*** Create bonds. ***/
+51: 
+52:    for (i = 0; i < mymol->nbonds; i++)
+53:       cx_make_bond(aa[mymol->ba1[i]], aa[mymol->ba2[i]], mymol->border[i]);
+54: 
+55:    /*** Associate datatype "MOL" with molecule (if needed, make it). ***/
+56: 
+57:    if (NULL == (dt = cx_tag2datatype(NULL, "MOL")))
+58:       dt = cx_create_datatype(NULL, "MOL", "Molecule", "molecule",
+59:                               "1", "XSMILES", "Molecule as XSMILES");
+60:    cx_set_datatype(cxmol, dt);
+61: 
+62:    /*** Add molecule name as property "name". ***/
+63: 
+64:    cx_set_sprop(cxmol, "name", mymol->name);
+65: 
+66:    /*** Make sure datatype exists with the property name "name". ***/
+67: 
+68:    if (NULL == (dt = cx_pname2datatype(NULL, "name")))
+69:       dt = cx_create_datatype(NULL, "NAM", "Name", "name",
+70:                               "1", "STRING", "Arbitrary ASCII name");
+71: 
+72:    /*** Clean up and return molecule object. ***/
+73: 
+74:    cx_free(aa);
+75:    return cxmol;
+76: }
+
+Notes about Example 2:
+
+   o (line 33) Ensure that initializations are called before other cx_
+     functions.  This is provided in both input and output functions
+     so either can be called first.
+
+   o (line 37) This call creates an empty molecule object with no parent.
+     If an XSMILES were available, it could be cx_parsed() to a molecule
+     directly (then skip to line 57).
+
+   o (lines 49-53) The way the conversion is done depends upon the exact
+     nature of the internal structure.  The method shown here may be used
+     to deal with index-oriented structures.  `aa' is an array of atoms
+     which are referenced by index to create bonds at line 53.
+
+     The four properties set in lines 44-47 (atomic number, charge, mass,
+     and implicit hcount) should be set if known.  Setting "atomic symbol"
+     is not sufficient (it is intended to be a derived property).
+
+   o (lines 57-59) There are a number of reasons that you might not need
+     to check/create a datatype for the root (e.g., you know that it was
+     read in), but you need to convince yourself that the datatype exists.
+
+   o (line 60) If the molecule object is to be transmitted, a datatype must
+     be associated with the molecule.  (If not, lines 55-71 can be omitted.)
+
+   o (line 64) Properties may be set before or after their datatypes.
+
+   o (lines 68-70) This might not be needed (same as 57-59) but is included
+     here for completeness.
+
+
+16.3.  Reading and writing CEX files
+
+Although the idea of dealing with CEX streams as files isn't quite in the
+"CEX spirit", CEX will undoubtedly be treated as "another file format" to be
+read and written as such.  Given conversions between a molecule object and
+your internal struct, it's trivial to do, as shown in this example.
+
+Example 3:
+
+ 1: /*** Headers and local struct same as Example 1, above. ***/
+18:
+19: /*=========================================================================
+20:  *  mymol2cexfile() -- write (MYMOL *) to .cex file, return success
+21:  */
+22: 
+23: cx_Integer mymol2cexfile(char *fn, MYMOL *mymol)
+24: {
+25:    cx_Object  cxmol;
+26:    FILE       *fp;
+27:    int         ok = FALSE;
+28:
+29:    /*** Convert (MYMOL *) to CX molecule and open output file. ***/
+30:
+31:    if (NULL != (cxmol = mymol2cxmol(mymol))) {
+32:       if (NULL != (fp = fopen(fn, "w"))) {
+33:
+34:          /*** Clear datatype marks in table and send molecule. ***/
+35:
+36:          cx_dt_table_setmarks(NULL, FALSE);
+37:          ok = cx_send(cxmol, NULL, fp);
+38:          fclose(fp);
+39:       }
+40:       cx_destroy(cxmol);
+41:    }
+42:
+43:    /*** Show any errors and return success. ***/
+44:
+45:    cx_error_spew(stderr, NULL);
+46:    return ok;
+47: }
+48:
+49: /*=========================================================================
+50:  *  cexfile2mymol() -- read .cex file, return (MYMOL *) or NULL
+51:  */
+52: 
+53: MYMOL *cexfile2mymol(char *fn)
+54: {
+55:    MYMOL     *mymol = NULL;
+56:    cx_Object  cxmol = NULL;
+57:    FILE      *fp;
+58:
+69:    /*** Open CEX file and get one molecule from it. ***/
+60:
+61:    if (NULL != (fp = fopen(fn, "r"))) {
+62:       while (NULL != (cxmol = cx_receive(NULL, fp)))
+63:          if (CX_OB_MOLECULE == cx_type(cxmol)) break;
+64:
+65:       /*** If molecule found, convert to (MYMOL *) and destroy it. ***/
+66:
+67:       if (cxmol) { mymol = cxmol2mymol(cxmol); cx_destroy(cxmol); }
+68:    }
+79:
+70:    /*** Tidy up, show errors, and return with mymol (or NULL). ***/
+71:
+72:    fclose(fp);
+73:    cx_error_spew(stderr, NULL);
+74:    return mymol;
+75: }
+
+Notes about Example 3:
+
+   o (line 36) Since we're writing one molecule per file here, we want all
+     referenced datatypes to be sent each time (regardless of the datatype
+     table's history).  This is done by clearing the datatype marks in the
+     relevant table (in this case, the unnamed table specified by NULL).
+
+   o (line 37) Note that the stream pointer (FILE *) given to cx_send() can
+     be a regular file.
+
+   o (line 67) Any generated root objects (i.e., those without parents) must
+     be destroyed (to avoid leaking memory).
+
+
+16.4.  Creating CEX filters
+
+One of the most powerful uses of CEX is to create a program which implements
+a useful algorithm designed to be used in concert with other programs.  The
+"pipe-filter-pipe" paradigm used in Unix and TCL shells provides an effective
+way to do this without having to create a large supporting infrastructure.
+
+The following program (distributed as "amw") is an example CEX filter.
+
+Example 4.
+
+  1: /************************************************************************
+  2: *  amw.c -- CEX average molecular weight generator
+  3: ************************************************************************/
+  4: 
+  5: #include <stdio.h>
+  6: #include <string.h>
+  7: #include "cx.h"
+  8: #include "cx_molecule.h"
+  9: 
+ 10: #define MX_ELEM 105
+ 11: 
+ 12: /*** aaw -- average atomic weight data ***/
+ 13: 
+ 14: static double aaw[MX_ELEM + 1] = {
+ 15:  0.0, 1.008, 4.0026, 6.94, 9.01218, 10.81, 12.011, 14.0067, 15.9994,
+ 16:  18.99846, 20.17, 22.98977, 24.305, 26.9815, 28.086, 30.9738, 32.06,
+ 17:  35.453, 39.948, 39.1, 40.08, 44.9559, 47.9, 50.941, 51.996, 54.938,
+ 18:  55.847, 58.9332, 58.71, 63.543, 65.38, 69.72, 72.59, 74.9216, 78.96,
+ 19:  79.904, 83.8, 85.467, 87.62, 88.9059, 91.22, 92.9064, 95.94, 98.9062,
+ 20:  101.07, 102.9055, 106.4, 107.868, 112.4, 114.82, 118.69, 121.75, 127.6,
+ 21:  126.9045, 131.3, 132.9055, 137.34, 138.9055, 140.12, 140.9077, 144.24,
+ 22:  145., 150.4, 151.96, 157.25, 158.9254, 162.5, 164.9303, 167.26, 168.9342,
+ 23:  173.04, 174.97, 178.49, 180.947, 183.85, 186.2, 190.2, 192.22, 195.09,
+ 24:  196.9665, 200.59, 204.37, 207.2, 208.9806, 209., 210., 222., 223., 226.,
+ 25:  227., 232.0381, 231.0359, 238.029, 237.0408, 244., 243., 247., 247.,
+ 26:  251., 254.09, 257.08, 258.098, 259.10, 260.1, 261.1, 262.11
+ 27: };
+ 28: 
+ 29: /*** prec -- precision, as places past decimal point ***/
+ 30: 
+ 31: static int prec[MX_ELEM + 1] = { 6,
+ 32:    3,4,2,5,2,3,4,4,5,2,5,3,4,3,4,2,3,3,1,2,4,1,3,3,3,3,4,2,3,2,2,2,4,2,3,
+ 33:    1,3,2,4,2,4,2,4,2,4,1,3,1,2,2,2,1,4,1,4,2,4,2,4,2,0,1,2,2,4,1,4,2,4,2,
+ 34:    2,2,3,2,1,1,2,2,4,2,2,1,4,0,0,0,0,0,0,4,4,3,4,0,0,0,0,0,2,2,3,2,1,1,2
+ 35: };
+ 36:   
+ 37: /*** Handy macros. ***/
+ 38: 
+ 39: #define NOTE(msg)  cx_error_save(msg, CX_ERR_NOTE,  *argv)
+ 40: #define FATAL(msg) cx_error_save(msg, CX_ERR_FATAL, *argv)
+ 41: 
+ 42: /*=======================================================================
+ 43:  *  amwof() -- calculate average molecular weight of molecule
+ 44:  *
+ 45:  *  This ignores atomic mass and accounts for implicit hydrogens.
+ 46:  */
+ 47: 
+ 48: static cx_String amwof(cx_Object mol)
+ 49: {
+ 50:    static char buf[20];
+ 51:    int         atno, imph, p = 6;
+ 52:    double      amw = 0.0;
+ 53:    cx_Object   atom, atoms = cx_stream(mol, CX_OB_ATOM);
+ 54: 
+ 55:    /*** Loop over atoms, adding up molecular weight. ***/
+ 56: 
+ 57:    while (NULL != (atom = cx_next(atoms))) {
+ 58:      atno = cx_iprop(atom, "atomic number");
+ 59: 
+ 60:      /*** Add atomic weight of heavy atoms, track precision. ***/
+ 61: 
+ 62:      if (0 < atno && MX_ELEM >= atno) {
+ 63:         amw += aaw[atno];
+ 64:         p    = CX_MIN(p, prec[atno]);
+ 65:      }
+ 66: 
+ 67:      /*** Add atomic weight of non-explicit hydrogens. ***/
+ 68: 
+ 69:      if (0 < (imph = cx_iprop(atom, "implicit hcount"))) {
+ 70:         amw += imph * aaw[1];
+ 71:         p    = CX_MIN(p, prec[1]);
+ 72:      }
+ 73:    }
+ 74:    cx_destroy(atoms);
+ 75: 
+ 76:    /*** Write ave mol wt to correct precision and return it. ***/
+ 77: 
+ 78:    return sprintf(buf, "%.*f", p, amw);
+ 79: }
+ 80: 
+ 81: /*=======================================================================
+ 82:  *  main() for amw
+ 83:  */
+ 84: 
+ 85: int main(int argc, char **argv)
+ 86: {
+ 87:    cx_Object ob, dt;
+ 88: 
+ 89:    /*** Initialize molecule package. ***/
+ 90:
+ 91:    cx_molecule_pkg();
+ 92: 
+ 93:    /*** This program takes no options: show usage if any specified. ***/
+ 94: 
+ 95:    if (1 < argc) {
+ 96:       FATAL("This program doesn't accept options or arguments.");
+ 97:       NOTE ("usage:   cex input | amw | cex output"            );
+ 98:       NOTE ("Adds AMW (ave mol wt) to molecules on cex stream" );
+ 99:       cx_error_spew(stderr, NULL);
+100:       exit(0);
+101:    }
+102: 
+103:    /*** Create AMW datatype in default datatype table. ***/
+104: 
+105:    dt = cx_create_datatype(NULL, "AMW", "ave mol wt", "Ave. Mol. Wt.",
+106:                            "1",  "REAL", "Average molecular weight");
+107: 
+108:    /*** Loop over objects on standard input. ***/
+109: 
+110:    while (NULL != (ob = cx_receive(NULL, stdin))) {
+111: 
+112:       /*** Calculate AMW for molecules, add as property. ***/
+113: 
+114:       if (CX_OB_MOLECULE == cx_type(ob))
+115:          cx_set_sprop(ob, "ave mol wt", amwof(ob));
+116: 
+117:       /*** Send object to stdout. ***/
+118: 
+119:       cx_send(ob, NULL, stdout);
+120: 
+121:       /*** Clean up. ***/
+122: 
+123:       cx_error_spew(stderr, NULL);
+124:       cx_destroy(ob);
+125:    }
+126: 
+127:    /*** Transmit remaining datatypes. ***/
+128:
+129:    cx_send(cx_dt_table_default(), NULL, stdout);
+130:
+131:    /*** Dump errors, clean up, close files, and exit with 0. ***/
+132: 
+133:    cx_error_spew(stderr, NULL);
+134:    cx_cleanup();
+135:    exit(0);
+136: }
+
+Notes about Example 3:
+
+   o This program computes the average molecular weight based on natural
+     isotopic abundance and attaches it to CEX molecules as a "ave mol wt"
+     property.  The only thing clever about it how precision is handled.
+
+   o (lines 14-27)  The average molecular weight data is hardcoded here.
+     Note that the precision is variable due to variations in the natural
+     abundance of the elements (and in the case of some heavy elements, the
+     lack of any natural abundance at all).
+
+   o (lines 31-34)  The precision is hardcoded here, corresponding to the
+     number of significant places past decimal point in the array `aaw'.
+
+   o (line 48)  Note that this is a string-valued function, to allow the
+     return of a result with implicit precision.  Strings are often more
+     natural variables than numbers for information exchange purposes.
+
+   o (line 51)  Precision `p' is initialized to 6, the maximum possible.
+
+   o (lines 62-64)  Contributions from explicit atoms are accumulated and
+      precision is adjusted to the minimum precision encountered.
+
+   o (lines 69-71)  Contributions from implicit hydrogens are accumulated
+     and precision is adjusted.
+
+   o (line 78)  Result is written to known precision.
+
+   o (lines 95-101)  The external interface to this program is excrutiatingly
+     simple: no options, arguments, or files are used at all.  In concert with
+     other CEX programs, it is still a general purpose program.
+
+   o (lines 105-106) The only datatype that needs to be dealt with is that for
+     new types of data.  One might check to see if the datatype "AMW" exists,
+     but cx_create_datatype() will automatically complain if an incompatible
+     datatype is present.  Here's what happens if the datatype "AMW" already
+     exists: If the datatype is identical, there is no problem and no error
+     action.  If the the datatype is identical except for "verbose name" or
+     "description", a warning is generated.  If the datatype is totally bogus
+     (i.e., tag and pname don't match), cx_create_datatype() generates a fatal
+     error. In all other cases of datatype incompatibilty (i.e., different
+     language or shape), an error is generated and NULL datatype is returned,
+     (i.e., objects set to that datatype won't be transmitted).  Since the
+     default behavior is acceptable (what else can you do?) no special tests
+     for existance of the datatype are used in this program.
+
+   o (line 110)  Objects are received from the CEX stream until finished.
+
+   o (lines 114-115)  The AMW property is attached to molecule objects only.
+     Note that there is no need to attach datatypes to the molecule (that's
+     done by cx_receive) or to the property (a datatype for the property
+     "ave mol wt" exists in the datatype table).
+
+   o (line 119)  All objects are sent along (including non-molecules).
+
+   o (line 129)  It's probably a good idea to send along all remaining
+     (i.e., unreferenced) datatypes (though not required for CEX validity).
+     This is done by sending the datatype table (without resetting marks).
+
+   o (lines 133-134)  It isn't really neccessary to clean up here since
+     we're going to exit at line 135, but it is good form to do so, since
+     it allows object-level debuggers (e.g., purify) to test for leaks.
+
+   o (line 135)  Exit with zero on success or with non-zero on failure.
+
+The most obvious advantage of a filter like `amw' is that it isolates a task.
+The program amw is short and sweet, and doesn't have much in the way of a
+system interface that can be incompatible or otherwise go wrong.  One might
+have several different programs which calculate average molecular weight
+in different ways, e.g., a program `iamw' which calculates "AMW" using
+other contributions for atoms with specified mass.  The end user can then
+choose which algorithm to use by selecting the appropriate filter, i.e.,
+
+   $ catcex my.cex | amw  | diffusivity | printcex
+   $ catcex my.cex | iamw | diffusivity | printcex
+
+which both pipe average molecular weight data to a (hypothetical) program
+`diffusivity' which uses average molecular weight for further calculation.
+The difference between the two is how the "AMW" data is calculated.  The
+neat thing is that the authors of `amw', `iamw', and `diffusivity' don't
+need to worry about anything but getting their own task done right.
+
+In isolation, the "CEX-iness" of program `amw' doesn't seem too impressive,
+i.e., there are more efficient ways to accomplish the task represented by:
+
+   $ catcex my.cex | amw  | printcex
+
+But consider working from a PDB file, e.g.,
+
+   $ pdb2cex my.pdb | amw  | printcex
+
+This usually doesn't work (at least, not correctly), because most PDB files
+don't have hydrogens specified (at least, not all of them).  Given the
+standard CEX filters `bondage' (deduces bond orders from geometry) and
+`hydrogenate' (adds explicit hydrogens), the job is simple:
+
+   $ pdb2cex my.pdb | bondage | hydrogenate | amw | printcex
+
+Better yet, tasks like this work correctly:
+
+   $ mdl2cex my.mol | amw | diffusivity | printcex
+
+   $ mdl2cex my.mol | hydrogenate | amw | diffusivity | printcex
+
+and tasks like this fail correctly:
+
+   $ mdl2cex my.mol | bondage | hydrogenate | amw | printcex
+   bondage: ERROR   missing required atom property "coordinates"
+
+   $ mdl2cex my.mol | hydrogenate | diffusivity | printcex
+   diffusivity: ERROR   missing required molecule property "ave mol wt"
+
+... all without requiring that the participating programs provide an
+inordinate number of options and intelligent features.
+
+The advantage of using CEX filters increases as the type of task becomes
+more complex than calculating average molecular weight, e.g., conformational
+analysis, predicting physical properties from conformation, estimating
+biological activity from physical properties, etc.

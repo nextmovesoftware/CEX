@@ -1,0 +1,40 @@
+<on>
+Intro \- introduction to CX objects and primitives (5cx)
+<description>
+The CX library communicates via a strict data interface, i.e., everything
+passed to or from CX functions is specified to the bit level
+regardless of calling language or operating environment.
+Since the CX interface is object-oriented, this isn't too hard to
+manage via wrappers \- there are only six kinds of things that ever
+get passed either way.
+These six primitives and are described on the following man pages:
+
+   cx_Binary(5cx) \- CX primitive binary representation
+   cx_Integer(5cx) \- CX primitive integer
+   cx_Method(5cx) \- CX primitive function
+   cx_Object(5cx) \- CX primitive object handle
+   cx_Real(5cx) \- CX primitive real number
+   cx_String(5cx) \- CX primitive character string
+
+Complex types of data are not used in the CX interface
+(e.g., no global variables, no pointers to C struct's,
+no Fortran COMMON blocks).
+All types of information which are more complex than the five basic
+primitives are represented as an object and referenced by an opaque
+cx_Object handle.
+Each object knows its type (or "class") which describes what it is
+what it can do.  CX object types are described on the following man pages:
+
+   atom(5cx) \- an atom in a molecule
+   atomtuple(5cx) \- a property of all atoms in molecule
+   binary(5cx) \- an arbitrary string of characters
+   bond(5cx) \- a bond in a molecule
+   bondtuple(5cx) \- a property of all bonds in molecule
+   datatype(5cx) \- internal-to-external data mapping
+   datatypetable(5cx) \- a datatype-containing object
+   errorqueue(5cx) \- a queue of error messages
+   molecule(5cx) \- a molecule (as valence model)
+   property(5cx) \- a named string attribute of an object
+   sequence(5cx) \- an ordered collection of objects
+   stream(5cx) \- ordered children of an object
+   string(5cx) \- an ASCII character string

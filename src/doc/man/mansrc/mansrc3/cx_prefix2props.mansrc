@@ -1,0 +1,39 @@
+<fn>
+cx_prefix2props \- return property objects with given prefix
+<fp>
+cx_Object cx_prefix2props(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_prefix2props(cx_Object ob, cx_String prefix);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) prefix;
+.br
+integer*4     props, ob, cx_f_prefix2props()
+.br
+props = cx_f_prefix2props(ob, prefix)
+<description>
+Returns a sequence of properties of the given object `ob' which have names
+starting with the given prefix, e.g., "remark.1", "remark.2", etc.
+cx_prop_name() can be used to retrieve each full property name.
+<returns>
+Returns a reset sequence of properties or NULL.
+The returned sequence (possibly empty) belongs to the caller;
+the properties do not (they belong to object `ob').
+<diagnostics>
+Returns NULL quietly if `ob' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_destroy(3cx)
+cx_prefix2atuples(3cx)
+cx_prefix2btuples(3cx)
+cx_prop_name(3cx)
+<bugs>
+To be consistent with cx_stream() this function should return NULL
+rather than an empty sequence.
+<objects>
+sequence

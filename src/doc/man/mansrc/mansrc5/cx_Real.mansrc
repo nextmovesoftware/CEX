@@ -1,0 +1,15 @@
+<pt>
+cx_Real \- CX primitive real number
+<description>
+A cx_Real primitive is a 64-bit real number,
+ultimately represented in IEEE format.
+IEEE conversion is automatically provided by the interface wrappers
+to and from native formats in non-IEEE environments.
+
+In the ANSI-C interface, a cx_Real is usually typedef'd in cx_types.h
+as a (double), but depends on the environment.
+
+In the Fortran interface, a cx_Real is a REAL*8 variable.
+<seealso>
+cx_Binary(5cx)
+cx_Integer(5cx)

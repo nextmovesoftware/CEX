@@ -1,0 +1,35 @@
+<fn>
+cx_cleanup \- recover resources used by all CX utilities
+<fp>
+void cx_e_cleanup(void);
+<fc>
+#include "cx.h"
+.br
+void cx_e_cleanup(void)
+<ff>
+include 'cx_f.inc'
+.br
+call cx_f_cleanup
+<description>
+cx_cleanup() recovers space invisibly used by various CX utilities
+(e.g., destroys the CEX input buffer, the default datatype table,
+and the scratchpad)
+but does not destroy anything that was created explicitly.
+If all explicitly-created objects are destroyed and cx_cleanup() is called,
+100% of the memory dynamically allocated by CX and all but a very small
+amount (<1K) of heap will be returned to the calling process.
+
+Note that cx_cleanup() destroys the default datatype table,
+so if you want to maintain a CEX stream over after a cx_cleanup(),
+you'll need to use an explicitly-created datatype table.
+<returns>
+No return value.
+<diagnostics>
+None.
+<seealso>
+cx_scratchpad(3cx)
+cx_create_datatypetable(3cx)
+<bugs>
+None known.
+<objects>
+datatypetable

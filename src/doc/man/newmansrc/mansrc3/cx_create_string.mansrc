@@ -1,0 +1,33 @@
+<fn>
+cx_create_string \- create a string object
+<fp>
+cx_Object cx_create_string(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_string(cx_Object parent, cx_String str);
+<ff>
+include 'cx_f.inc'
+.br
+character*() str
+.br
+integer*4    parent, sob, cx_f_create_string()
+.br
+sob = cx_f_create_string(parent, str)
+<description>
+Creates a string object with given stringvalue `str'
+and given parent (or NULL parent).
+String objects created with cx_create_string()
+may be deallocated with cx_destroy().
+<returns>
+Returns the handle of a newly-allocated object or NULL on error.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_destroy(3cx)
+cx_stringvalue(3cx)
+<bugs>
+None known.
+<objects>
+string

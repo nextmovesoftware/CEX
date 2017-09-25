@@ -1,0 +1,63 @@
+<fn>
+cx_stream \- ennumerate an object's children of a given type
+<fp>
+cx_Object cx_stream(cx_Object, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_stream(cx_Object ob, cx_Integer type);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ob, typ, stream, cx_f_stream()
+.br
+stream = cx_f_stream(ob, typ)
+<description>
+Returns a stream containing an object's children of a given type,
+or all children if the given type is CX_OB_ANY.
+The returned stream is a child of the object `ob' and 
+is positioned at the beginning.
+A stream is a snapshot of the children at the time cx_stream() is
+called (it is not updated as children are created or destroyed).
+A stream is a readonly object in that it is not possible to modify
+it (e.g., via cx_append() or cx_delete()) in the same way as a sequence.
+
+A common C idiom to enumerate children is:
+
+   cx_Object mol, atom, atoms;
+   ...
+   atoms = cx_stream(mol, CX_OB_ATOM);
+   while (NULL != (atom = cx_next(atoms)))
+      /* process atom */
+   cx_destroy(atoms)
+<returns>
+Returns the handle of a new stream object or NULL.
+<diagnostics>
+NULL is quietly returned if no children the given type exist
+or if `type' is invalid.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_count(3cx)
+cx_destroy(3cx)
+cx_next(3cx)
+cx_reset(3cx)
+cx_sequence(3cx)
+<bugs>
+None known.
+<objects>
+any
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

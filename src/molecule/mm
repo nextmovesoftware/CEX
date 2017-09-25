@@ -1,0 +1,42 @@
+# make test_err && test_err -v
+# make pure_smi && pure_smi
+# make test_smi && test_smi
+# make pure_mol && pure_mol
+# make test_mol && test_mol
+# make test_mol && test_mol -v
+# make test_alabs && test_alabs -v
+# make pure_alabs && pure_alabs -v
+# make test_array && test_array
+# make pure_array && pure_array
+# pdb2cex data/tef.pdb | cex2pdb
+# pdb2cex data/trimethoprim.pdb
+#| cex2pdb
+
+# make test_basics && test_basics $*
+# make helloworlds && helloworlds $*
+# make countcode && countcode *.c *.h
+# make trymol && trymol $*
+# make puremol && puremol $*
+# make trycex && trycex ../data/aa.cex $*
+# cat ../data/bb.cex
+# make trycex && trycex ../data/bb.cex $*
+# cat ../data/bbb.cex
+# make trycex && trycex ../data/bbb.cex
+
+prog=printcex
+cexfile=bbb.cex
+echo ""
+echo "------------------------- $cexfile -------------------------"
+echo ""
+cat ../data/cextest/$cexfile
+echo ""
+echo "------------------------- making $prog -------------------------"
+echo ""
+make $prog
+echo ""
+echo "------------------------- running $prog $* -------------------------"
+echo ""
+$prog $* ../data/cextest/$cexfile
+echo ""
+echo "-------------------------  done  -------------------------"
+

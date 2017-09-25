@@ -1,0 +1,35 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<CDOBJ>
+/_P<cdobj>
+/_V<ChemDraw object>
+/_S<1>
+/_L<STRING>
+/_X<ChemDraw object with object-specific id and type>
+|
+$D<OBJD>
+/_P<objdata>
+/_V<Object data>
+/_S<1>
+/_L<BINARY>
+/_X<Object specific data in binary form>
+|
+$MOL<[C]1=[C][C]=[C][C]=[C]1>
+$CDOBJ<1,0>
+/OBJD<...4T.WM.E....A..EW20QE,.....k.006EA5.2....1..A4T.p6.E....A.,.Fp1,k,.....k.3,5I7l.2....13>
+$CDOBJ<3,0>
+/OBJD<.....E66..A..E.0.E2..k.0..A00..1..A.,.2,..A.,..3.UU..k....I,.E.13>
+|
+$MOL<>
+$CDOBJ<57345,0>
+/OBJD<....2>
+$CDOBJ<57346,0>
+/OBJD<..M.,U..........1>
+$CDOBJ<57347,0>
+/OBJD<....0Dzzzzzzzk.......Dzz.....Dzzzzw.....zzw.....zzzzzk....1zzzzz..1zzk..1>
+|

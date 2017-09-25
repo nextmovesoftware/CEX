@@ -1,0 +1,78 @@
+Table objects
+
+A table object is a first-class object which contains a recursive sequence
+of ASCII strings and properties.  In cex100, messages are implemented as 
+an object with no internal content.  Strings and properties are attached
+to a message object using the underlying parent-child mechanism.  As with
+all first class objects, a message may occur as an object in a CEX stream
+or as children of other objects.
+
+
+Description of most commonly used functions:
+
+   cx_type(cx_Object msg) => (cx_Integer) CX_OB_MESSAGE
+
+     Messages are identified by their object type (class).
+
+   cx_create_message(cx_Object parent) => (cx_Object) msg
+
+     Returns a newly allocated and empty message.
+
+   cx_create_string(cx_Object msg, cx_String text) => (cx_Object) sob
+
+     Strings are added to a message by creating them with a message parent.
+
+   cx_stream(cx_Object msg, cx_Integer CX_OB_STRING) => (cx_Object) sos
+
+     A stream of strings over a message produces the message's strings.
+
+   cx_stringvalue(cx_Object msg) => (cx_String) string
+
+     The stringvalue of a message is the newline delimited concatenation
+     of all it's strings.
+
+   cx_sprop(cx_Object msg, CX_PROP_NAME) => message name
+   cx_sprop(cx_Object msg, CX_PROP_FROM) => message origin
+   cx_sprop(cx_Object msg, CX_PROP_TO  ) => message destination
+
+     Messages have 3 factory-defined properties (which may be NULL):
+     "name" describes the kind of message, e.g., "log",
+     "from" describes the origin, e.g., the program which wrote it, and
+     "to" identifies the destination, e.g., a target program for a script.
+
+   cx_Object cx_log_manager(cx_Object msg);
+ 
+     If called with a message named "log", saves or accumulates message.
+     If called with a NULL object, returns extant (or new) log.
+     If called with any other object, no-op and returns that object.
+
+   
+   cx_Object cx_log_errors(cx_Object msgin, cx_String severity);
+
+      Copies errors of given severity or worse to message object then
+      destroys the errorqueue.  Includes all all messages if `severity'
+      is NULL, none if CX_OB_NONE.  If object msg is NULL, creates a new
+      message object.  Returns message object, or NULL if msgin is NULL
+      and no messages were added.
+ 
+   int cx_log_spew(FILE *fp, cx_Object log);
+
+      Prints contents of log to given stream.
+ 
+
+Usage as distributed error handler:
+
+   cx_Object ins, outs;
+   cx_Object errlog = NULL;
+   ins  = cx_create_iostream("-", CX_IO_READ );
+   outs = cx_create_iostream("-", CX_IO_WRITE);
+   ...
+   while (NULL != (ob = cx_next(ins))) {
+      if (NULL == cx_log_manager(ob)) continue;
+      ...
+      normal processing
+      ...
+   }
+   log = cx_log_errors(cx_log_manager(NULL), NULL);
+   cx_append(outs, log);
+   ...

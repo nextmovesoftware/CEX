@@ -1,0 +1,7 @@
+#!/bin/sh
+echo $CX_ROOT
+make addlog
+catcex x.cex | addlog hello | addlog there > xx.cex
+echo '------- xx.cex begin --------'
+cat xx.cex
+echo '------- xx.cex done ---------'

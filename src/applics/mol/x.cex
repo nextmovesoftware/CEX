@@ -1,0 +1,25 @@
+$D<UNK>
+/_P<unknown>
+/_V<Unknown>
+/_S<1>
+/_L<STRING>
+/_X<Unknown>
+|
+$D<JUNK>
+/_P<junk>
+/_V<Junk>
+/_S<1>
+/_L<STRING>
+/_X<Junk>
+|
+$D<GAR>
+/_P<garbage>
+/_V<Garbage>
+/_S<1>
+/_L<STRING>
+/_X<Garbage>
+|
+$UNK<This is an unknown root>
+$JUNK<this is a junk id>
+/GAR<this is a garbage property>
+|

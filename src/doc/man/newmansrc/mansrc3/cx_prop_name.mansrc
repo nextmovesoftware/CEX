@@ -1,0 +1,47 @@
+<fn>
+cx_prop_name \- return the name of a property object
+<fp>
+cx_String cx_prop_name(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_prop_name(cx_Object prop);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4     prop
+.br
+character*(*) pname, cx_f_prop_name()
+.br
+pname = cx_f_prop_name(prop)
+<description>
+Returns the name of a property object.
+
+This is a low-level function which accesses property attributes
+and not one of the high-level CX property interface functions.
+cx_prop_name() may used to find all properties of an object without
+knowing their names, e.g., 
+   
+   printf("known properties of %s object: ", cx_typename(ob));
+   props = cx_stream(ob, CX_OB_PROPERTY);
+   while (NULL != (prop = cx_next(props)))
+      printf(" %s", cx_prop_name(prop));
+   cx_destroy(props);
+<returns>
+Returns a cx_String or NULL on error.
+<diagnostics>
+NULL is quietly returned if the argument is not a property object.
+<seealso>
+cx_iprop(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_rprop(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+None known.
+<objects>
+property
+string

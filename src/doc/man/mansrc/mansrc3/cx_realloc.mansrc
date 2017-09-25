@@ -1,0 +1,24 @@
+<fn>
+cx_realloc \- robust memory reallocation
+<fp>
+void *cx_realloc(void *, cx_Integer)
+<fc>
+#include "cx.h"
+.br
+void *cx_realloc(void *ptr, cx_Integer size)
+<ff>
+(not applicable)
+<description>
+Changes the size of the block pointed to by `ptr' to `size' bytes
+and returns a pointer to the (possibly moved) block.  The contents
+will be unchanged up to the lesser of the new and old sizes.
+If `size' is zero and `ptr' is not NULL, the object pointed to is freed.
+
+This function is similar to the C library function realloc(3),
+differing only in how it handles out-of-memory conditions.
+<diagnostics>
+If out of memory, generates an "out of memory" panic message
+and returns NULL.
+<bugs>
+None known.
+<objects>

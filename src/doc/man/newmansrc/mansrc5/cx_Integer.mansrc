@@ -1,0 +1,13 @@
+<pt>
+cx_Integer \- CX primitive integer
+<description>
+A cx_Integer primitive is integer represented
+in 32-bit 2's-complement form.
+
+In the ANSI-C interface, a cx_Integer is typedef'ed in cx_types.h
+as a (short int), (int), or (long int) depending on the environment.
+
+In the Fortran interface, a cx_Integer is a INTEGER*4 variable.
+<seealso>
+cx_Binary(5cx)
+cx_Real(5cx)

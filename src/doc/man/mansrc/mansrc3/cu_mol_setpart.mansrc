@@ -1,0 +1,47 @@
+<fn>
+cu_mol_setpart \- find disconnected parts of molecule
+<fp>
+cx_Integer cu_mol_setpart(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+#include "cu.h"
+.br
+cx_Integer cx_mol_setpart(cx_Object mol, cx_String partprop);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) partprop
+.br
+integer*4     mol, ok, cx_f_iprop()
+.br
+ok = cu_f_mol_setpart(mol, partprop)
+<description>
+This creates an integer atom property with name given by partprop
+(typically "part") for the given molecule
+corresponding to the 0-origin number of the disconnected part, where
+parts are numbered in order of their lowest numbered atom.
+Returns the number total number of parts (disconnected components) found.
+
+The file cx_mol_setpart.c implements a depth-first-search using
+CX functions.
+
+This function provides an example of a user-contributed (cu) function.
+Note that the function name starts "cu_" (rather than "cx_"),
+it is declared (indirectly) in the header files "cu.h" and "cu_f.inc"
+(rather than in "cx.h" and "cx_f.inc"), and cu_mol_setpart.o is
+located in the library $CX_ROOT/lib/libcu.a (rather than libcx.a).
+Also note how the interface avoids hardcoding a possibly conflicting
+property name (e.g., "part") by using the argument `partprop'.
+<returns>
+The number of disconnected parts in the molecule.
+<diagnostics>
+Returns 0 quietly if either argument is NULL.
+<seealso>
+cx_iprop(3cx)
+<bugs>
+One can't distinugish between an error and a zero value using this
+function alone (use cx_sprop()).
+<objects>
+molecule
+atom

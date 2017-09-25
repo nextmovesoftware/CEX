@@ -1,0 +1,37 @@
+<fn>
+cx_default_datatypetable \- return default datatype table
+<fp>
+cx_Object cx_default_datatypetable(void)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_default_datatypetable(void)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 table, cx_f_default_datatypetable()
+.br
+table = cx_f_default_datatypetable()
+<description>
+Returns the default datatype table (creating one if needed).
+Most functions which take datatype table arguments accept NULL
+as a flag indicating the default datatype table, so this return value
+isn't needed often.
+<returns>
+Returns the handle of the default datatype table or NULL on error.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_datatype(3cx)
+cx_pname2datatype(3cx)
+cx_reset(3cx)
+cx_set_datatype(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

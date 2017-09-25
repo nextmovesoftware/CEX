@@ -1,0 +1,210 @@
+============================================================================
+CEX STATUS -- current status of CEX distribution and "To do" list
+============================================================================
+
+------------------------------------------------------------------------------
+Current version and availability
+------------------------------------------------------------------------------
+
+The current version is 0.33.
+   
+The intention is to make this available for development purposes as ftp
+archives under /pub/cex/cex033:  The clean (unmade) source code will be
+archived as:
+
+   cex033.clean.tar.gz
+
+Binary versions for specific environments contain object libraries and
+executables.  They will be added as they become available and include:
+
+   cex033.sun4bin.tar.gz ......... SunOS 4.x
+   cex033.sun5bin.tar.gz ......... SunOS 5.4, Solaris 2.4
+   cex033.sgi4bin.tar.gz ......... Irix 4.x
+   cex033.sgi5bin.tar.gz ......... Irix 5.x
+   cex033.osf1bin.tar.gz ......... OSF-1 (Alpha)
+   cex033.hpuxbin.tar.gz ......... HP/UX
+   cex033.macbin.tar.gz .......... MacOS
+   cex033.winbin.tar.gz .......... Windows-3.1, Windows-95
+
+
+------------------------------------------------------------------------------
+Executable components
+------------------------------------------------------------------------------
+
+amw
+
+   A filter which adds "ave mol wt" (amw) property to each molecule in
+   a CEX stream.   amw is defined to be the average molecular weight
+   as the sum of average atomic weights with natural isotope abundances.
+   The atomic mass of the most stable isotope is used for elements which
+   have no natural abundances.  Real, variable precision results are
+   produced, with precision dictated by natural variation.
+
+   The program amw is intended to be an archetype cex filter.
+
+bondage
+
+   Deduces connectivity and bond order from geometry (atom coordinates).
+   Current (033) version is operational but adds bond order only.
+   Future versions are expected to add hydrogens and hybridization props.
+
+catcex
+  
+   Reads multiple cex streams, writes a single cex stream.  Doesn't do
+   anything that /usr/bin/cat can't do, but the output stream is smaller.
+
+cex2pdb
+
+   Converts molecules on a cex stream to Brookhaven PDB format.
+
+chains
+
+   Deduces peptide chain and residues for molecules in a cex stream,
+   adds them as atom properties.  A work in progress.
+
+checksum
+
+   A checksum program used for self-validation of released source code.
+
+connect
+
+   Deduces connectivity (adds single bonds) from interatomic distances
+   (atom coordinates) for molecules in a cex stream.
+
+countcode
+   
+   A simple utility which counts and classifies C source code by line.
+
+hydrogenate
+
+   Adds (or removes) hydrogens to (from) molecules on a cex stream.
+
+pdb2cex
+
+   Converts a Brookhaven PDB format to a cex stream.
+
+printcex
+
+   Prints visible components in a cex stream as formatted text.
+
+printmol
+
+   Prints molecules in a cex stream as formatted text, including all visible
+   and invisible properties and properties of children (atoms, bonds).
+
+rasmol
+
+   A version of rasmol (2.6) which reads and writes cex streams.
+
+
+------------------------------------------------------------------------------
+Library components
+------------------------------------------------------------------------------
+
+libcu.a
+
+   User-level (non-core) functions.
+      
+   The function cu_mol_setpart() sets a property based on membership
+   in disconnected molecular components.  It is a sample implementation
+   of a CU-level function.
+
+   Support for the CX_CAMERA and CX_SURFACE objects are included in
+   this library.
+
+libcx.a
+
+   Support for the CEX object environment, polymorphic functions,
+   datatype and molecule objects.
+
+libcx_f.a
+
+   Fortran wrappers for all functions, all packages, all objects.
+
+libpdb.a
+
+   Support for Brookhaven PDB format.  Read/write CX_MOLECULEs from/to
+   .PDB files, invent PDB-like atom labels.
+
+rasmol
+
+   Directory containing rasmol's support files.
+   Currently contains only rasmol.hlp.
+
+------------------------------------------------------------------------------
+Object components
+------------------------------------------------------------------------------
+
+   +==========================================================================+
+   |                               ROOT OBJECTS                               |
+   |       Root objects are those transmitted directly on a CEX stream.       |
+   +----------------+----------------------+----------------------------------+
+   |   class name   |      class token     |         class description        |
+   +================+======================+==================================+
+   | molecule       | CX_OB_MOLECULE       | molecule, contains ATOMs & BONDs,|
+   |                |                      | all with properties              |
+   +----------------+----------------------+----------------------------------+
+   | datatype       | CX_OB_DATATYPE       | info mapping internal/external   |
+   |                |                      | representation of objects, props |
+   +----------------+----------------------+----------------------------------+
+   | datatype table | CX_OB_DATATYPE_TABLE | a collection of datatypes        |
+   +----------------+----------------------+----------------------------------+
+   | surface        | CX_OB_SURFACE        | vertices & optional triangular   |
+   |                |                      | faces representing a surface     |
+   +----------------+----------------------+----------------------------------+
+   | camera         | CX_OB_CAMERA         | a visual, 3-D point-of-view      |
+   +================+======================+==================================+
+
+   +==========================================================================+
+   |                               BASE OBJECTS                               |
+   |   Base objects implement the CEX object model and are used internally.   |
+   +----------------+----------------------+----------------------------------+
+   |   class name   |      class token     |         class description        |
+   +================+======================+==================================+
+   | invalid        | CX_OB_INVALID        | NULL, a valid pseudo-object      |
+   +----------------+----------------------+----------------------------------+
+   | any            | CX_OB_ANY            | represents any class of object   |
+   +----------------+----------------------+----------------------------------+
+   | string         | CX_OB_STRING         | a 0-terminated ASCII string      |
+   +----------------+----------------------+----------------------------------+
+   | errorqueue     | CX_OB_ERRORQUEUE     | a sequence of error strings      |
+   +----------------+----------------------+----------------------------------+
+   | stream         | CX_OB_STREAM         | an ordered collection of objects |
+   |                |                      | as an immutable container object |
+   +----------------+----------------------+----------------------------------+
+   | sequence       | CX_OB_SEQUENCE       | an ordered collection of objects |
+   |                |                      | as a modifiable container object |
+   +----------------+----------------------+----------------------------------+
+   | property       | CX_OB_PROPERTY       | a named, string-valued attribute |
+   |                |                      | of another object                |
+   +----------------+----------------------+----------------------------------+
+   | binary         | CX_OB_BINARY         | length-delimited string of bytes |
+   +================+======================+==================================+
+
+   +==========================================================================+
+   |                              PRIMITIVE TYPES                             |
+   |       Primitive types are used to communicate with calling programs.     |
+   +-----------+------------+-----------+-------------------------------------+
+   | type name | C-typedef  | FORTRAN   |           type description          |
+   +===========+============+===========+=====================================+
+   | integer   | cx_Integer | INTEGER   | NULL, a valid pseudo-object         |
+   +-----------+------------+-----------+-------------------------------------+
+   | real      | cx_Real    | REAL      | represents any class of object      |
+   +-----------+------------+-----------+-------------------------------------+
+   | binary    | cx_Binary  | CHARACTER | a 0-terminated ASCII string         |
+   +-----------+------------+-----------+-------------------------------------+
+   | string    | cx_String  | CHARACTER | a 0-terminated ASCII string         |
+   +-----------+------------+-----------+-------------------------------------+
+   | object    | cx_Object  | INTEGER   | a sequence of error strings         |
+   +-----------+------------+-----------+-------------------------------------+
+   | method    | cx_Method  | INTEGER   | a function as an object property    |
+   +===========+============+===========+=====================================+
+
+------------------------------------------------------------------------------
+To do list
+------------------------------------------------------------------------------
+
+[ ] finish chains
+
+[ ] reformulate surface to be set of vertices with faces property
+    OR name with vertices and faces properties

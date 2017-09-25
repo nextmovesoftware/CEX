@@ -1,0 +1,161 @@
+#!/bin/sh
+#
+#  cx_install: copy appropriate src/etc/makefile.mdep to include directory
+# 
+#  Each Makefile under $CX_ROOT tree includes $CX_ROOT/include/makefile.mdep,
+#  which contains O/S-specific information such as compilation instructions
+#  and locations of system files and libraries.  A version of makefile.mdep
+#  for each supported operating system is provided in $CX_ROOT/src/mdep.
+#
+#  This shell script figures out which operating system this is, and creates
+#  the file "makefile_include", a copy of the appropriate OS-specific file.
+#
+
+#
+#  Check that CX_ROOT is defined
+#
+
+if [ -z "$CX_ROOT" ] ; then
+   echo "$0: Oops!  The environment variable CX_ROOT is not defined."
+   echo " "
+   echo "Set CX_ROOT to the CX root directory and try again, e.g.,"
+   echo "   sh:   CX_ROOT=/usr/local/cex120; export CX_ROOT"
+   echo "   csh:  setenv CX_ROOT /usr/local/cex120"
+   exit 1
+fi
+
+#
+#  Initialize variable systype and release.
+#
+
+systype="unknown"
+release="0.0.0"
+
+#
+#  Use uname(1) to figure out what O/S is running.
+#
+
+case `uname -s` in
+    SunOS)
+	release=`/usr/bin/uname -r`
+	case "$release" in
+	    5.*) systype="sun5" ;;
+	    4.*) systype="sun4" ;;
+	    *)   systype="unknown" ;;
+	esac
+      ;;
+    IRIX64)
+	release=`/bin/uname -r`
+	case "$release" in
+	   6.*) systype="sgi6" ;;
+	   *)   systype="unknown" ;;
+	esac
+      ;;
+    IRIX)
+	release=`/bin/uname -r`
+	case "$release" in
+	   6.*) systype="sgi6" ;;
+	   5.*) systype="sgi5" ;;
+	   4.*) systype="sgi4" ;;
+	   *)   systype="unknown" ;;
+	esac
+      ;;
+    HP-UX)
+      case `uname -m` in
+	  9000/7**)  systype=hp
+	  ;;
+	  *)         systype=unknown
+	  ;;
+      esac
+      ;;
+    Linux)
+      systype="linux"
+      ;;
+    OSF1)
+      systype="osf1"
+      ;;
+    CYGWIN*)
+      systype="win32"
+      ;;
+esac
+
+#
+#  If system type is unknown, write warning message and exit with 1.
+#
+
+if [ "$systype" = "unknown" ] ; then
+   echo "$0: Oops: this seems to be an unsupported operating system."
+   echo " "
+   echo "Supported systems are:"
+   echo "  SunOS ...... version 4.1.x and 5.2 or higher"
+   echo "  SGI IRIX64 . version 6.4"
+   echo "  SGI IRIX ... version 4.0.5A/F"
+   echo "  HP-UX ...... version 9.x, on HP9000/7xx computers"
+   echo "  OSF1 ....... version 4.x Digital UNIX on DEC alphas"
+   echo "  Linux ...... version 1.x.y and 2.x.y"
+   echo "  Win32 ...... version 1.x GNU cygwin"
+   exit 1
+fi
+
+#
+#  SPECIAL CASE:  IRIX 5.x has a "compatibility mode" that allows users to 
+#  generate IRIX 4.x compatible code.  If a user is using the IRIX 4.x
+#  "compatibility mode", they will have installed the IRIX 4.x version
+#  of the Daylight libraries.  This is easy to tell because the IRIX 4.x
+#  version has $CX_ROOT/lib/libvfork.a, and the IRIX 5.x version doesn't.
+#  If the user is using compatibility mode, install the machine-dependent
+#  makefile_include for the IRIX 4.x.
+#
+#  NOT IMPLEMENTED YET
+#
+# 
+# if [ "$systype" = sgi5 -a -r $CX_ROOT/lib/libvfork.a ] ; then
+#    systype=sgi4
+# fi
+
+#
+#  Create source filename, test for presence.
+#
+
+source=$CX_ROOT/src/etc/makefile.mdep.$systype
+
+if [ ! -r "$source" ] ; then
+   echo "$0: Oops!  Can't locate the following file:"
+   echo " "
+   echo "   $source"
+   echo " "
+   echo "Check CX_ROOT definition and CX code installation, then try again."
+   exit 1
+fi
+
+#
+#  Test destination directory.
+#
+
+destdir=$CX_ROOT/include
+
+if [ ! -d "$destdir" ] ; then
+   echo "$0: Oops!  Can't locate the following directory:"
+   echo " "
+   echo "   $destdir"
+   echo " "
+   echo "Check CX_ROOT definition and CX code installation, then try again."
+   exit 1
+fi
+
+#
+#  Copy the file.
+#
+
+dest=$destdir/makefile.mdep
+echo "$0: copying $source"
+echo "$0: to      $dest"
+rm -f $dest
+cp $source $dest
+
+#
+#  Fini.
+#
+
+echo "$0: Done."
+exit 0

@@ -1,0 +1,70 @@
+#-----------------------------------------------------------------------------
+#  makefile.mdep.sun5 -- sun5 (solaris) version
+#-----------------------------------------------------------------------------
+#
+#  makefile.mdep -- machine dependent CX definitions for make(1)
+#
+#  The source for this file is $CX_ROOT/src/etc/makefile.mdep.(arch), e.g.,
+#
+#      $CX_ROOT/src/etc/makefile.mdep.sun5
+#
+#  which is copied to:
+#
+#      $CX_ROOT/include/makefile.mdep
+#
+#  by the script
+#
+#      $CX_ROOT/bin/cx_install
+#
+#  and is included in all makefile's in the CX_ROOT directory
+#
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# ANSI C compiler flags
+#-----------------------------------------------------------------------------
+
+CC          = cc
+CFLAGS      = -v -Xt -DSVR4 -fast -xO5 -xtarget=generic -xdepend -fsimple=2 -xcrossfile -xsafe=mem -I$(CX_ROOT)/include $(LOCALINCS)
+DFLAGS      = -v -Xa -DSVR4 -g -I$(CX_ROOT)/include $(LOCALINCS)
+SYSLIBS     = -lsocket -lnsl -lw -ldl -lintl -lm -lmalloc
+XLIBS       = -L$(OPENWINHOME)/lib -lXext -lX11
+SQRTLIB     = -lm
+
+AR          = ar
+AR_GETFLAGS = xv
+AR_PUTFLAGS = rcv
+
+#-----------------------------------------------------------------------------
+# Fortran 77 compiler flags
+#-----------------------------------------------------------------------------
+
+F77         = f77
+LINKER	    = f77
+FFLAGS	    = -fast -O5 -xtarget=generic -fsimple=2 -silent -w
+F77LIBS     = -Bstatic -lF77 -lM77 -Bdynamic -lsocket -lnsl
+
+#-----------------------------------------------------------------------------
+# Other utilities
+#-----------------------------------------------------------------------------
+
+STRIP       = /usr/ccs/bin/strip
+# No ranlib on solaris?
+RANLIB      = /bin/true
+SHELL       = /bin/sh
+
+#-----------------------------------------------------------------------------
+# Rule for adding objects to libraries.  If disk space is at a premium,
+# uncomment last line to save disk space (but takes longer to rebuild).
+#-----------------------------------------------------------------------------
+
+.c.a:
+	$(CC) -c $(CFLAGS) $<
+	ar rv $@ $*.o
+#       rm $*.o
+
+#-----------------------------------------------------------------------------
+# If purify is available, set location of purify executable and uncomment
+#-----------------------------------------------------------------------------
+#
+# PURIFY      = /usr/local/purify/purify

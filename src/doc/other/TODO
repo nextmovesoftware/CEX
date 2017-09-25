@@ -1,0 +1,640 @@
+To do on cx stuff
+
+[x] implement datatypes
+[ ] check basic memory usage
+[x] count lines
+[ ] stream of own class should return self
+[x] cx_prop_object, cx_property, cx_destroy(prop) names are confusing
+[x] should property objects ALWAYS be owned by their parents?
+[x] set atomic symbol properties
+[x] provide cx_set_iprop, cx_iprop, etc.
+[ ] deal with chirality
+[x] restore error functionality
+[ ] more ringclosures, e.g. C1 C%12 C-12-3
+[x] make cu_spewob into cx_spewob
+[ ] go through everything and add headers
+[x] remove 2nd arg in xxxxx_parse(cx_Object par, cx_String type, cx_String str)
+[ ] consider generalizing property names, e.g., atomic symbol => symbol
+[ ] provide means of deallocating given property
+[x] don't need first argument in cx_add_bond(mol, a1, a2, bo)
+[ ] cx_smilin should accept SMILES<space>name on input
+[?] resolve conformation vs x,y,z dilemma
+[x] should there be only one property of given type per parent or many?
+[ ] reshape cx_init(int *argc, char **argv)
+[?] reshape cx_base_create(parent, type) to cx_base_create(type,parent)
+[x] change cextree to $ and / convention
+[ ] add "Parent class" property
+[ ] consider (briefly) going to one-argument functions (sequences)
+[x] helloworlds has developed a problem
+[?] how about a component_classes polyfunc?  or a special type like "Any"
+[ ] dynamically allocate stringvalue(tuple) buffer, check buf's in general
+[ ] split out XSMILES parser
+[x] add bondprops
+[x] test bondprops
+[ ] (deal with reserving property names)
+[ ] consider splitting smiles support out of cx_molecule.c
+[ ] how about integer/real parsers
+
+[x] write molecule_send()
+[ ] deal with pdb stuff
+[ ] deal with bondage
+[x] consider simplifying properties to sprop rules
+[ ] cx_properties() approach is pretty flaky
+[ ] pdb strangeness: TER records suppressed if no CONECT but could use resno
+[ ] pdb strangeness: if bvalue is mispelled it just dosn't show up ... OK?
+[ ] add -a (output all datatypes) to cex2cex type filters
+[ ] Make polymorphics less heavy-handed and callbase function if not specified?
+[ ] establish a sane smiles-bond-order
+[ ] implement stringvalue(bond) => "bond symbol";
+[ ] consider a function which sets up standard datatypes sans files
+[ ] add util function to return filename from path
+[ ] go through applications adding introductory line to help output
+
+[ ] add standard property names to cx_datatype.h
+[ ] add ifdefs around TRUE/FALSE definition
+[ ] change cx_cex_in to cx_cex_receive
+[ ] how about making root and children visible on input, but not grandchildren
+[ ] consider making object's datatypes referenced by name not value?
+[ ] make prefix function for normal objects
+[ ] consider adding polymorphic "name" property
+[ ] tuplesum seems to be broken (sumarizes singletons)
+[ ] cx_cleanup should clear errors.
+[ ] resolve whether to send datatype datatypes or not
+[x] cx_init() should key on cx_types.h
+[ ] make sure order of create_datatype(,,pname,vname,,,) is right everywhere
+[x] make sure cx_create(ANY, ...) returns NULL
+
+[x] remove references to polymorphic create and parse functions
+[x] make initializations automatic
+[x] correct documentation
+[ ] cx_e_create_datatype should check for conflicting datatype in table
+[x] add cx_atof
+
+
+
+-----
+timings
+
+440b$ time testpdbin /home/dave/Testbed/cx/cex010/demos/data/jeff.pdb
+      529.9 real       382.7 user        13.8 sys  
+
+==================== cex025 -g times ====================
+
+   time pdb2cex jeff.pdb > /dev/null
+   real    1m7.81s
+   user    1m6.13s
+   sys     0m0.66s
+
+   time pdb2cex SAMPLE.pdb > /dev/null
+   real    0m15.62s
+   user    0m15.35s
+   sys     0m0.10s
+
+==================== cex026 -g times ====================
+
+   time pdb2cex jeff.pdb > /dev/null
+   real    0m45.39s
+   user    0m44.51s
+   sys     0m0.51s
+
+   ==> old code took 1.493 as long
+
+   time pdb2cex SAMPLE.pdb > /dev/null
+   real    0m8.32s
+   user    0m8.13s
+
+   ==> old code took 1.877 as long
+
+==================== cex026 -fast times ====================
+
+   time pdb2cex jeff.pdb > /dev/null
+   real    0m31.26s
+   user    0m30.54s
+   sys     0m0.49s
+
+   time pdb2cex SAMPLE.pdb > /dev/null
+   real    0m5.53s
+   user    0m5.26s
+   sys     0m0.11s
+
+   time pdb2cex SAMPLE.pdb | printcex | wc     
+   889    3953   63469
+   real    0m12.66s
+   user    0m12.08s
+   sys     0m0.50s
+
+==================== cex026 -xpg times ====================
+
+time pdb2cex SAMPLE.pdb > /dev/null
+ 
+ real    0m12.37s
+ user    0m12.07s
+ sys     0m0.23s
+
+   %  cumulative    self              self    total
+ time   seconds   seconds    calls  ms/call  ms/call name
+ 20.9       1.85     1.85                             mcount (196)
+ 11.5       2.87     1.02                             oldarc [16]
+  6.4       3.44     0.57   134995     0.00     0.01  cx_e_set_parent [23]
+  6.1       3.98     0.54   894036     0.00     0.00  cx_e_type [18]
+  5.5       4.47     0.49  1047524     0.00     0.00  classof [33]
+  5.4       4.95     0.48   812309     0.00     0.00  headerof [34]
+  4.4       5.34     0.39    52794     0.01     0.04  cx_e_base_stream [9]
+  4.1       5.70     0.36   600392     0.00     0.00  cx_e_base_content [39]
+  3.6       6.02     0.32    83353     0.00     0.00  type2class [40]
+  3.5       6.33     0.31   364203     0.00     0.00  cx_e_sibling [28]
+  3.1       6.60     0.27   274215     0.00     0.00  cx_e_next [24]
+  2.6       6.83     0.23   183428     0.00     0.00  cx_e_prop_name [27]
+  2.3       7.03     0.20    51854     0.00     0.09  cx_e_property [4]
+  2.1       7.22     0.19                             done [46]
+  1.7       7.37     0.15   462035     0.00     0.00  cx_e_free [50]
+  1.5       7.50     0.13    58393     0.00     0.05  cx_e_stream [7]
+  1.5       7.63     0.13    56204     0.00     0.01  cx_e_base_destroy [26]
+  1.5       7.76     0.13    56170     0.00     0.02  seq_destroy [19]
+  1.5       7.89     0.13    24195     0.01     0.01  cx_e_base_append [52]
+  1.2       8.00     0.11   188101     0.00     0.00  cx_e_strcmp [53]
+  1.2       8.11     0.11    50571     0.00     0.00  reverse_oblist [54]
+  1.0       8.20     0.09   170806     0.00     0.00  cx_e_child [45]
+
+
+time pdb2cex jeff.pdb > /dev/null
+ 
+ real    0m58.90s
+ user    0m57.59s
+ sys     0m0.43s
+
+   %  cumulative    self              self    total          
+ time   seconds   seconds    calls  ms/call  ms/call name    
+ 34.6      16.35    16.35    28056     0.58     0.58  cx_e_base_append [10]
+ 14.8      23.33     6.98   318091     0.02     0.02  cx_e_set_parent [21]
+ 12.7      29.32     5.99                             mcount (196)
+  5.8      32.08     2.76                             oldarc [33]
+  3.6      33.77     1.69  3058625     0.00     0.00  classof [40]
+  3.0      35.18     1.41  2260889     0.00     0.00  headerof [42]
+  2.9      36.57     1.39  2753783     0.00     0.00  cx_e_type [32]
+  2.5      37.75     1.18   116898     0.01     0.07  cx_e_base_stream [19]
+  2.1      38.73     0.98   774791     0.00     0.00  cx_e_next [38]
+  1.8      39.60     0.87  1224938     0.00     0.00  cx_e_sibling [41]
+  1.6      40.35     0.75  1634651     0.00     0.00  cx_e_base_content [44]
+  1.6      41.09     0.74                             done [45]
+  1.4      41.77     0.68  1396769     0.00     0.00  cx_e_free [46]
+  1.4      42.42     0.65   116783     0.01     0.28  cx_e_property [3]
+  1.2      43.01     0.59   176836     0.00     0.00  type2class [47]
+
+with speed improvments: ran in about 30 seconds and:
+
+   %  cumulative    self              self    total
+ time   seconds   seconds    calls  ms/call  ms/call name
+ 20.2       3.67     3.67                            mcount (194)
+ 10.2       5.52     1.85                            oldarc [19]
+  9.8       7.29     1.77  2682152     0.00     0.00  cx_e_type [22]
+  6.3       8.43     1.14   117108     0.01     0.04  cx_e_base_stream [14]
+  5.0       9.34     0.91   790859     0.00     0.00  cx_e_next [21]
+  5.0      10.24     0.90  1121171     0.00     0.00  cx_e_sibling [29]
+  4.2      11.01     0.77  1666997     0.00     0.00  cx_e_base_content [31]
+  3.7      11.69     0.68   177046     0.00     0.00  type2class [36]
+  3.6      12.35     0.66  1398869     0.00     0.00  cx_e_free [38]
+  3.6      13.01     0.66                            done [37]
+
+===== compiled with -fast with speed improvements =====
+
+This doesn't produce the right stuff (things are backwards) but probably
+represents how much speed improvement working on streams could produce.
+
+
+time pdb2cex SAMPLE.pdb > /dev/null
+ 
+real    0m4.65s
+user    0m4.46s
+sys     0m0.16s
+
+==> 5.53/4.65 = 1.19 (current code is ~20% faster)
+
+
+time pdb2cex jeff.pdb > /dev/null
+
+real    0m15.66s
+user    0m14.94s
+sys     0m0.50s
+
+==> 31.26/15.66 = 2.00 (current code is 100% slower)
+
+============== Restored correct but slower operation: with -fast,
+
+   time pdb2cex SAMPLE.pdb > /dev/null
+   real    0m5.17s
+   user    0m5.02s
+   sys     0m0.12s
+
+   time pdb2cex jeff.pdb > /dev/null
+   real    0m30.73s
+   user    0m30.08s
+   sys     0m0.37s
+
+   slight improvements (7% and 2%) due to inlining CLASSOF and HEADEROF
+
+============== Now tried -xO4 optimization (automatic inlining):
+
+   time pdb2cex SAMPLE.pdb > /dev/null
+ 
+   real    0m5.28s
+   user    0m4.98s
+   sys     0m0.17s
+
+   ==> splits:  base: 5.53,  manual: 5.17, auto: 5.28
+
+   time pdb2cex jeff.pdb > /dev/null
+ 
+   real    0m31.81s
+   user    0m30.94s
+   sys     0m0.51s
+
+   ==> doesn't help:  base: 31.26,  manual: 30.73, auto: 31.81
+
+-----
+history
+   cex021
+   cex022
+   cex023 -- atomtuples, /properties
+   cex023 -- properties subclassed from strings
+   cex025 -- datatyoe control, hall, applics
+   cex025 -- classes
+   cex026 -- integer classes
+
+-----
+
+Say properties are subclassed from strings, i.e., they are kinds of strings
+which have a string-valued property called "property name".
+
+cx_property(ob, pname) => returns string value of 1st property of ob with pname
+
+cx_properties(ob, pname) => return properties of ob with pname
+cx_stream(ob, CX_TYPE_PROPERTY) => return properties of ob with pname
+
+cx_parse(ob, CX_TYPE_PROPERTY, pname) => create property of ob with pname
+
+cx_stringvalue    (prop)        => stringvalue of property
+cx_set_stringvalue(prop, pname) => set stringvalue of property
+
+BUT HOW ABOUT NON-STRING-VALUED PROPERTIES?
+e.g., cx_property(mol, "atoms in smiles order") => sequence
+... replace with cx_smiatomstream(mol)
+... or make special pseudo class, e.g., cx_stream(mol, CX_TYPE_SMIATOMS);
+
+----
+
+$MOL<C=O>
+   $CAS<50-00-0>
+   $CI9<FORMALDAHYDE>
+      MP<48.2>
+      /ATM<1.0>
+      /REF<Johnson & Bayer>
+
+-----
+
+"Input"
+"Output"
+
+typedef struct {
+   FILE      *fp;
+   cx_Object  table;
+} CI_INPUT;
+
+   in  = cx_parse(CX_TYPE_INPUT,  NULL, stdin );
+   out = cx_parse(CX_TYPE_OUTPUT, NULL, stdout);
+
+-----
+
+catcex [ -o out.cex ] [ in.cex [ in.cex ... ] ]
+
+NOTE    catcex     Usage:  catcex [options] [in.cex [in.cex...]]
+NOTE    catcex     
+NOTE    catcex     Standard input used if file spec(s) are omitted.
+NOTE    catcex     Standard output is used unless -o option specified.
+NOTE    catcex     
+NOTE    catcex     Input from stdin if file spec(s) are omitted.
+NOTE    catcex     Output to stdout unless -o option is specified.
+NOTE    catcex     
+NOTE    catcex     Control options: 
+NOTE    catcex       -o <file.cex> 
+NOTE    catcex     
+NOTE    catcex     Datatype options: 
+NOTE    catcex       -ta: write all datatypes
+NOTE    catcex       -to: write datatypes only
+NOTE    catcex       -tw: show datatype conflict warnings
+NOTE    catcex     
+NOTE    catcex     Format options: 
+NOTE    catcex       -d: dump format, eot newlines
+NOTE    catcex       -l: list format, eod & eod newlines
+NOTE    catcex       -r: raw  format, no newlines
+
+-----
+
+target applications: [ ] vapor, [o] written, [+] rewritten, [X] documented
+
+
+utils/cex
+   [o] countcode
+   [o] checksum
+
+applics/mol
+   [ ] addparts
+   [ ] bondage
+   [o] hydrate
+   [o] printmol
+
+applics/convert/mdl
+   [ ] mdl2cex
+   [ ] cex2mdl
+
+applics/convert/syb
+   [ ] syb2cex
+   [ ] cex2syb
+
+applics/convert/tdt
+   [ ] tdt2cex
+   [ ] cex2tdt
+
+applics/convert/pdb
+   [o] pdb2cex
+   [o] cex2pdb
+
+applics/convert
+   [ ] mdl2cex  [ ] cex2mdl
+   [ ] syb2cex  [ ] cex2syb
+   [ ] tdt2cex  [ ] cex2tdt
+   [o] pdb2cex  [o] cex2pdb
+
+applics/cex
+   [+] catcex
+   [o] printcex
+
+
+
+catcex [options] [in.cex [in.cex...]]
+printcex [options] [file.cex]
+hydrate -- adjust hydrogens on cex molecules
+hydrate [options] [in.cex [in.cex...]]
+printmol -- print molecules on cex stream
+printmol [options] [in.cex [in.cex...]]
+
+=====
+main points
+
+System for recording and exchange of chemical information:
+   o  represents data in a software-independent manner
+   o  distributable in source code to run on Unix, Mac and Windows
+   o  easy to use at high level (i.e., exchange of information)
+   o  accessable from Fortran and C
+   o  user-extendable at low level (i.e., add object classes and messages)
+
+1. Primitives
+
+   NULL .......... instead of NULL_OB
+   cx_String ..... stored as zero-terminated string; NULL's ok
+   cx_Integer .... same as dt_Integer
+   cx_Real ....... double rather than float
+!  cx_Method ..... void (*)();
+   cx_Object ..... (void *)
+
+2. Object orientation in the cx_ interface is done at a lower level than in
+   the dt_ interface, e.g., access is provided to methods.
+  
+   Some are similar, e.g.,
+      cx_type(), cx_typename()
+      cx_count(), cx_stream()
+  
+   Some are slightly different, e.g.,
+      cx_type(), cx_typename() -- similar but not hard coded
+      cx_create(), cx_parse(), cx_destroy() -- polymorphic
+      cx_stringvalue() -- used differently
+  
+   Some are new, e.g.,
+      cx_method(), cx_set_method()
+      cx_set_typename(), cx_typename2type(), cx_type2typename() -- new & needed
+      cx_ancestor(), cx_child(), cx_sibling()
+!     cx_property(), cx_set_property()
+      cx_datatype(), cx_set_datatype()
+      cx_cexin(), cx_set_send()
+  
+   Parent-child relationship is very important, e.g., stream & destroy.
+
+3. Generic objects
+
+   CX_OB_INVALID .... generic pseudo class
+   CX_OB_ANY ........ generic pseudo class
+   CX_OB_STRING ..... length is derived (not a fixed attribute)
+   CX_OB_ERRORS ..... a "phoenix" string object with string children
+   CX_OB_STREAM ..... polymorphic, always stream of children over parent
+   CX_OB_SEQUENCE ... similar to DY_TYP_SEQUENCE
+   CX_OB_PROPERTY ... string-valued pname/pvalue pair, unique pname per parent
+   CX_OB_DATATYPE ... unique tag and property name, also language and shape
+!  CX_OB_DATATYPE_TABLE ... a string object with datatype children
+
+4. Properties are string value/name pairs associated with parents.
+   Property names are unique per parent (e.g., there's only one of a kind).
+   At low level they are real objects but normally used at higher level,
+   e.g., cx_sprop(ob,pname), cx_set_sprop(ob,pname,str), cx_iprop(ob,pname)
+
+   Almost everything is an attribute with a functional interface in dt
+   is a property in cx, e.g., "tag", "atomic number", etc.
+
+   One can set any property of any object at any time (not a fixed list).
+   Properties are created as needed and destroyed with their parent.
+
+5. Datatypes are a lower-level idea than in Thor/Merlin.  Datatypes are both
+   objects (always parented by a datatype table) and object attributes.  can be
+   Datatypes are "really" just string objects with the following properties:
+
+   tag ............ e.g., "MOL", "NAM", "MP", etc.
+   verbose name ... e.g., "Molecule", "Name", "Melting point", etc.
+   property name .. e.g., "molecule", "name", "melting point", etc.
+   language ....... e.g., "XSMILES", "STRING", "INTEGER", "BINARY"
+   shape .......... e.g., "1", "3A"
+   description .... e.g., "Melting point, C."
+   (also mark) .... e.g., "x"
+
+   Datatypes may be associated with an object via cx_[set_]datatype().
+   Datatypes are automatically associated with properties via property name.
+
+   By convention, objects without associated datatypes are invisible
+   (i.e., they are not written to either printed or CEX output).
+   
+   The most important datatype table is the default one (referenced by NULL).
+   Uncertain whether we really need multiple datatype tables.
+
+6. Normal I/O streams are used (i.e. FILE *).  CEX streams are normal streams
+   with CEX input/output on them (cx_cex_read() and cx_cex_write() are like
+   tdtio functions).  Objects are read from / written to CEX streams with the
+   polymorphic functions cx_cexin() and cx_send() (an unfortunate dichotomy).
+!  On input, datatype objects are consumed by the (default) datatype table.
+   On output, datatype objects are sent in a def-before-ref fashion.
+
+7. Error handling illustrates the differences in the cx_ vs dt_ interfaces.
+   In the dt interface, there are five error-specific methods and no special
+   objects, e.g. dt_errorsave, dt_errors, etc.  In the cx_ interface, there
+   is one new object subclass (CX_OB_ERRORS) and no error-specific methods.
+
+   A CX_OB_ERRORS object is a kind of string object (thus multiple named
+   error queues are available) which has error strings as its children.
+
+      create an unnamed queue .. errors = cx_create(CX_OB_ERRORS, parent);
+      create a named queue ..... errors = cx_parse(CX_OB_ERRORS, parent, name);
+      get automatic queue ...... errors = cx_create(CX_OB_ERRORS, NULL);
+      dt_errorsave()  .......... error  = cx_parse(CX_OB_STRING, errors, msg)
+                                 cx_set_sprop(error, "severity", str );
+                                 cx_set_sprop(error, "source",   func);
+      dt_errors() .............. cx_stream(errors, CX_OB_STRING);
+      dt_errorclear() .......... cx_destroy(errors);
+
+   Convenience macros (or cu_ level functions) can of course be used:
+
+      /* in cx.h in cx_errors.h */
+      #define CX_ERR_WARN "WARNING"
+
+      /* in .c file */
+      #define WARN(msg,sev,src) \
+	 { cx_Object errors = cx_create(CX_OB_ERRORS, NULL);        \
+	   cx_Object error  = cx_parse (CX_OB_STRING, errors, msg)  \
+           cx_set_sprop(error, "severity", CX_ErR_WARN);            \
+           cx_set_sprop(error, "source",   func       );            \
+	 }
+      ...
+      cx_String func = "function name";
+      ...
+      if (condition) WARN("error message");
+
+8. Molecule objects are supported by an "external" molecule package, e.g.,
+
+   CX_OB_MOLECULE ..... basic molecule class
+   CX_OB_ATOM ......... mol child with props such as "atomic number"
+   CX_OB_BOND ......... mol child with props such as "bond order"
+   CX_OB_ATOMTUPLE .... mol child containing an atom property name
+   CX_OB_BONDTUPLE .... mol child containing a  bond property name
+   CX_OB_SMIATOMS ..... a pseudo class for enumeration
+   CX_OB_SMIBONDS ..... a pseudo class for enumeration
+
+   Virtually all molecule-based attributes are properties.
+
+   Molecules:  The stringvalue of a molecule is its SMILES.  There no
+   "special" molecule properties other than in the context of a language,
+   e.g., cx_parse(CX_OB_MOLECULE, smiles) creates the properties
+   "molecule name" and "input smiles".
+
+   Atoms: There are six "special" atom properties: "atomic number",
+!  "atomic symbol", "mass", "charge", "chirality" and "implicit hcount".
+
+   Bonds: There are three "special" bond properties: "bond order",
+   "bond symbol", "bond dbo".  Bond order is defined, bond type is not.
+
+   There are 3 cx_ molecule-specific messages (vs 49 in dt_):
+      cx_make_bond(a1,a2,bo), cx_bond(a1,a2) and cx_xatom(atom,bond)
+
+   Atom and bond tuples are simply string objects, parented by a molecule,
+   containing the name of an atom/bond property (which may or may not exist).
+   The stringvalue of a tuple is the comma-delimited (and possibly quoted)
+   list of the stringvalues of the constituent properties.  Destroying a
+   tuple destroys the properties.  Setting a datatype on a tuple makes the
+   properties visible.
+
+9. External CEX representation differs from TDT's in several respects:
+
+   o  CEX's are self-defining, i.e., all datatype definitions precede data
+      definitions in a strict def-before-ref basis on a given stream.  This
+      means everyting, including "intrinsic" datatypes such as $D and its
+      properties.
+
+   o  CEX's implement a 3-level organization: identifier - data - properties
+      (vs. TDT's 2-levels, identifier - data).  The id/data dichotomy is
+      retained, as is the non-recursive nature of the datatree.
+
+   o  There is no concept of CEX datatree fields or subfields.
+
+   o  The role of a CEX datatype is defined in the datatree syntax (not in
+      the datatype defintion as in TDT's).  ID's are indicated by a leading
+      `$', properties by leading a `/' -- these are strictly ideas which
+      describe relationships (not intrinsic object attributes).
+
+         $MOL<C=O>                    { root id }
+	    CP<-1.2>                  { data about root id }
+	       /PV<3.54>              { property of data about root id }
+	    $CAS<50-00-0>             { non-root id connected to root id }
+	       CIN<Formaldehyde>      { data about non-root id }
+                  /CI<9>              { property of data about non-root id }
+	          /REM<Unchanged>     { property of data about non-root id }
+	 |
+
+   o  { comments appear outside datapairs in braces }
+
+   o  There are three CEX (as opposed to two TDT) output formats possible:
+      LIST (eod,eot nl's), DUMP (eot nl's), and RAW (no nl's).
+
+10. Various basic and example application programs are provided, e.g.,
+
+   $ pdb2cex -t $CX_ROOT/data/datatypes.cex  trimethoprim.pdb
+   $ pdb2cex trimethoprim.pdb
+pdb2cex -t $CX_ROOT/data/datatypes.cex  \
+	$CX_ROOT/src/data/cextest/trimethoprim.pdb
+pdb2cex $CX_ROOT/src/data/pdb/trimethoprim.pdb | printcex
+pdb2cex $CX_ROOT/src/data/pdb/trimethoprim.pdb | hydrate -hc | printcex
+pdb2cex $CX_ROOT/src/data/pdb/trimethoprim.pdb | printcex
+pdb2cex $CX_ROOT/src/data/pdb/trimethoprim.pdb | hydrate -hc | printcex
++------------------------------------------------------------------------------
+| Molecule ............ C1(=C([C]=NC(=N1)[N])[C]C=2[C]=C(C(=C([C]2)O[C])O[C])O
+|                       [C])[N]
+| Remark .............. TRIMETHOPRIM
+|  +---------------------------------------------------------------------------
+|  | Atom name ........... " C1 , C2 , C3 , NH1, C4 , N<2, NH4, C5 , C8 , C7 
+|  |                       , C6 , C11, C10, C9 , O1 , C12, O2 , C13, O3 , C14,
+|  |                        N3 "
+|  +---------------------------------------------------------------------------
+|  | Atom residue name ... RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,
+|  |                       RES,RES,RES,RES,RES,RES,RES,RES,RES
+|  +---------------------------------------------------------------------------
+|  | Atom chain ID ....... ,,,,,,,,,,,,,,,,,,,,
+|  +---------------------------------------------------------------------------
+|  | Atom residue number . 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+|  +---------------------------------------------------------------------------
+|  | Conformation ........ 6.222;0.270;-8.799,6.464;1.141;-7.691,5.690;2.329;
+|  |                       -7.677,4.810;2.599;-8.634,4.682;1.712;-9.601,5.332;
+|  |                       0.575;-9.732,3.808;1.993;-10.536,7.472;0.895;
+|  |                       -6.537,8.800;1.653;-6.692,9.060;2.783;-5.914,
+|  |                       10.266;3.472;-6.042,11.219;3.041;-6.972,10.949;
+|  |                       1.925;-7.778,9.756;1.223;-7.615,11.896;1.465;
+|  |                       -8.753,11.819;2.107;-10.044,12.424;3.804;-7.149,
+|  |                       13.634;3.229;-6.610,10.482;4.667;-5.277,10.997;
+|  |                       4.483;-3.942,6.870;-0.873;-8.952
+|  +---------------------------------------------------------------------------
+|  | Atom occupancy ...... ,,,,,,,,,,,,,,,,,,,,
+|  +---------------------------------------------------------------------------
+|  | Atom B-value ........ ,,,,,,,,,,,,,,,,,,,,
++------------------------------------------------------------------------------
+
++------------------------------------------------------------------------------
+| Molecule ............ C1(=C(C=NC(=N1)N)CC=2C=C(C(=C(C2)OC)OC)OC)N
+| Remark .............. TRIMETHOPRIM
+|  +---------------------------------------------------------------------------
+|  | Atom name ........... ,,,,,,,,,,,,,,,,,,,,
+|  +---------------------------------------------------------------------------
+|  | Atom residue name ... RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,
+|  |                       RES,RES,RES,RES,RES,RES,RES,RES,RES
+|  +---------------------------------------------------------------------------
+|  | Atom chain ID ....... ,,,,,,,,,,,,,,,,,,,,
+|  +---------------------------------------------------------------------------
+|  | Atom residue number . 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+|  +---------------------------------------------------------------------------
+|  | Conformation ........ 6.222;0.270;-8.799,6.464;1.141;-7.691,5.690;2.329;
+|  |                       -7.677,4.810;2.599;-8.634,4.682;1.712;-9.601,5.332;
+|  |                       0.575;-9.732,3.808;1.993;-10.536,7.472;0.895;
+|  |                       -6.537,8.800;1.653;-6.692,9.060;2.783;-5.914,
+|  |                       10.266;3.472;-6.042,11.219;3.041;-6.972,10.949;
+|  |                       1.925;-7.778,9.756;1.223;-7.615,11.896;1.465;
+|  |                       -8.753,11.819;2.107;-10.044,12.424;3.804;-7.149,
+|  |                       13.634;3.229;-6.610,10.482;4.667;-5.277,10.997;
+|  |                       4.483;-3.942,6.870;-0.873;-8.952
+|  +---------------------------------------------------------------------------
+|  | Atom occupancy ...... ,,,,,,,,,,,,,,,,,,,,
+|  +---------------------------------------------------------------------------
+|  | Atom B-value ........ ,,,,,,,,,,,,,,,,,,,,
++------------------------------------------------------------------------------
+

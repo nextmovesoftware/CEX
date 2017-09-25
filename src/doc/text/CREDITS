@@ -1,0 +1,50 @@
+==============================================================================
+CREDITS BY TOPIC, authors and *porters
+==============================================================================
+
+object support
+   Dave Weininger
+
+camera (object)
+   Conrad Huang
+
+molecule (object)
+   Dave Weininger
+
+surface (object)
+   Anthony Nichols, Conrad Huang*
+
+PDB (format)
+   Conrad Huang, Dave Weininger
+
+bondage (program)
+   Eric Swanson, Jeff Blaney, Scott Dixon, David Spellmeyer*
+
+chains (program)
+   Roger Sayle
+
+compare (program)
+   Jeff Blaney, David Spellmeyer*
+
+connect (program)
+   Roger Sayle
+
+dgeom (program)
+   Jeff Blaney, Gordon Crippen, Andrew Dearing, Scott Dixon, David Spellmeyer*
+
+rasmol (program)
+   Roger Sayle
+
+
+==============================================================================
+CONTRIBUTORS' INSTITUTIONS
+==============================================================================
+Blaney, Jeffery ..... Chiron Corporation
+Crippen, Gordon ..... University of Michigan
+Dearing, Andrew ..... Shell
+Dixon, Scott ........ Smith Klein Beecham
+Huang, Conrad ....... University of California, San Francisco
+Sayle, Roger ........ Glaxo-Wellcome
+Spellmeyer, David ... Chiron Corporation
+Swanson, Eric ....... University of Washington
+Weininger, David .... Daylight Chemical Information Systems, Inc.

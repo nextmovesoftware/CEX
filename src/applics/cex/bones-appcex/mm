@@ -1,0 +1,9 @@
+# make catcex && cat y.cex yy.cex | catcex $* x.cex - xx.cex
+# make progs && cat y.cex yy.cex | catcex x.cex - xx.cex | printcex $*
+# make progs && cat y.cex yy.cex | catcex $* x.cex - xx.cex | printcex
+# make progs && cat y.cex yy.cex | ./catcex $* x.cex - xx.cex | printcex
+
+make progs && \
+cat test/y.cex test/yy.cex \
+| ./catcex $* test/x.cex - test/xx.cex \
+| printcex

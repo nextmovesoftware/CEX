@@ -1,0 +1,17 @@
+$D<MSG>
+/_P<message>
+/_V<Message>
+/_S<1>
+/_L<STRLST>
+/_X<Message as sequence of strings>
+|
+$D<NAM>
+/_P<name>
+/_V<Name>
+/_S<1>
+/_L<STRING>
+/_X<Name as arbitrary ASCII text>
+|
+$MSG<"He said, ""Hello there.""\nShe said, ""Hi!""\nThe rest is history.">
+/NAM<This is the name>
+|

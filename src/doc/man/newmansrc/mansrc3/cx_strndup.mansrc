@@ -1,0 +1,36 @@
+<fn>
+cx_strndup \- robust length-delimited string duplication
+<fp>
+cx_String cx_strndup(cx_String, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_strndup(cx_String str, cx_Integer n);
+<ff>
+(not applicable)
+<description>
+cx_strndup() returns a new cx_String which is a duplicate
+of the cx_String `str' through the first `n' characters or
+to the first `\\0' character.
+The returned string is always zero terminated.
+
+This function is similar to the C library function strdup(3)
+differing in how it handles NULL arguments
+and that it copies a length-delimited string.
+<returns>
+Returns a cx_String or NULL.
+<diagnostics>
+NULL is quietly returned if the argument `str' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_strcat(3cx)
+cx_strcmp(3cx)
+cx_strdup(3cx)
+cx_strlen(3cx)
+cx_strncmp(3cx)
+cx_strqbrk(3cx)
+<bugs>
+A Fortran wrapper for this function should be available.
+<objects>

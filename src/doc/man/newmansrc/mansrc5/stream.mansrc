@@ -1,0 +1,16 @@
+<on>
+stream \- object representing ordered children of another object
+<description>
+A stream object is a "read-only snapshot" of the children of another
+object and is used to ennumerate children.
+Streams are created by cx_stream(), destroyed by cx_destroy();
+cx_reset() resets a stream to its beginning,
+cx_next() returns the next object in a stream or NULL if at the end.
+
+The stream object type is CX_OB_STREAM
+and its typename is "Stream".
+
+The related object type `sequence' represents an ordered collection of
+arbitrary objects.
+<seealso>
+sequence(5cx)

@@ -1,0 +1,12 @@
+
+Unfortunately, I didn't quite manage to finish the port of the
+"mdl2pdb" code to CEX before the release of version 32. However,
+here is the functional, but incomplete, version of "chains".
+Those feeling enthusiastic may want to implement the remaining
+two or three routines from the outline code given in the file
+"mdl2pdb.algorithm"
+
+Roger Sayle
+Glaxo Wellcome R & D
+October 1995
+

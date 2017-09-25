@@ -1,0 +1,33 @@
+<fn>
+cx_create_sequence \- create a new, empty sequence object
+<fp>
+cx_Object cx_create_sequence(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_sequence(cx_Object parent);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 parent, newob, cx_f_create_sequence()
+.br
+newob = cx_f_create_sequence(parent)
+<description>
+Creates a new, empty object sequence
+with a given parent (or NULL parent).
+Sequences created with cx_create_sequence()
+may be deallocated with cx_destroy().
+<returns>
+Returns the handle of a newly-allocated and initialized object
+or NULL on error.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_binary(3cx)
+cx_destroy(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+sequence

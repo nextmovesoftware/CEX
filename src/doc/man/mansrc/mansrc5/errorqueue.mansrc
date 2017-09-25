@@ -1,0 +1,23 @@
+<on>
+errorqueue \- object representing a queue of error messages
+<description>
+An errorqueue object is a kind of string object which has other string
+objects (the error messages) as its children.  The children in turn
+may have properties such as "severity" and "source".
+
+The errorqueue object type is CX_OB_ERRORQUEUE
+and its typename is "Errorqueue".
+
+The low-level error interface provides an errorqueue object
+and uses only polymorphic messages on this object, e.g.,
+error messaages are added to an error queue by creating a string
+with an errorqueue parent, enumerated with a stream of children
+over an errorqueue, and deallocated by destroying an errorqueue.
+
+The errorqueue object is special only in that a default errorqueue object is
+defined to exist and is returned by cx_errorqueue().
+
+Messages in errorqueues are typically accessed via the more
+convenient high-level interface provided by the functions
+cx_error_count(), cx_error_save(), and cx_error_spew().
+<seealso>

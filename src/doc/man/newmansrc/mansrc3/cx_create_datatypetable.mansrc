@@ -1,0 +1,45 @@
+<fn>
+cx_create_datatypetable \- create a new datatypetable object
+<fp>
+cx_Object cx_create_datatypetable(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_datatypetable(cx_Object parent, cx_String name)
+<ff>
+include 'cx_f.inc'
+.br
+character*() name;
+.br
+integer*4 table, parent, cx_f_create_datatype_table()
+.br
+table = cx_f_create_datatypetable(parent, name)
+<description>
+Creates a new datatypetype with given name and parent.
+Explicitly-created datatype tables are not often used -- the
+default datatype table is adequate for almost all purposes.
+The ability to create datatype tables is mainly available for programs
+which need to process multiple concurrent I/O streams.
+
+The returned datatype table is not quite empty:
+the datatypes for datatype tables and datatypes themselves
+are automatically loaded.
+<returns>
+Returns the handle of a newly created datatypetable object
+or NULL on error.
+<diagnostics>
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_datatype(3cx)
+cx_datatype(3cx)
+cx_default_datatypetable(3cx)
+cx_pname2datatype(3cx)
+cx_reset(3cx)
+cx_set_datatype(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

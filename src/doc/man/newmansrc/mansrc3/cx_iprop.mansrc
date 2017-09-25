@@ -1,0 +1,46 @@
+<fn>
+cx_iprop \- return a named property as an integer
+<fp>
+cx_Integer cx_iprop(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_iprop(cx_Object ob, cx_String pname);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) pname;
+.br
+integer*4     ob, ival, cx_f_iprop()
+.br
+ival = cx_f_iprop(ob, pname)
+<description>
+Returns the integer value of the object's property with
+the given property name.
+The integer value is obtained from the property's string value via cx_atoi().
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+cx_iprop() is equivalent to cx_atoi(cx_sprop(ob, pname)).
+<returns>
+Returns a cx_Integer or 0 on error.
+<diagnostics>
+0 is quietly returned if either argument is NULL
+or if requested property does not exist.
+<seealso>
+cx_atoi(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_rprop(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+One can't distinugish between an error and a zero value using this
+function alone (use cx_sprop()).
+<objects>
+property
+string

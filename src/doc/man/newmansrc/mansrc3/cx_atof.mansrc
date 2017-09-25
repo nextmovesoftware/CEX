@@ -1,0 +1,46 @@
+<fn>
+cx_atof \- robust conversion of string to real
+<fp>
+cx_Real cx_atof(cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Real cx_atof(cx_String str);
+<ff>
+include 'cx_f.inc'
+.br
+character*() str
+.br
+real*8       rval, cx_f_atof()
+.br
+rval = cx_f_atof(str)
+<description>
+Interprets given string as an real number
+(skipping leading whitespace if present)
+and returns the resultant cx_Real value.
+ 
+The language accepted for real numbers is:
+
+   real: [whitespace] [sign] mant ['e'|'E' [sign] digs]
+   mant: digs | digs '.' | '.' digs | digs '.' digs
+   sign: '+' | '-'
+   digs: (one or more digits)
+
+This function is similar to the C library function atof(3),
+differing only in how it handles NULL arguments and exceptions.
+<returns>
+Returns a cx_Real.
+<diagnostics>
+0.0 is quietly returned if the argument is NULL
+or if `str' is not parsable as a real number
+(e.g., contains no digits).
+Exponent overflow and underflow produce the results
+specified by the IEEE Standard.
+<bugs>
+None known.
+<seealso>
+atof(3)
+atoi(3cx)
+cx_rprop(3cx)
+stringtodecimal(3)
+<objects>

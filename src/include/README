@@ -1,0 +1,376 @@
+$CX_ROOT/src/package/README -- package creation and management information
+
+
+CX PACKAGE OVERVIEW
+
+The CX system is designed to be shipped as source code, to be supportable,
+and to be extensible by the adding new packages.  In general, you do NOT
+need to create a new package to create new CX applications or to port an
+exiting application to CEX.  The reason to create a new package is to
+support a new object classs, e.g., a binary spectrum object or a root object
+other than a molecule.
+
+The CX code is organized as three kinds of packages ... actually all three
+kinds are identical in function, they just appear in different places.
+
+   o  Internal packages (e.g., support for strings, streams, properties,
+      datatypes, etc.) are part of the underlying object support system and
+      appear in the directory $CX_ROOT/src/cobweb (chemical object web).
+      Internal packages are directly initialized by cx_init() and directly
+      cleaned up by cx_cleanup().
+
+   o  Supported packages (e.g., support for molecules) appear in other
+      directories (e.g., $CX_ROOT/src/molecule), have reserved object
+      classes (0-9999), and are initialized and cleaned up based on the
+      CX_e_PKG_INIT and CX_e_PKG_CLEANUP macros in cx_types.h.
+
+   o  Unsupported ("exotic") packages (i.e., support for user-defined
+      objects) is intended to go in the $CX_ROOT/src/cu directory (but may
+      appear anywhere), have user-defined object classes (>9999), and are
+      initialized and cleaned up based on the CX_e_EXOTIC_INIT and
+      CX_e_EXOTIC_CLEANUP macros in cx_types.h.
+
+The idea of exotic packages is to allow anyone to add new functionality to
+CX and to share them without being dependent on an "official" CX release.
+
+
+ADDING A NEW DATATYPE TO THE CX SYSTEM
+
+If you are adding a new datatype which can be described with existing CX
+languages you don't need to create a package -- just do it as described in
+this section and skip all the packaging details that follow.
+
+First decide if the information best described as a property, an object, or
+an identifier.  Properties are simple pieces of information which help
+describe other things, e.g., "Remark" or "pH of measurement" are properties.
+Objects typically used to describe most chemical data and can have properties,
+e.g., "Measured partition coefficient" is an object which has properties such
+as "Reference", "Temperature of measurement", "pH of measurement", etc.
+Identifiers (especially "pure" identifiers) are used mainly (or exclusively)
+to identify an entity for which information is known, e.g., a "Registration
+Number" is an identifier.
+
+Next, determine the information's shape (dimensionality) and language.
+
+Shape refers to how many pieces of information make up a single entity.
+For instance, all scalar properties such as a melting point have a shape
+of "1".  An (X,Y,Z) coordinate has a shape of "3".  (It would be acceptable,
+but not very natural, to store coordinates as three separate properties of
+shape "1".)  A rotation-translation matrix has a shape of "6".  Shapes can
+also have alphabetic suffixes which indicate semantic limitations, e.g.,
+remark has a shape of "1" (no suffix, goes anywhere), bond order has a shape
+of 1B (shape 1, bond parent), and "atomic coordinate" has "3A" (atoms).
+
+The "language" property of a datatype indicates how the data is stored and
+interpreted.  Most things use the STRING langugage (printable ASCII strings),
+but some make more natural numbers (e.g. INTEGER and REAL languages).  For
+numeric properties, decision about language to isn't usually critical, since
+most numbers are managed as strings anyway.  The language BINARY is also
+available for data which has no natural string equivalent (e.g. fingerprints
+or sets of structural keys).
+
+Finally, make up a datatype.  You will ultimately be calling this function:
+
+   cx_create_datatype(table, tag, pname, vname, shape, lang, desc);
+
+E.g., for a registration number you might specify:
+
+   tag ............ "XRN"
+   verbose name ... "X Registration Number"
+   property name .. "xregno"
+   shape .......... "1"
+   language ....... "STRING"
+   description .... "Company X's registration Number"
+
+Other examples:
+
+   tag   prop name   verbose name   shape language  description
+   ----  ----------  -------------- ----- --------  --------------------------
+   XRN   xregno      X Reg Number   1     STRING    X's registration Number
+   MVOL  molvol      Molal volume   1     REAL      Molal volume at normal BP
+   ACH   charge      Atom charge    1A    REAL      Atomic charge
+   ALAB  atomlabel   Atom label     1A    STRING    Atom label
+   ALAB  coordinates Atom coords    3A    STRING    Atomic XYZ coordinates, A
+   BLAB  bondlabel   Bond label     1B    STRING    Bond label
+
+If you are creating a property, once you have defined the datatype, you're
+done.  For an object, you will need to attach the dataype to each object
+that is to be transmitted.  Also, since objects can have properties, you
+should think about what an object's natural properties are and define
+datatypes for them.
+
+That's all, unless you are creating a type of object which will either
+(1) be used as a root identifier or (2) contain propertied components,
+or (3) will be represented in a special lanaguage.  In these cases, you
+will need to create a package so that the polymorphic messages (functions
+such as cx_parse()) get dispatched to your procedures.
+
+
+ADDING A NEW KIND OF OBJECT TO THE CX SYSTEM
+
+OK, you've read the above section and decided that you need to make a new
+kind of object, perhaps because you know that this kind of data is super
+important to you and there's only right way to describe it (your way).
+For the purposes of discussion, let's say it is "raw electrophoresis data".
+Before you charge ahead, get a cup of coffee (or something stronger), sit
+down, and think about how you might generalize your solution in terms of
+information exchange.  Chemists always seem to be ready to work hard on
+special-purpose systems to solve their particular problems without doing
+much in the way of reviewing existing solutions.  (I know, I'm one of them.)
+In this case, raw electrophoresis images look a lot like photographs.
+It just so happens that there are already a variety of good protocols to
+store such images (TIFF, GIF, PICT, JPEG, RGB, PSL2, etc.)  Consider the
+pros and cons of each and don't be mislead by the fact that one of them
+works really well on the kind computer you're using this week.  When you
+write for CEX, you're writing for posterity.  My personal favorite among
+the pixmap formats is JPEG, because it's efficient, flexible, and there are
+good public-domain interpreters, generators, and viewers available.
+Assume we get our hands on (or create) a set of JPEG algorithms and
+convince ourselves that we can represent our data in JPEG.  With that,
+we're already 90% done.
+
+The rest is teaching CEX about JPEG.  The intent is to create a functional
+system which can be tested and shared right away.  If generally useful, it
+may be incorporated into the mainstream CX system.  Here's how it's done.
+
+
+   1. Select a name for the language.
+      -- In this case it's obvious, "JPEG".
+
+
+   2. Select symbolic and text names for the object class (type of object).
+      -- Here, we will use CU_OB_PHOTO and "Photo".
+
+
+   3. Select a number for your object class that is unlikely to conflict
+      with others.  Read the section below about inventing class numbers.
+      -- in this case, we'll use 879340201
+
+
+   4. Create a directory to contain code which will support photo objects.
+      -- Here we use $CX_ROOT/src/cu/photo
+
+      IMPORANT: all entry points and symbols in this directory must use
+      prefixes other than  "cx_" and "CX_" ... "cu_" and "CU_" are
+      recommended, but you can pick anyhing else, e.g., your initials.
+      A programmer's life is tough enough without symbol conflicts.
+
+
+   5. Edit the file $CX_ROOT/src/packages/cx_types.h ... add the symbolic
+      name(s) of your objects(s) under the comment, e.g.:
+
+         /*** Exotic package classes. ***/
+       
+         #define CU_OB_PHOTO 879340201
+
+      Also add the names of your initialization and clean up functions to
+      the appropriate macros at the bottom of this file, e.g.,
+
+         /*** Exotic package initializations. ***/
+ 
+         #define CX_e_EXOTIC_INIT \
+            cu_e_photo_init();
+ 
+         /*** Exotic package cleanups. ***/
+ 
+         #define CX_e_EXOTIC_CLEANUP \
+            cu_e_photo_cleanup();
+
+
+   6. Edit the file $CX_ROOT/src/packages/cx_exotic.h ... add a line which
+      includes a header file which defines your interface, e.g., any flags
+      and prototypes of non-polymorphic functions, e.g.,
+
+	 #include "cu_photo.h"
+
+      Your header file will be included in any program that includes "cx.h".
+
+
+   7. Edit the file $CX_ROOT/src/cu/Makefile ... add the name of your
+      subdirectory to the SUBDIRS symbol, e.g.,
+
+	 SUBDIRS = photo
+
+      Your directory will automatically be made with the rest of the system
+
+
+   8. Create a Makefile, source code, and test programs in your directory
+      $CX_ROOT/src/cu/photo which support the PHOTO object.  The Makefile
+      and source file cx_molecule.c in $CX_ROOT/src/molecule are good
+      starting points.
+
+      Makefile should provide the targets "most" (default), "all", "install"
+      and "clean".  Add your object support files (e.g., cx_photo.o) to the
+      CU library $CX_ROOT/lib/libcu.a, called $(CULIB) in Makefiles.
+      
+      If you are supplying application programs, the "install" target should
+      copy stripped versions to %CX_ROOT/bin, e.g., you might provide programs
+      such as `jpeg2cex and `cex2jpeg, converters such as `pict2cex' and
+      `cex2pict', filters such as `addphoto2cex', and a viewer `photocex'.
+
+      You must provide initialization and cleanup functions as per the
+      entries in cx_types.h, i.e., cu_e_photo_init() and cu_e_photo_cleanup()
+      (both of which would probably be in cx_photo.c).  The initialization
+      function must declare a typename, e.g.,
+
+         cx_set_typename(CU_OB_PHOTO, "Photo");
+
+      and must declare certain polymorphic methods for the dispatcher, e.g.,
+
+         cx_set_method(CX_OB_PHOTO, "create",      NULL                 );
+         cx_set_method(CX_OB_PHOTO, "parse",       photo_parse          );
+         cx_set_method(CX_OB_PHOTO, "cexin",       NULL                 );
+         cx_set_method(CX_OB_PHOTO, "send",        NULL                 );
+         cx_set_method(CX_OB_PHOTO, "setproperty", cx_e_base_setproperty);
+         cx_set_method(CX_OB_PHOTO, "stringvalue", photo_stringvalue    );
+         cx_set_method(CX_OB_PHOTO, "destroy",     photo_destroy        );
+         cx_set_method(CX_OB_PHOTO, "count",       cx_e_base_count      );
+         cx_set_method(CX_OB_PHOTO, "stream",      cx_e_base_stream     );
+
+      Note that your new object class does not have to respond to all
+      messages, e.g., create, cexin and send as per above.  The class can
+      inherit base methods if they are appropriate, e.g., setproperty, count,
+      and stream as per above.  Class-specific methods must be specified for
+      when special behavior is needed -- these are non-public functions,
+      e.g., photo_parse, photo_stringvalue, and photo_destroy.  photo_parse()
+      creates a new photo object by interpreting a given string, which is
+      sort of the reverse of photo_stringvalue() which returns the string
+      value of a given photo object.  photo_destroy(0 deallocates a given
+      photo object.  Note that photo_create() is not defined since it is
+      presumably not useful to create an empty photo object (parse is used
+      to create photo objects).
+      
+      NOTE: the prototype of these functions is defined by the CI_CLASS
+      structure in $CX_ROOT/src/cobweb/cx_basics.c, *not* by the public
+      function prototypes in cx_basics.h.  E.g., when the call:
+
+	  cx_parse(CX_OB_PHOTO, parent, str);
+
+      is made, it is automatically dispatched to
+
+	  photo_parse(parent, str);
+
+
+   9. That's all that's required for most packages.  If the package is useful
+      to you, it'll probably be useful to others, so you are invited to
+      submit it for inclusion in the standard CX distribution.  If you do so,
+      please:
+
+	 o  Send us author's name(s) (and organization(s), as applicable)
+	    We will be sure that credits are attached to the work unless
+	    instructed otherwise.
+
+	 o  Send us something stating that you have clear rights to the
+	    code and that you are contributing it to the public domain.
+	    You will fall under the standard liabilty clause (basically,
+	    "We think this code isn't good for anything and we're not
+	    our fault even if we're right.")
+
+	 o  Don't try to do anything clever when sending us the code.
+	    Back it up.  Go to $CX_ROOT and "make clean", then go up one
+	    directory and tar the whole root directory.  Compress it if you
+	    like, uuencode it if you have to, but send it all.
+
+
+ADDING A NEW KIND OF ROOT OBJECT TO THE CX SYSTEM
+
+OK, OK, you've thought twice about it, and decided that molecule-based data
+trees don't fit your chemical data exchange needs.  You may need to make a
+new kind of root object, or maybe not.  Some valid reasons for doing so are:
+
+   (a) the molecular structure is not known even at a valence-model level
+   (b) the molecular structure isn't represented well by a valence model
+   (c) you want to exchange data which is not molecule-based.
+   
+If (a) or (b), be aware that we are considering adding new root object
+classes to the standard CX distribution in future releases.  Right now,
+these include allowing strings to be root objects (e.g., for exchange of
+analytical chemistry data, where the root is something like "unknown 47")
+and a root class for combinatorial mixtures.
+
+If (c), ask yourself, "Am I really exchanging chemical information?".
+If not, there are probably better ways to get the job done.  The molecular
+model is such an underpinning of current chemical information systems that
+most non-molecule-based information doesn't seem chemical.  However, there
+are certainly kinds of non-molecule-based information that chemists might
+want to exchange, e.g., space-charge fields, surfaces, etc.  In such cases,
+it is reasonable to build a new root object.  But remember that CEX is
+designed for *exchange* of chemical information and (here's the catch),
+if your information is not molecule-based, you might have a hard time
+finding someone to exchange it with.
+
+Convincing yourself that you need a new kind of root object is a lot
+harder than actually implementing one.  Simply create a new class which
+responds to "cexin" and "send" messages and define a distinguished datatype.
+Here are the steps, assuming (for the sake of example only!) that Photo
+objects are going to be allowed as root objects:
+
+
+   0.  Create a new object class as per (1) to (8) above, then,
+
+
+   8a. The class initialization must define a non-NULL "cexin" method,
+
+          cx_set_method(CX_OB_PHOTO, "cexin", photo_cexin);
+
+       where photo_cexin() is a function which interprets an entire
+       photo-based tree (creates datatypes, children, and properties).
+       See molecule_cexin() in $CX_ROOT/src/molecule for an example.
+
+
+   8b. The class initialization must define a non-NULL "send" method, e.g.,
+
+          cx_set_method(CX_OB_PHOTO, "send",  photo_send);
+
+       where photo_send() is a function which transmits a photo object,
+       including its datatypes, properties, visible descendents, and
+       their properties.  This sounds complex, but in fact can be done
+       quite simply with a combination of iteration and recursion.
+       See molecule_send() in $CX_ROOT/src/molecule for an example.
+
+
+   8c. Modify the function cx_e_receive() in $CX_ROOT/src/cobweb/cx_cex_io.c
+       to do a cexin with your object type when needed.  This can be done
+       by hardcoding a distinguished datatype (that's how datatypes are
+       recognized; the tag "D" is special) or by recognizing a language,
+       which is even better (molecule-based trees are recognized by having
+       root objects with datatypes with language XSMILES.
+       
+       For this example, we'd need to add these two lines:
+
+          } else if (0 == strcmp("JPEG", lang)) {
+             rootob = cx_cexin(cex, CX_OB_MOLECULE, table);
+
+       This is the ONLY case in which you need to edit distributed cex code
+       (and probably won't be needed future releases).
+
+
+A NOTE ABOUT OBJECT CLASS NUMBERS
+
+Object class numbers have to be unique.  These ranges are reserved:
+   
+   The numbers    0 -  999 are reserved for core system use.
+   The numbers 1000 - 1999 are reserved for core application use.
+   The numbers 2000 - 9999 are reserved for contractor use.
+
+If you need to make a new object class, give it a number higher than
+9999 so it won't conflict with others which may be contributed. 
+
+Valid user-defined object numbers are 10000 to 2147483648 (2^31).
+To avoid conflicts (e.g., everyone using 10000 and 10001), multiply your
+phone number (no area code, just the last 6 or 7 digits) by 100 and use
+this as the first number in a block of 100 numbers.  If your phone number
+is 988-7934 extension 13, use the numbers 879341300 - 879341399, e.g.,
+you might add the following lines to your copy of this file:
+
+   #define CU_OB_SPECTRUM 879341300
+   #define CU_OB_UVSPEC   879341301
+   #define CU_OB_NMRSPEC  879341302
+
+If you contribute the code, the next "official" release might contain:
+
+   #define CX_OB_SPECTRUM 107
+   #define CX_OB_UVSPEC   108
+   #define CX_OB_NMRSPEC  109
+
+Always, always use symbolic names (e.g., CU_OB_SPECTRUM) in your code.

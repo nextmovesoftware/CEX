@@ -1,0 +1,6 @@
+# infile=../../data/pdb/trimethoprim.pdb
+infile=1gcn.pdbrun
+make pdb2cex cex2pdb \
+&& ./pdb2cex $* $infile > z.cex \
+&& ./cex2pdb z.cex > z.pdb \
+&& sdiff -w78 $infile z.pdb

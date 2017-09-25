@@ -1,0 +1,50 @@
+<fn>
+cx_mol_heavycopy \- copy heavy atoms in molecule
+<fp>
+cx_Object cx_mol_heavycopy(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_mol_heavycopy(cx_Object mol);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, copy, cx_f_mol_heavycopy()
+.br
+copy = cx_f_mol_heavycopy(mol)
+<description>
+Returns a copy of the molecule, including copies of
+heavy atoms and their standard properties,
+bonds between heavy atoms and their standard properties,
+and the standard molecular properties "molname" (CX_PROP_MOLNAME)
+and "input smiles" (CX_PROP_INSMI).
+
+Other atoms, bonds, children and
+attributes (e.g., associated datatype) are not copied.
+In particular, "normal" hydrogen atoms are not copied.
+Hydrogens which have a non-zero charge, a specified non-zero mass,
+or are connected to other than one other non-hydrogen atom are considered
+to be "abnormal" and are treated like heavy atoms.
+This results in a "hydrogen-suppressed" molecular representation,
+with "normal" hydrogens represented in the "implicit hcount" property
+of heavy atoms.
+<returns>
+Returns a handle to a new molecule or NULL.
+<diagnostics>
+Returns NULL quietly if `mol' is not a molecule.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_atom(3cx)
+cx_create_bond(3cx)
+cx_create_molecule(3cx)
+cx_mol_copy(3cx)
+cx_smilin(3cx)
+<bugs>
+None known.
+<objects>
+atom
+bond
+molecule
+property

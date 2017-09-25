@@ -1,0 +1,71 @@
+#-----------------------------------------------------------------------------
+#  makefile.mdep.hp -- HP/UX version
+#-----------------------------------------------------------------------------
+#
+#  makefile.mdep -- machine dependent CX definitions for make(1)
+#
+#  The source for this file is $CX_ROOT/src/etc/makefile.mdep.(arch), e.g.,
+#
+#      $CX_ROOT/src/etc/makefile.mdep.hp
+#
+#  which is copied to:
+#
+#      $CX_ROOT/include/makefile.mdep
+#
+#  by the script
+#
+#      $CX_ROOT/bin/cx_install
+#
+#  and is included in all makefile's in the CX_ROOT directory
+#
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+#  ANSI C compiler flags
+#-----------------------------------------------------------------------------
+
+CC          = cc
+CFLAGS      = -O -Aa -D_HPUX_SOURCE -I$(CX_ROOT)/include -I/usr/include/X11R5 \
+	      $(LOCALINCS) -DHPUX
+DFLAGS      = -g -Aa -D_HPUX_SOURCE -I$(CX_ROOT)/include -I/usr/include/X11R5 \
+	      $(LOCALINCS) -DHPUX
+SYSLIBS     = -lm
+XLIBS       = /usr/lib/X11R5/libX11.a /usr/lib/X11R5/libXext.a
+SQRTLIB     = -lm
+
+AR          = ar
+AR_GETFLAGS = xv
+AR_PUTFLAGS = rcvlf
+
+#-----------------------------------------------------------------------------
+#  Fortran 77 compiler flags
+#-----------------------------------------------------------------------------
+
+F77         = /usr/bin/f77
+F77_LINKER  = /usr/bin/f77
+FFLAGS      = -ppu -K
+F77LIBS     = -lm
+
+#-----------------------------------------------------------------------------
+# Other utilities
+#-----------------------------------------------------------------------------
+
+STRIP       = strip
+RANLIB      = /bin/true
+SHELL       = /bin/sh
+
+#-----------------------------------------------------------------------------
+#  Rule for adding objects to libraries.  If disk space is at a premium,
+#  uncomment last line to save disk space (but takes longer to rebuild).
+#-----------------------------------------------------------------------------
+
+.c.a:
+	$(CC) -c $(CFLAGS) $<
+	ar rv $@ $*.o
+#       rm $*.o
+
+#-----------------------------------------------------------------------------
+#  If purify is available, set location of purify executable and uncomment
+#-----------------------------------------------------------------------------
+#
+# PURIFY      = /usr/local/purify/purify

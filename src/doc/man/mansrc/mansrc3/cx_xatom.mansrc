@@ -1,0 +1,33 @@
+<fn>
+cx_xatom \- return atom across bond from another atom
+<fp>
+cx_Object cx_xatom(cx_Object, cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_xatom(cx_Object atom, cx_Object bond);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 atom, bond, xatom, cx_f_xatom()
+.br
+xatom = cx_f_xatom(atom, bond)
+<description>
+Returns the atom across a given bond from a given atom.
+<returns>
+An atom object or NULL.
+<diagnostics>
+NULL is quietly returned on error, e.g.,
+`bond' is not a bond object,
+`atom' is not an atom object, or 
+`bond' is not connected to `atom'.
+<seealso>
+cx_create_atom(3cx)
+cx_create_bond(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+atom
+bond
+stream

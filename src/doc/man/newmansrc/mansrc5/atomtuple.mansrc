@@ -1,0 +1,17 @@
+<on>
+atomtuple \- object representing a property of all atoms
+<description>
+An atomtuple object represents a given property of all atoms in a molecule \-
+the atomic property name is the name of the atomtuple.
+The string value of an atomtuple is the semicolon-delimited string values of
+the corresponding atom properties in generated XSMILES order.
+Atomtuples are always children of a molecule.
+Destroying atomtuples destroys the corresponding atom properties.
+Associating a datatype with an atomtuple makes the corresponding atom
+properties visible.
+
+The atomtuple object type is CX_OB_ATOMTUPLE and its typename is "Atomtuple".
+<seealso>
+atom(5cx)
+bondtuple(5cx)
+molecule(5cx)

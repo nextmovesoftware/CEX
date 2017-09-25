@@ -1,0 +1,739 @@
+#VRML V1.0 ascii
+  Info { string "Created by cex2wrl 0.34" }
+DEF BackgroundColor Info { string "0.9 0.9 0.9" }
+DEF Viewer Info { string "examiner" }
+Separator {
+  Separator {
+    Material { diffuseColor 0.00 1.00 0.00 }
+    Separator {
+      MatrixTransform { matrix
+            0.63324    0.67170   -0.38448    0.00000
+           -0.67170    0.23019   -0.70415    0.00000
+           -0.38448    0.70415    0.59695    0.00000
+            5.99950    0.34625   -9.03225    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.662 }
+    }
+    Separator {
+      Translation { translation 6.222 0.270 -8.799 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.98220   -0.16923   -0.08149    0.00000
+            0.16923    0.60909    0.77483    0.00000
+           -0.08149   -0.77483    0.62689    0.00000
+            6.35357    0.53467   -8.57441    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.715 }
+    }
+    Separator {
+      Translation { translation 6.293 0.317 -8.851 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.98220   -0.16923   -0.08149    0.00000
+            0.16923    0.60910    0.77483    0.00000
+           -0.08149   -0.77483    0.62689    0.00000
+            6.21143    0.44083   -8.46959    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.715 }
+    }
+    Separator {
+      Translation { translation 6.151 0.223 -8.747 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.76565   -0.48988    0.41689    0.00000
+            0.48988   -0.86409   -0.11566    0.00000
+            0.41689    0.11566    0.90157    0.00000
+            6.38400   -0.01575   -8.83725    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.661 }
+    }
+    Separator {
+      Translation { translation 6.222 0.270 -8.799 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.79109   -0.49384    0.36097    0.00000
+            0.49384   -0.86384   -0.09953    0.00000
+            0.36097    0.09953    0.92725    0.00000
+            4.91566    1.47448   -9.68622    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.658 }
+    }
+    Separator {
+      Translation { translation 4.753 1.759 -9.653 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.79109   -0.49384    0.36097    0.00000
+            0.49384   -0.86384   -0.09953    0.00000
+            0.36097    0.09953    0.92725    0.00000
+            4.77334    1.38102   -9.58128    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.658 }
+    }
+    Separator {
+      Translation { translation 4.611 1.665 -9.549 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.63368    0.66699   -0.39189    0.00000
+           -0.66699    0.21444   -0.71354    0.00000
+           -0.39189    0.71354    0.58076    0.00000
+            4.46350    1.78225   -9.83475    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.655 }
+    }
+    Separator {
+      Translation { translation 4.682 1.712 -9.601 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.99437   -0.09709   -0.04257    0.00000
+            0.09709    0.67277    0.73345    0.00000
+           -0.04257   -0.73345    0.67841    0.00000
+            4.71400    1.93375   -9.35925    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.659 }
+    }
+    Separator {
+      Translation { translation 4.682 1.712 -9.601 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.63500    0.66273   -0.39693    0.00000
+           -0.66273    0.20334   -0.72072    0.00000
+           -0.39693    0.72072    0.56833    0.00000
+            5.39882    2.34951   -7.86405    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.664 }
+    }
+    Separator {
+      Translation { translation 5.619 2.282 -7.625 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.63500    0.66273   -0.39693    0.00000
+           -0.66273    0.20334   -0.72072    0.00000
+           -0.39693    0.72072    0.56833    0.00000
+            5.54118    2.44349   -7.96845    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.664 }
+    }
+    Separator {
+      Translation { translation 5.761 2.376 -7.729 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.83722   -0.54585    0.03323    0.00000
+            0.54585   -0.83782   -0.00987    0.00000
+            0.03323    0.00987    0.99940    0.00000
+            5.88350    2.03200   -7.68050    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.709 }
+    }
+    Separator {
+      Translation { translation 5.690 2.329 -7.677 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.83788    0.54585    0.00293    0.00000
+           -0.54585    0.83782    0.00987    0.00000
+            0.00293   -0.00987    0.99995    0.00000
+            6.27050    1.43800   -7.68750    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.709 }
+    }
+    Separator {
+      Translation { translation 6.464 1.141 -7.691 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.92674    0.16923   -0.33544    0.00000
+           -0.16923   -0.60910   -0.77483    0.00000
+           -0.33544    0.77483   -0.53583    0.00000
+            6.33243    0.87633   -7.91559    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.715 }
+    }
+    Separator {
+      Translation { translation 6.393 1.094 -7.639 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.92674    0.16923   -0.33544    0.00000
+           -0.16923   -0.60910   -0.77483    0.00000
+           -0.33544    0.77483   -0.53583    0.00000
+            6.47457    0.97017   -8.02041    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.715 }
+    }
+    Separator {
+      Translation { translation 6.535 1.188 -7.743 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.49862   -0.64954   -0.57400    0.00000
+            0.64954   -0.15852    0.74362    0.00000
+           -0.57400   -0.74362    0.34286    0.00000
+            6.71600    1.07950   -7.40250    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.776 }
+    }
+    Separator {
+      Translation { translation 6.464 1.141 -7.691 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.63583    0.64954   -0.41692    0.00000
+           -0.64954    0.15852   -0.74362    0.00000
+           -0.41692    0.74362    0.52269    0.00000
+            7.22000    0.95650   -6.82550    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.776 }
+    }
+    Separator {
+      Translation { translation 7.472 0.895 -6.537 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.50000   -0.86406    0.05836    0.00000
+            0.86406    0.49319   -0.10085    0.00000
+            0.05836    0.10085    0.99319    0.00000
+            7.80400    1.08450   -6.57575    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.768 }
+    }
+    Separator {
+      Translation { translation 7.472 0.895 -6.537 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.47312    0.86406    0.17194    0.00000
+           -0.86406   -0.49319    0.10085    0.00000
+            0.17194   -0.10085    0.97993    0.00000
+            8.46800    1.46350   -6.65325    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.768 }
+    }
+    Separator {
+      Translation { translation 8.800 1.653 -6.692 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.98084   -0.18620   -0.05734    0.00000
+            0.18620    0.80925    0.55717    0.00000
+           -0.05734   -0.55717    0.82842    0.00000
+            8.86500    1.93550   -6.49750    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 8.800 1.653 -6.692 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.32310   -0.68447    0.65353    0.00000
+            0.68447   -0.30787   -0.66084    0.00000
+            0.65353    0.66084    0.36903    0.00000
+            8.99618    1.60188   -6.99337    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 8.757 1.709 -6.763 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.32310   -0.68447    0.65353    0.00000
+            0.68447   -0.30787   -0.66084    0.00000
+            0.65353    0.66084    0.36903    0.00000
+            9.08183    1.48912   -6.85213    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 8.843 1.597 -6.621 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.81824    0.18620   -0.54389    0.00000
+           -0.18620   -0.80925   -0.55717    0.00000
+           -0.54389    0.55717   -0.62749    0.00000
+            8.99500    2.50050   -6.10850    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 9.060 2.783 -5.914 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.49961   -0.86462    0.05311    0.00000
+            0.86462    0.49397   -0.09177    0.00000
+            0.05311    0.09177    0.99436    0.00000
+            9.32040    3.01428   -6.01547    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 9.019 2.842 -5.983 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.49961   -0.86462    0.05311    0.00000
+            0.86462    0.49397   -0.09177    0.00000
+            0.05311    0.09177    0.99436    0.00000
+            9.40260    2.89622   -5.87653    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 9.101 2.724 -5.845 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.47733    0.86462    0.15680    0.00000
+           -0.86462   -0.49397    0.09177    0.00000
+            0.15680   -0.09177    0.98336    0.00000
+           10.00560    3.24072   -5.94053    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 10.307 3.413 -5.973 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.47733    0.86462    0.15680    0.00000
+           -0.86462   -0.49397    0.09177    0.00000
+            0.15680   -0.09177    0.98336    0.00000
+            9.92340    3.35878   -6.07947    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 10.225 3.531 -6.111 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.33005   -0.68091    0.65378    0.00000
+            0.68091   -0.30795   -0.66448    0.00000
+            0.65378    0.66448    0.36200    0.00000
+           10.50425    3.36425   -6.27450    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.700 }
+    }
+    Separator {
+      Translation { translation 10.266 3.472 -6.042 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.98764   -0.15050   -0.04377    0.00000
+            0.15050    0.83262    0.53301    0.00000
+           -0.04377   -0.53301    0.84497    0.00000
+           10.32000    3.77075   -5.85075    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.718 }
+    }
+    Separator {
+      Translation { translation 10.266 3.472 -6.042 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.64552    0.68091    0.34592    0.00000
+           -0.68091    0.30795    0.66448    0.00000
+            0.34592   -0.66448    0.66242    0.00000
+           10.98075    3.14875   -6.73950    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.700 }
+    }
+    Separator {
+      Translation { translation 11.219 3.041 -6.972 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.81884    0.19247   -0.54079    0.00000
+           -0.19247   -0.79552   -0.57454    0.00000
+           -0.54079    0.57454   -0.61436    0.00000
+           11.10739    2.82131   -7.24085    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.701 }
+    }
+    Separator {
+      Translation { translation 11.175 3.100 -7.039 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.81884    0.19247   -0.54079    0.00000
+           -0.19247   -0.79552   -0.57454    0.00000
+           -0.54079    0.57454   -0.61436    0.00000
+           11.19561    2.70269   -7.10615    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.701 }
+    }
+    Separator {
+      Translation { translation 11.263 2.982 -6.905 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.54080   -0.83844    0.06745    0.00000
+            0.83844    0.53090   -0.12316    0.00000
+            0.06745    0.12316    0.99009    0.00000
+           11.52025    3.23175   -7.01625    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.719 }
+    }
+    Separator {
+      Translation { translation 11.219 3.041 -6.972 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.97937   -0.19246   -0.06159    0.00000
+            0.19246    0.79552    0.57454    0.00000
+           -0.06159   -0.57454    0.81615    0.00000
+           11.06061    2.14469   -7.50915    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.701 }
+    }
+    Separator {
+      Translation { translation 10.993 1.866 -7.711 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.97937   -0.19246   -0.06159    0.00000
+            0.19246    0.79552    0.57454    0.00000
+           -0.06159   -0.57454    0.81615    0.00000
+           10.97239    2.26331   -7.64385    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.701 }
+    }
+    Separator {
+      Translation { translation 10.905 1.984 -7.845 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.47611    0.85595    0.20168    0.00000
+           -0.85595   -0.50367    0.11695    0.00000
+            0.20168   -0.11695    0.97244    0.00000
+           10.65075    1.74950   -7.73725    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 10.949 1.925 -7.778 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.35895   -0.65996    0.66001    0.00000
+            0.65996   -0.32057   -0.67947    0.00000
+            0.66001    0.67947    0.32048    0.00000
+           11.18575    1.81000   -8.02175    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.717 }
+    }
+    Separator {
+      Translation { translation 10.949 1.925 -7.778 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.51276   -0.85595    0.06657    0.00000
+            0.85595    0.50367   -0.11695    0.00000
+            0.06657    0.11695    0.99090    0.00000
+           10.05425    1.39850   -7.65575    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.697 }
+    }
+    Separator {
+      Translation { translation 9.756 1.223 -7.615 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.64178    0.68447    0.34585    0.00000
+           -0.68447    0.30787    0.66084    0.00000
+            0.34585   -0.66084    0.66609    0.00000
+            9.55982    1.27412   -7.31363    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 9.799 1.167 -7.544 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.64178    0.68447    0.34585    0.00000
+           -0.68447    0.30787    0.66084    0.00000
+            0.34585   -0.66084    0.66609    0.00000
+            9.47417    1.38688   -7.45487    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.698 }
+    }
+    Separator {
+      Translation { translation 9.713 1.279 -7.686 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.99488   -0.05333   -0.08586    0.00000
+            0.05333   -0.44464    0.89412    0.00000
+           -0.08586   -0.89412   -0.43952    0.00000
+           11.83825    1.94650   -9.72125    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.722 }
+    }
+    Separator {
+      Translation { translation 11.819 2.107 -10.044 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.49783    0.83793   -0.22369    0.00000
+           -0.83793    0.39819   -0.37326    0.00000
+           -0.22369    0.37326    0.90036    0.00000
+           13.33150    3.37275   -6.74475    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.722 }
+    }
+    Separator {
+      Translation { translation 13.634 3.229 -6.610 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.88698    0.35698   -0.29297    0.00000
+           -0.35698    0.12754   -0.92537    0.00000
+           -0.29297    0.92537    0.24056    0.00000
+           10.86825    4.52900   -4.27575    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.721 }
+    }
+    Separator {
+      Translation { translation 10.997 4.483 -3.942 }
+      Sphere { radius 0.100 }
+    }
+    Material { diffuseColor 0.00 1.00 1.00 }
+    Separator {
+      MatrixTransform { matrix
+            0.41391   -0.67170   -0.61441    0.00000
+            0.67170   -0.23019    0.70415    0.00000
+           -0.61441   -0.70415    0.35590    0.00000
+            5.55450    0.49875   -9.49875    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.662 }
+    }
+    Separator {
+      Translation { translation 5.332 0.575 -9.732 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.86915    0.49384    0.02637    0.00000
+           -0.49384    0.86384    0.09953    0.00000
+            0.02637   -0.09953    0.99469    0.00000
+            5.09834    0.81252   -9.64678    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.658 }
+    }
+    Separator {
+      Translation { translation 5.261 0.528 -9.680 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.86915    0.49384    0.02637    0.00000
+           -0.49384    0.86384    0.09953    0.00000
+            0.02637   -0.09953    0.99469    0.00000
+            5.24066    0.90597   -9.75172    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.658 }
+    }
+    Separator {
+      Translation { translation 5.403 0.622 -9.784 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.43368   -0.66699   -0.60584    0.00000
+            0.66699   -0.21444    0.71354    0.00000
+           -0.60584   -0.71354    0.35187    0.00000
+            4.02650    1.92275  -10.30225    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.655 }
+    }
+    Separator {
+      Translation { translation 3.808 1.993 -10.536 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.97120    0.09709   -0.21761    0.00000
+           -0.09709   -0.67277   -0.73345    0.00000
+           -0.21761    0.73345   -0.64397    0.00000
+            4.77800    2.37725   -8.87575    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.659 }
+    }
+    Separator {
+      Translation { translation 4.810 2.599 -8.634 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.44868   -0.66273   -0.59956    0.00000
+            0.66273   -0.20334    0.72072    0.00000
+           -0.59956   -0.72072    0.34798    0.00000
+            5.10118    2.57849   -8.44695    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.664 }
+    }
+    Separator {
+      Translation { translation 4.881 2.646 -8.686 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.44868   -0.66273   -0.59956    0.00000
+            0.66273   -0.20334    0.72072    0.00000
+           -0.59956   -0.72072    0.34798    0.00000
+            4.95882    2.48451   -8.34255    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.664 }
+    }
+    Separator {
+      Translation { translation 4.739 2.552 -8.582 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.87126    0.48988    0.03040    0.00000
+           -0.48988    0.86409    0.11566    0.00000
+            0.03040   -0.11566    0.99282    0.00000
+            6.70800   -0.58725   -8.91375    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.661 }
+    }
+    Separator {
+      Translation { translation 6.870 -0.873 -8.952 }
+      Sphere { radius 0.100 }
+    }
+    Material { diffuseColor 1.00 0.27 0.00 }
+    Separator {
+      MatrixTransform { matrix
+            0.67018    0.65996    0.33957    0.00000
+           -0.65996    0.32057    0.67947    0.00000
+            0.33957   -0.67947    0.65039    0.00000
+           11.65925    1.58000   -8.50925    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.717 }
+    }
+    Separator {
+      Translation { translation 11.896 1.465 -8.753 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.99803    0.05333   -0.03301    0.00000
+           -0.05333    0.44464   -0.89412    0.00000
+           -0.03301    0.89412    0.44661    0.00000
+           11.87675    1.62550   -9.07575    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.722 }
+    }
+    Separator {
+      Translation { translation 11.896 1.465 -8.753 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.49856    0.83844    0.22012    0.00000
+           -0.83844   -0.53090    0.12316    0.00000
+            0.22012   -0.12316    0.96767    0.00000
+           12.12275    3.61325   -7.10475    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.719 }
+    }
+    Separator {
+      Translation { translation 12.424 3.804 -7.149 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+           -0.16668   -0.83793   -0.51970    0.00000
+            0.83793   -0.39819    0.37326    0.00000
+           -0.51970   -0.37326    0.76850    0.00000
+           12.72650    3.66025   -7.01425    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.722 }
+    }
+    Separator {
+      Translation { translation 12.424 3.804 -7.149 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.86469    0.15050   -0.47924    0.00000
+           -0.15050   -0.83261   -0.53301    0.00000
+           -0.47924    0.53301   -0.69730    0.00000
+           10.42800    4.36825   -5.46825    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.718 }
+    }
+    Separator {
+      Translation { translation 10.482 4.667 -5.277 }
+      Sphere { radius 0.100 }
+    }
+    Separator {
+      MatrixTransform { matrix
+            0.85394   -0.35698   -0.37862    0.00000
+            0.35698   -0.12754    0.92537    0.00000
+           -0.37862   -0.92537    0.01852    0.00000
+           10.61075    4.62100   -4.94325    1.00000
+      }
+      Cylinder { parts SIDES radius 0.100 height 0.721 }
+    }
+    Separator {
+      Translation { translation 10.482 4.667 -5.277 }
+      Sphere { radius 0.100 }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<fn>
+cx_destroy \- deallocate an object
+<fp>
+void cx_destroy(cx_Object);
+<fc>
+#include "cx.h"
+.br
+void cx_destroy(cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 object
+.br
+call cx_f_destroy(object)
+<description>
+Deallocate an object.
+
+Once an object is destroyed, the value of its object handle value
+becomes undefined -- do not use it for any reason.
+<seealso>
+cx_create_binary(3cx)
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_create_errorqueue(3cx)
+cx_create_molecule(3cx)
+cx_create_property(3cx)
+cx_create_sequence(3cx)
+cx_create_string(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

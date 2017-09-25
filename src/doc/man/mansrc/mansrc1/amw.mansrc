@@ -1,0 +1,44 @@
+<pn>
+amw \- CEX filter to calculate average molecular weight
+<ps>
+ ... CEX input | amw | CEX output ...
+<description>
+amw is a CEX filter which adds the AMW (average molecular weight) property
+to molecules in the CEX stream.  The average molecular weight is calculated
+as the average of naturally-occurring isotopes.
+Since the precision of this value varies depending on elemental composition,
+so does output precision.
+
+For example, feeding amw the input stream:
+
+   $D<MOL>/_P<molecule>/_V<Molecule>/_S<1M>/_L<XSMILES> .. |
+   $D<NAM>/_P<name>/_V<Name>/_S<1>/_L<STRING>/_X<Name a .. |
+   $MOL<C>/NAM<methane>|
+   $MOL<[Na+]>/NAM<sodium ion>|
+   $MOL<S>/NAM<hydrogen sulfide>|
+   $MOL<[Xe]>/NAM<zenon>|
+   $MOL<[Na+].[O-]C1=CC=CC=C1>/NAM<sodium phenoxide>|
+   $MOL<S1C=CC=C1>/NAM<thiophene>|
+
+produces the output stream:
+
+   $D<MOL>/_P<molecule>/_V<Molecule>/_S<1M>/_L<XSMILES>/_X ..|
+   $D<NAM>/_P<name>/_V<Name>/_S<1M>/_L<STRING>/_X<Name as  ..|
+   $D<AMW>/_P<ave mol wt>/_V<Ave. Mol. Wt.>/_S<1>/_L<REAL> ..|
+   $MOL<C>/NAM<methane>/AMW<16.043>|
+   $MOL<[Na+]>/NAM<sodium ion>/AMW<22.98977>|
+   $MOL<S>/NAM<hydrogen sulfide>/AMW<34.08>|
+   $MOL<[Xe]>/NAM<zenon>/AMW<131.3>|
+   $MOL<[Na+].[O-]C1=CC=CC=C1>/NAM<sodium phenoxide>/AMW<116.095>|
+   $MOL<S1C=CC=C1>/NAM<thiophene>/AMW<84.14>|
+
+This program is intended to be an example of how a CEX filter is written.
+<options>
+No options are accepted.
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., amw -help.
+<bugs>
+None known.
+<seealso>
+CX Programmer's Guide

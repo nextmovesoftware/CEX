@@ -1,0 +1,59 @@
+<fn>
+cx_e_mol_setimph() \- invent implicit hydrogen counts
+<fp>
+void cx_e_mol_setimph(cx_Object);
+<fc>
+#include "cx.h"
+.br
+void cx_e_mol_setimph(cx_Object mol);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, cx_f_addhall()
+.br
+call cx_f_setimph(mol)
+<description>
+This deduces hydrogen count solely from atom's oxidation state, explicit
+bonds, and normal valence assumptions, i.e.,
+from the atomic properties "atomic number" and "charge"
+and the bond property "bond order".
+
+The atomic property "implicit hcount" is set to the unmet valence based
+on an element's lowest normal valence which is consistent with explicit
+bonds at the given oxidation state:
+
+ 	element	neutral	+1	-1
+ 	-------	-------	-------	-------	
+ 	H	1	0	-
+ 	C	4	5	3
+ 	N	3,5	4	2
+ 	O	2	3	1
+ 	F	1	-	0
+ 	P	3,5	4	-
+ 	S	2,4,6	-	-
+ 	Cl	1	-	0
+ 	Br	1	-	0
+ 	I	1	-	0
+ 	-------	-------	-------	-------	
+
+The "implicit hcount" is not changed for other elements or oxidation states.
+
+Note that this function does not destroy or create explicit hydrogrens,
+it merely invents hydrogen counts for the most common elements.
+Note also that this function ignores and overwrites existing hydrogen counts
+for elements and oxidation states in the above list -- if "implicit hcount"
+is going to be set for some atoms explicitly, do it *after* this function
+is called.
+<returns>
+No return value.
+<diagnostics>
+None.  No-op if argument is NULL.
+<seealso>
+cx_mol_addhall(3cx)
+cx_mol_zaph(3cx)
+<bugs>
+None known.
+<objects>
+atom
+molecule
+property

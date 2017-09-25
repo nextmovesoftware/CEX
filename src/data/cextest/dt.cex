@@ -1,0 +1,126 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1M>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<REM>
+/_P<remark>
+/_V<Remark>
+/_S<1M>
+/_L<STRING>
+/_X<General purpose ASCII text>
+|
+$D<XYZ>
+/_P<coordinates>
+/_V<Conformation>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<XYZ>
+/_P<coordinates>
+/_V<Conformation>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<RESNO>
+/_P<resno>
+/_V<Atom residue number>
+/_S<1A>
+/_L<INTEGER>
+/_X<Atom residue number>
+|
+$D<RESNA>
+/_P<resname>
+/_V<Atom residue name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom residue name, typically three upper case letters>
+|
+$D<NAM>
+/_P<name>
+/_V<Name>
+/_S<1M>
+/_L<STRING>
+/_X<Name as arbitrary ASCII text>
+|
+$D<ANAM>
+/_P<atomname>
+/_V<Atom name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom name as arbitrary ASCII text>
+|
+$D<XYZ>
+/_P<coordinates>
+/_V<Conformation>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<P>
+/_P<logp>
+/_V<Measured log(P)>
+/_S<1M>
+/_L<REAL>
+/_X<Measured hydrophobicity as log10([organic]/[aqueous])>
+|
+$D<SOLP>
+/_P<solventpair>
+/_V<Solvent pair>
+/_S<1>
+/_L<STRING>
+/_X<Solvent pair name(s); if only one present, the other is water>
+|
+$D<REF>
+/_P<reference>
+/_V<Reference>
+/_S<1>
+/_L<STRING>
+/_X<Solvent name>
+|
+$D<FOOT>
+/_P<footnote>
+/_V<Footnote>
+/_S<1>
+/_L<STRING>
+/_X<Useful standardized remarks>
+|
+$D<QAM>
+/_P<qamark>
+/_V<QA mark>
+/_S<1>
+/_L<STRING>
+/_X<Quality assurance mark, typically one character>
+|
+$D<PH>
+/_P<ph>
+/_V<pH>
+/_S<1>
+/_L<REAL>
+/_X<pH, -log10([H+])>
+|
+$D<F>
+/_P<molform>
+/_V<Molecular formula>
+/_S<1M>
+/_L<STRING>
+/_X<Molecular formula, format [C#][H#]others alphabetically,  e.g., C17H20N2S>
+|
+$D<COM>
+/_P<comment>
+/_V<Comment, free text like "Remark">
+/_S<1>
+/_L<STRING>
+/_X<General purpose ASCII text -- for testing only>
+|
+$D<CAS>
+/_P<casno>
+/_V<CAS Registry Number>
+/_S<1M>
+/_L<STRING>
+/_X<Chemical Abstracts Registry Number>
+|

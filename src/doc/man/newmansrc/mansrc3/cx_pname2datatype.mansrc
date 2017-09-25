@@ -1,0 +1,45 @@
+<fn>
+cx_pname2datatype \- find datatype by property name
+<fp>
+cx_Object cx_pname2datatype(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_pname2datatype(cx_Object table, cx_String pname);
+<ff>
+include 'cx_f.inc'
+.br
+character*() pname;
+.br
+integer*4 dt, table, cx_f_pname2datatype()
+.br
+dt = cx_f_pname2datatype(table, pname)
+<description>
+Finds and returns the datatype object with given property name in the
+given datatype table (or in the default table, if NULL).
+There will be at most one such datatype (only one datatype with a
+given property name can be in a datatype table).
+
+This function is not commonly used by the CX-level programmer,
+who typically deals with properties as name-value pairs.
+It may be used to find out if a property is "visible", e.g.:
+
+   prop_is_visible = (NULL != cx_pname2datatype(table, pname)).
+<returns>
+Returns a datatype handle or NULL.
+or NULL on error.
+<diagnostics>
+NULL is quietly returned if no such datatype exists in the table
+or on error (i.e., `table' is neither NULL nor a datatype table).
+<seealso>
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_datatype(3cx)
+cx_default_datatypetable(3cx)
+cx_set_datatype(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

@@ -1,0 +1,59 @@
+      INCLUDE 'bondage.siz'
+
+C.. Atomic data
+C..              CR     atomic coordinates
+C..              NAT    total number of atoms
+      COMMON /ATOMS/ CR(3,MAXAT),NAT
+
+
+C.. Bonding:  Atoms IANO(J) and IBNO(J) are bonded...
+C..              ISTJ     first bond in each molecule
+C..              IENJ     last bond in each molecule
+C..              NOJ      number of bonds in each molecule
+C..              AUTOBND  automatically assign double bonds
+      COMMON /BONDS/ IANO(MAXBND),IBNO(MAXBND),
+     .               ISTJ(MAXSEC),IENJ(MAXSEC),NOJ(MAXSEC),AUTOBND
+
+C.. Molecular data...
+C                NSEC   number of molecules
+C..              NIN    number of atoms in each molecule
+C..              ISTC   first atom in each molecule
+C..              IENC   last atom in each molecule
+      COMMON /MOLS/   NIN(MAXSEC),ISTC(MAXSEC),IENC(MAXSEC),NSEC
+
+C.. Residue data...
+C..              NSEG   number of residues
+C..              SECSQ  sequence numbers of residues
+C..              ISCML  molecule within which residue is found
+C..              ISTS   first atom in each residue
+C..              IENS   last atom in each residue
+      COMMON /RESIDS/ SECSQ(MAXSEG),ISCML(MAXSEG),
+     .                ISTS(MAXSEG),IENS(MAXSEG),NSEG
+
+C.. Atom, residue names, and chain identifiers...
+C..              ATNM    atom names
+C..              SECNM   name of residues
+C..              CHAINID chain identifier
+C..              SYM     atomic symbols used for VDW/covalent radii
+C..                      (subroutine GETRADII)
+      COMMON /NAMES/ ATNM(MAXAT),SECNM(MAXSEG),CHAINID(MAXSEG),
+     .               SYM(MAXTYP)
+
+C.. Covalent and van der Waals radii assigned in subroutine GETRADII
+C..              CRAD   covalent bond radii
+C..              VRAD   van der Waals radii
+C..              SYMNO  atomic symbol # assigned to atom
+C..              NTYPES # atom types (SYM) with radii
+      COMMON /RADII/ CRAD(MAXTYP),VRAD(MAXTYP),SYMNO(MAXAT),NTYPES
+
+
+C.. Declare type information for the above
+
+      REAL        CR,CRAD,VRAD
+C     INTEGER     NSTRCT
+      INTEGER     IANO,IBNO,NSEC,NIN,ISTC,IENC,ISTJ,IENJ,NOJ
+      INTEGER     NSEG,ISCML,ISTS,IENS,SECSQ,SYMNO
+      CHARACTER*4 ATNM,SECNM
+      CHARACTER*2 SYM
+      CHARACTER*1 CHAINID
+      LOGICAL     AUTOBND

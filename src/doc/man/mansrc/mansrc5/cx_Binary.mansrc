@@ -1,0 +1,16 @@
+<pt>
+cx_Binary \- CX primitive binary representation
+<description>
+A cx_Binary primitive is a string of arbitrary characters with
+an explicit length.
+
+In the ANSI-C interface, a cx_Binary is represented as a
+an (unsigned char *) pointer and a cx_Integer (32-bit) length.
+
+In the Fortran interface, a cx_Binary is represented as a
+CHARACTER*() variable and a an INTEGER*4 length.
+<seealso>
+binary(5cx)
+string(5cx)
+cx_Binary(5cx)
+cx_Integer(5cx)

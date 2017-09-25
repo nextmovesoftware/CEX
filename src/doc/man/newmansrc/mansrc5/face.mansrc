@@ -1,0 +1,15 @@
+<on>
+face \- object representing a face in a surface
+<description>
+A face object represents a face formed from vertices on a
+three-dimensional surface.
+Currently, a face is always contains a list of three vertices
+and the optional property
+"face area", whose symbolic name is CX_PROP_FACE_AREA and
+is stored in units of square Angstoms.
+
+The face object type is CX_OB_FACE and its typename is "Face".
+<seealso>
+vertex(5cx)
+facetuple(5cx)
+surface(5cx)

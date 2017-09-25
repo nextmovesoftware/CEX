@@ -1,0 +1,16 @@
+<on>
+binary \- object representing an arbitrary character string
+<description>
+A binary object holds a string of arbitrary characters
+and its explicit length.
+The stringvalue of a binary object is an printable ASCII representation
+of the binary value.
+
+The binary object type is CX_OB_BINARY and its typename is "Binary".
+
+The related object type `string' represents a string of ASCII
+characters with implicit length.
+<seealso>
+cx_Binary(5cx)
+cx_String(5cx)
+string(5cx)

@@ -1,0 +1,43 @@
+<fn>
+cx_parent \- return parent of object
+<fp>
+cx_Object cx_parent(cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_parent(cx_Object ob)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ob, parent, cx_f_parent()
+.br
+parent = cx_f_parent(ob)
+<description>
+Returns object's parent (which may be NULL).
+<returns>
+Returns an object handle or NULL.
+<diagnostics>
+NULL is quietly returned if the argument is NULL.
+<seealso>
+cx_ancestor(3cx)
+cx_set_parent(3cx)
+cx_stream(3cx)
+<bugs>
+This entry point could be removed from the interface since it is
+equivalent to cx_ancestor(ob, CX_OB_ANY).
+It is retained because it is slightly more efficient and 
+the name corresponds to the function cx_set_parent() in an intuitive way.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

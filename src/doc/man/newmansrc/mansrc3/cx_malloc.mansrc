@@ -1,0 +1,22 @@
+<fn>
+cx_malloc \- robust memory allocation
+<fp>
+void *cx_malloc(cx_Integer)
+<fc>
+#include "cx.h"
+.br
+void *cx_malloc(cx_Integer size)
+<ff>
+(not applicable)
+<description>
+Returns a pointer to a block of at least `size' bytes
+suitably aligned for any purpose.
+
+This function is similar to the C library function malloc(3),
+differing only in how it handles out-of-memory conditions.
+<diagnostics>
+If out of memory, generates an "out of memory" panic message
+and returns NULL.
+<bugs>
+None known.
+<objects>

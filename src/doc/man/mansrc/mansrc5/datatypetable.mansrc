@@ -1,0 +1,21 @@
+<on>
+datatype table \- special object containing datatypes
+<description>
+A datatype table object represents a set of dataypes.
+
+The datatype table object type is CX_OB_DATATYPE_TABLE
+and its typename is "DatatypeTable".
+
+It is special only in that a default datatype table object is
+defined to exist and is returned by:
+
+   cx_default_datatypetable() => default table
+
+i.e., there is only one datatype table with a NULL parent.
+
+The default datatype table is universally used (so far)
+and is referred to by specifiying a NULL datatype table.
+Multiple datatype tables are supported for (hypothetical) future
+applications which manage multiple concurrent CEX streams.
+<seealso>
+datatype(5cx)

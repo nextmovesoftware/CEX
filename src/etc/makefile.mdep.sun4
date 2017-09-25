@@ -1,0 +1,73 @@
+#-----------------------------------------------------------------------------
+#  makefile.mdep.sun4 -- sun4 version
+#-----------------------------------------------------------------------------
+#
+#  makefile.mdep -- machine dependent CX definitions for make(1)
+#
+#  The source for this file is $CX_ROOT/src/etc/makefile.mdep.(arch), e.g.,
+#
+#      $CX_ROOT/src/etc/makefile.mdep.sun4
+#
+#  which is copied to:
+#
+#      $CX_ROOT/include/makefile.mdep
+#
+#  by the script
+#
+#      $CX_ROOT/bin/cx_install
+#
+#  and is included in all makefile's in the CX_ROOT directory
+#
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# ANSI C compiler flags
+#-----------------------------------------------------------------------------
+
+CC          = /usr/lang/acc
+CFLAGS      = -O -Xa -target sun4 -I$(CX_ROOT)/include \
+              -I$(OPENWINHOME)/include $(LOCALINCS)
+DFLAGS      = -g -Xa -target sun4 -I$(CX_ROOT)/include \
+              -I$(OPENWINHOME)/include$(LOCALINCS)
+SYSLIBS     = -lm
+XLIBS       = -L$(OPENWINHOME)/lib -lXext -lX11
+SQRTLIB     = -lm
+
+AR          = ar
+AR_GETFLAGS = xv
+AR_PUTFLAGS = rcv
+
+
+#-----------------------------------------------------------------------------
+# Fortran 77 compiler flags
+#-----------------------------------------------------------------------------
+
+F77         = /usr/lang/f77
+FFLAGS      = -O -u
+F77LIBS     = /usr/lang/SC1.0/ansi_lib/libansi.a
+
+#-----------------------------------------------------------------------------
+# Other utilities
+#-----------------------------------------------------------------------------
+
+STRIP       = /usr/bin/strip
+RANLIB      = /usr/bin/ranlib
+SHELL       = /bin/sh
+
+#-----------------------------------------------------------------------------
+# Rule for adding objects to libraries.  If disk space is at a premium,
+# uncomment last line to save disk space (but takes longer to rebuild).
+#-----------------------------------------------------------------------------
+
+.c.a:
+	$(CC) -c $(CFLAGS) $<
+	ar rv $@ $*.o
+	ranlib $@
+#	rm $*.o
+
+#-----------------------------------------------------------------------------
+# If purify is available, set location of purify executable and uncomment
+#-----------------------------------------------------------------------------
+#
+# PURIFY      = /usr/local/purify/purify
+# PURIFY      = /home2/purify/purify

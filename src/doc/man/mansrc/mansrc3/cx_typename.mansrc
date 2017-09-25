@@ -1,0 +1,43 @@
+<fn>
+cx_typename \- return the name of an object's type (class)
+<fp>
+cx_String cx_typename(cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_String cx_typename(cx_Object ob)
+<ff>
+include 'cx_f.inc'
+.br
+character*() typename, cx_f_type()
+.br
+integer*4    ob
+.br
+typename = cx_f_typename(ob)
+<description>
+Returns an object's typename as a string.
+This is not a critical function (but handy for debugging).
+<returns>
+Returns the name of an object type as a cx_String.
+<diagnostics>
+"Invalid" is returned if `ob' is NULL.
+<seealso>
+cx_type(3cx)
+cx_type2typename(3cx)
+cx_typename2type(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

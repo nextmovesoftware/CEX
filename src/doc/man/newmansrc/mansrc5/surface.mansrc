@@ -1,0 +1,34 @@
+<on>
+surface \- object representing a surface
+<description>
+A surface object describes a three-dimensional surface using a set of
+vertices and a set of faces formed from the vertices.  Currently faces
+are always triangles.
+
+The surface object type is CX_OB_SURFACE
+and its typename is "Surface".
+
+Surface constituents include vertices, faces,
+vertextuples (represent vertex properties), and
+facetuples (represent face properties).
+
+A surface's stringvalue is the concatenation of its vertex list and
+its face list, separated by an ampersand ('&').  The vertex list is
+a semicolon-separated list of unique integer identifiers associated
+with the vertices.  The face list is a semicolon-separated list of
+faces.  Each face is a comma-separated list of vertex identifiers.
+Standard surface properties include
+"surface name" (CX_PROP_SURF_NAME),
+"surface area" (CX_PROP_SURF_AREA),
+"surface volume" (CX_PROP_SURF_VOLUME) and
+"generation method" (CX_PROP_SURF_GENERATION).
+
+CX surfaces do not have to be fully specified to be used as objects \-
+information is retained as to what is (and is not) known.
+However, to be useful for information exchange, all
+vertices must have coordinates associated with them.
+<seealso>
+vertex(5cx)
+vertextuple(5cx)
+face(5cx)
+facetuple(5cx)

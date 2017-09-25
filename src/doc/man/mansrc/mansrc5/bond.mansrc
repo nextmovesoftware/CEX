@@ -1,0 +1,17 @@
+<on>
+bond \- object representing a bond in a molecule
+<description>
+A bond object represents a bond between atoms in a valence model of molecule,
+always contains a (possibly empty) list of attached atoms
+and the following standard properties (with symbolic names):
+formal bond order "bond order" (CX_PROP_BORDER) and
+double bond orientation flag "dbo" (CX_PROP_DBO)
+Neither property is required to form a valid object,
+but to be useful for chemical information exchange,
+"bond order" is required unless good atomic geometries are available.
+
+The bond object type is CX_OB_BOND and its typename is "Bond".
+<seealso>
+atom(5cx)
+bondtuple(5cx)
+molecule(5cx)

@@ -1,0 +1,16 @@
+<on>
+any \- an object pseudo-type representing any possible type
+<description>
+"Any" is a special object type with the symbolic name CX_OB_ANY
+and typename "Any" which is used to represent any actual object type.
+
+Actual objects of type CX_OB_ANY do not exist.
+The "Any" type otherwise acts like a normal type, e.g.,
+
+   cx_type2typename(CX_OB_ANY)	=> "Any"
+   cx_typename2type("Any")	=> CX_OB_ANY
+
+The "Any" type is used to enumerate all children, i.e.,
+
+   cx_stream(ob, CX_OB_ANY)	=> stream of all children
+<seealso>

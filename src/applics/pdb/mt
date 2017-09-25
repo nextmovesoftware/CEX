@@ -1,0 +1,2 @@
+time testpdbin -7 ../../data/pdb/SAMPLE.pdb
+# make testpdbin && testpdbin -71 jeff.pdb

@@ -1,0 +1,52 @@
+<fn>
+cx_prefix2btuples \- return bondtuples with given prefix
+<fp>
+cx_Object cx_prefix2btuples(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_prefix2btuples(cx_Object mol, cx_String prefix);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) prefix;
+.br
+integer*4     tuples, mol, cx_f_prefix2btuples()
+.br
+tuples = cx_f_prefix2btuples(mol, prefix)
+<description>
+Returns a sequence of bondtuples of the given molecule which have names
+starting with the given prefix.
+
+Bondtuples represent a given property of all bonds in a molecule,
+e.g., a set of "bondlabel" properties.
+By convention, multiple sets of properties of the same type are named
+with the same prefix and different suffixes, e.g.,
+three sets of bondlabel's would be
+named "bondlabel.1", "bondlabel.2", and "bondlabel.3".
+This function provides a convenient method for finding related
+bondtuples in a molecule.
+<returns>
+Returns a reset sequence of bondtuples or NULL.
+The returned sequence (possibly empty) belongs to the caller;
+the bondtuples do not (they belong to the molecule).
+<diagnostics>
+Returns NULL quietly if `mol' is not a molecule or `prefix' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_bondtuple_name(3cx)
+cx_create_bondtuple(3cx)
+cx_destroy(3cx)
+<bugs>
+To be consistent with cx_stream() this function should return NULL 
+rather than an empty sequence.
+
+A more descriptive name would be cx_prefix2bondtupleseq (ugh!)
+<objects>
+bond
+bondtuple
+molecule
+sequence
+string

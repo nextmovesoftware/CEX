@@ -1,0 +1,38 @@
+<pn>
+catcex \- concatentate and reformat cex streams
+<ps>
+catcex [-m2|-mn|-mw] [-fd|-fl|-fr] [-oa|-od|-ot] [in.cex...]
+<description>
+catcex concatentates one or more CEX streams
+into a single (optionally reformatted) output stream,
+
+Input is taken from standard input if file specification(s) are omitted
+or where "-" is encountered in the list of files.
+The output stream is sent to standard output.
+Error messages are sent to standard error.
+
+Output is written in list format by default,
+i.e., newlines are written after EOD (end-of-datum)
+and EOT (end-of-tree) delimiters.
+Options are provided which cause output to be written using other
+conventions.
+<options>
+Error message control options (at most one of):
+  -me: show ERROR messages only (default)
+  -mn: show NOTE, WARNING and ERROR messages
+  -mw: show WARNING and ERROR messages
+
+Format control options (at most one of):
+  -fd: dump format, EOT newlines
+  -fl: list format, EOD & EOT newlines (default)
+  -fr: raw  format, no newlines
+
+Output content control options (at most one of):
+  -oa: write all (even unreferenced) datatypes
+  -od: output (d)ata only, suppress datatypes
+  -ot: output data(t)ypes only, suppress data
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., catcex -help.
+<bugs>
+None known.

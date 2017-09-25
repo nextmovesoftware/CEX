@@ -1,0 +1,27 @@
+<on>
+atom \- object representing an atom in a molecule
+<description>
+An atom object represents an atom in a valence model of molecule,
+always contains a (possibly empty) list of attached bonds,
+and the following standard properties (with symbolic names):
+"atomic number" (CX_PROP_ATNUMB),
+"charge" (CX_PROP_CHARGE),
+"chirality" (CX_PROP_CHIRAL),
+"implicit hcount" (CX_PROP_IMPH), and
+"mass" (CX_PROP_MASS),
+None of these is required to form a valid object,
+but to be useful for
+chemical information exchange, "atomic number" is required;
+"implicit hcount" (or explicit hydrogens) and
+"charge" are strongly desirable.
+
+When XSMILES is interpreted or generated, the following standard properties
+are generated:
+"atomic symbol" (CX_PROP_ATSYMB) and
+"atom label" (CX_PROP_ALABEL).
+
+The atom object type is CX_OB_ATOM and its typename is "Atom".
+<seealso>
+atomtuple(5cx)
+bond(5cx)
+molecule(5cx)

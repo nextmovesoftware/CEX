@@ -1,0 +1,71 @@
+#-----------------------------------------------------------------------------
+#  makefile.mdep.win32 -- Microsoft Windows version
+#-----------------------------------------------------------------------------
+#
+#  makefile.mdep -- machine dependent CX definitions for make(1)
+#
+#  The source for this file is $CX_ROOT/src/etc/makefile.mdep.(arch), e.g.,
+#
+#      $CX_ROOT/src/etc/makefile.mdep.win32
+#
+#  which is copied to:
+#
+#      $CX_ROOT/include/makefile.mdep
+#
+#  by the script
+#
+#      $CX_ROOT/bin/cx_install
+#
+#  and is included in all makefile's in the CX_ROOT directory
+#
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+#  ANSI C compiler flags
+#-----------------------------------------------------------------------------
+
+CC          = gcc
+CFLAGS      = -Wall -O3 -fomit-frame-pointer -ffast-math -funroll-loops -I$(CX_ROOT)/include $(LOCALINCS)
+DFLAGS      = -Wall -O -g -I$(CX_ROOT)/include $(LOCALINCS)
+SYSLIBS     = 
+XINCS       =
+XLIBS       = -L/usr/X11R6/lib -lXext -lX11
+SQRTLIB     = -lm
+
+AR          = ar
+AR_GETFLAGS = xv
+AR_PUTFLAGS = rcv
+
+#-----------------------------------------------------------------------------
+#  Fortran 77 compiler flags
+#-----------------------------------------------------------------------------
+
+F77         = /usr/bin/g77
+F77_LINKER  = /usr/bin/g77
+FFLAGS      = -O2
+F77LIBS     = 
+
+#-----------------------------------------------------------------------------
+# Other utilities
+#-----------------------------------------------------------------------------
+ 
+STRIP       = /usr/bin/strip
+RANLIB      = /usr/bin/ranlib
+SHELL       = /bin/sh
+
+#-----------------------------------------------------------------------------
+#  Rule for adding objects to libraries.  If disk space is at a premium,
+#  uncomment last line to save disk space (but takes longer to rebuild).
+#-----------------------------------------------------------------------------
+
+.c.a:
+	$(CC) -c $(CFLAGS) $<
+	ar rv $@ $*.o
+#       rm $*.o
+
+#-----------------------------------------------------------------------------
+#  If purify is available, set location of purify executable and uncomment
+#  (Fat chance!  Purify isn't currently available for IRIX, more's the pity.)
+#-----------------------------------------------------------------------------
+#
+# PURIFY      = /usr/local/purify/purify

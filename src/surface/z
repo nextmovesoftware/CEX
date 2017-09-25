@@ -1,0 +1,94 @@
+$D<SURF>
+/_P<surface>
+/_V<Surface>
+/_S<1>
+/_L<SURFEX>
+/_X<Surface as vertex positions and optional triangular faces>
+|
+$D<REM>
+/_P<remark>
+/_V<Remark>
+/_S<1>
+/_L<STRING>
+/_X<General purpose ASCII text>
+|
+$D<ISMAN>
+/_P<is-a-manifold>
+/_V<Is a manifold>
+/_S<1>
+/_L<STRING>
+/_X<Is this (surface) a manifold? (T,F)>
+|
+$D<ISWELL>
+/_P<is-well-formed>
+/_V<Is well-formed>
+/_S<1>
+/_L<STRING>
+/_X<Are (surface) edges shared by at most two faces? (T,F)>
+|
+$D<AREA>
+/_P<area>
+/_V<Area>
+/_S<1>
+/_L<REAL>
+/_X<Area, square Angstroms>
+|
+$D<CURVE>
+/_P<curvature>
+/_V<Curvature at vertex>
+/_S<1V>
+/_L<REAL>
+/_X<Curvature at vertex (unitless)>
+|
+$D<FAREA>
+/_P<facearea>
+/_V<Face area>
+/_S<1F>
+/_L<REAL>
+/_X<Surface area of face, square Angstroms>
+|
+$SURF<"1.1,0.1,0.1;0.2,1.2,0.2;0.3,0.3,1.3;0.4,0.4,0.4&1,2,3;4,2,1">
+/REM<this is surface s1>
+/ISMAN<F>
+/ISWELL<T>
+/AREA<3.579>
+CURVE<"0.111;0.222;0.333;0.444">
+/REM<these are curvatures of vertices of surface s1>
+FAREA<"1.234;2.345">
+/REM<these are areas of faces of surface s1>
+|
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<NAM>
+/_P<name>
+/_V<Name>
+/_S<1>
+/_L<STRING>
+/_X<Name as arbitrary ASCII text>
+|
+$MOL<CC(=O)CCO>
+$SURF<"1.1,0.1,0.1;0.2,1.2,0.2;0.3,0.3,1.3;0.4,0.4,0.4&1,2,3;4,2,1">
+/REM<this is surface s1>
+/ISMAN<F>
+/ISWELL<T>
+/AREA<3.579>
+CURVE<"0.111;0.222;0.333;0.444">
+/REM<these are curvatures of vertices of surface s1>
+FAREA<"1.234;2.345">
+/REM<these are areas of faces of surface s1>
+$MOL<C=N>
+/REM<molecule m2 of molecule m1>
+SURF<"&">
+/NAM<surface 2>
+/REM<surface s2 of molecule m2 of molecule m1>
+$SURF<"&">
+/NAM<surface 3>
+/REM<surface s3 of molecule m1>
+CURVE<"">
+/REM<these are curvatures of vertices of surface s3>
+|

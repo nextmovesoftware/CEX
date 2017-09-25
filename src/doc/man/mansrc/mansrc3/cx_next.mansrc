@@ -1,0 +1,40 @@
+<fn>
+cx_next \- return the next object in a stream or sequence
+<fp>
+cx_Object cx_next(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_next(cx_Object ss)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ss, ob, cx_f_next()
+.br
+ob = cx_f_next(ss)
+<description>
+Returns the next object in the given stream or sequence `ss'
+and advances the current position,
+or returns NULL if at the end.
+
+If there's a possiblity that a sequence might contain NULL objects,
+use cx_atend(seq) to determine if at the end.
+
+cx_reset() resets a stream or sequence to the beginning.
+<returns>
+Returns an object handle or NULL.
+<diagnostics>
+NULL is quietly returned if at the end or if
+argument `ss' is not a sequence or stream.
+<seealso>
+cx_append(3cx)
+cx_atend(3cx)
+cx_create_sequence(3cx)
+cx_delete(3cx)
+cx_reset(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+sequence
+stream

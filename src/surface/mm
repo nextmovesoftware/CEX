@@ -1,0 +1,9 @@
+# make testsurf && testsurf
+echo "--- making testsurf" &&
+make testsurf &&
+echo "--- running testsurf, output to file z" &&
+testsurf > z &&
+echo "--- file z" &&
+cat z &&
+echo "--- printcex z" &&
+cat z | $CX_ROOT/src/applics/cex/printcex -me

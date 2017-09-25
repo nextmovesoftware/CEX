@@ -1,0 +1,52 @@
+Notes for cex121
+
+[ ] corrected problems with /bin/sh (bash) under ReadHat Linux
+[ ] Added "cleanall" targets to most Makefiles to squeeky clean.
+[ ] modified src/etc/cx_install to handle IRIX64 and Linux
+[ ] modified src/etc/makefile.mdep.* to link -lXext before -lX11
+[ ] modified src/wrappers/f77/cx_f.inc for new iostream functions
+[ ] modified src/wrappers/f77/cx_f_wrappers.c for iostream functions
+[ ] added $(SYSLIBS) to the Makefile lines for every executable
+[ ] included the latest source code of RasMol (v2.6b3) and OSF1 fixes!
+[ ] corrected compilation warnings in cexio.c, connect.c, chains.c,
+        linecout.c, cx_read_pdb.c ...
+
+Notes for cex101
+
+[ ] changed references in cobweb/*.c:
+      cx_fgetc()    to     cx_e_fgetc()
+      cx_fgets()    to     cx_e_fgets()
+      cx_eof()      to     cx_e_eof()
+
+[ ] deal with cx_e_feof() in cx_stream.c (changed to cx_e_eof())
+
+[ ] changed cx_fputs() and cx_fputc() to cx_e_fputs() and cx_e_fputc()
+    in camera/cu_camera.c  NOT RIGHT change later
+
+[ ] whew! changed cx_fputs() and cx_fputc() to cx_e_fputs() and cx_e_fputc()
+      cx_e_fgetc()    to     cx_e_iogetc()
+      cx_e_fgets()    to     cx_e_iogets()
+      cx_e_eof()      to     cx_e_ioeof()
+      cx_e_flush()    to     cx_e_ioflush()
+      cx_e_close()    to     cx_e_ioclose()
+    They all take objects!
+
+[ ] removed all references to cx_IOStream, made them cx_Object
+
+[ ] removed all references to cx_fopen() made them cx_create_iostream()
+
+[ ] removed some references to fclose() made them cx_destroy()
+
+[ ] added cobweb/new_version script which creates cx_version.c
+
+[ ] moved low-level test functions into cobweb/TODO, deal with that later
+
+[ ] removed cx_send from cx_cobweb.h and changed references to cx_append()
+
+[ ] cu/camera -- changed cameraone to use iostream
+
+[o] applics/cex -- updated catcex, removed minor bug (closed input 2ce)
+      [o] catcex   [o] printcex
+
+[o] applics/mol:
+      [o] amw   [o] hydrogenate   [o] printmol

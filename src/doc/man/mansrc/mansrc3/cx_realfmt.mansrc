@@ -1,0 +1,41 @@
+<fn>
+cx_realfmt \- get format used by cx_set_rprop()
+<fp>
+cx_String cx_realfmt(void)
+<fc>
+#include "cx.h"
+.br
+cx_String cx_realfmt(void)
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) str, cx_f_realfmt()
+.br
+str = cx_f_realfmt()
+<description>
+Get the format that cx_set_rprop() uses to write cx_Real numbers.
+The format is interpreted as per C's printf(3), and is initially "%g".
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+<returns>
+Returns a cx_String.
+<diagnostics>
+None.
+<seealso>
+amw(1cx)
+cx_iprop(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_rprop(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+None known.
+<objects>
+property
+string

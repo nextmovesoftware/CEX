@@ -1,0 +1,39 @@
+<fn>
+cx_append \- append object to a sequence
+<fp>
+cx_Object cx_append(cx_Object, cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_append(cx_Object seq, cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 seq, ob, ok, cx_f_append()
+.br
+ok = cx_f_append(seq, ob)
+<description>
+Appends the given object `ob' to the end of the given sequence `seq'.
+Does not affect the current position of the sequence
+(the next object to be returned by cx_next() doesn't change)
+unless the current position is undefined
+(sequence was empty or at end),
+in which case ob becomes the current position
+(ob will be returned next).
+
+It's OK to append NULL to a sequence
+(if so, cx_atend() will need to be used to detect the end-of-sequence).
+<returns>
+Returns TRUE if successful, FALSE if not.
+<diagnostics>
+NULL is quietly returned if argument `seq' is not a sequence.
+<seealso>
+cx_atend(3cx)
+cx_delete(3cx)
+cx_next(3cx)
+cx_reset(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+sequence

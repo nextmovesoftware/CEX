@@ -1,0 +1,29 @@
+<fn>
+cx_strlen \- robust measurement of string length
+<fp>
+cx_Integer cx_strlen(cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_strlen(cx_String str);
+<ff>
+(not applicable)
+<description>
+Returns the length of a string as a cx_Integer.
+
+This function is similar to the C library function strlen(3),
+differing only in how it handles NULL arguments.
+<returns>
+Returns a cx_Integer.
+<diagnostics>
+0 is quietly returned if the argument `str' is NULL.
+<seealso>
+cx_strdup(3cx)
+cx_strndup(3cx)
+cx_strcat(3cx)
+cx_strcmp(3cx)
+cx_strncmp(3cx)
+cx_strqbrk(3cx)
+<bugs>
+A Fortran wrapper for this function should be available.
+<objects>

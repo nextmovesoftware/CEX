@@ -1,0 +1,61 @@
+<pn>
+cex2pdb \- write CEX molecule to .pdb file
+<ps>
+cex2pdb [options] [in.cex [out.pdb]]
+<description>
+cex2pdb writes molecule(s) from a CEX stream to a Brookhaven PDB
+(Protein Data Bank) file as robustly and flexibly as possible.
+The .PDB format is a very limited format for exchange of chemical
+information and has been frequently modified (and abused)
+by many software authors.
+It is so widely used that a de facto pseudo-standard has evolved
+which is probably more imporant than the original Brookhaven format.
+
+cex2pdb writes both Brookhaven-compatible and extended .pdb files
+using a fairly complicated (read "Byzantine"), method described in 
+in $CX_ROOT/doc/README.pdb.
+
+The default cex2pdb settings attempt to write exactly what is on the
+input stream and no more.  This can amount to a fairly complete
+representation of the molecule with atomic coordinates, especially
+if the CEX filter
+`bondage' (an expert system which deduces hybridization from geometry)
+is used before cex2pdb on the stream.  Options allow generation of
+a more standard Brookhaven PDB file.
+<options>
+Options specifying files:
+  -i in.cex 	    specify .cex input file  (else standard input)
+  -o out.pdb        specify .pdb output file (else standard output)
+  -t datatypes.cex  specify .cex datatypes file (else from input)
+
+Options specifying fields:
+  -n <namefmt> 	 specify name (COMPND field)
+  -r <remfmt> 	 specify remark (REMARK field)
+
+  "%d" in <namefmt> or <remfmt> gets serial number.
+
+Options mapping input properties to output fields:
+  -m molname <prop> 	 map prop to molecule name
+  -m remark <prop> 	 map prop to remark
+  -m atomname <prop> 	 map prop to atom name*
+  -m resnam <prop> 	 map prop to residue name
+  -m chain <prop> 	 map prop to chain id
+  -m resno <prop> 	 map prop to residue number
+  -m coordinates <prop>	 map prop to coordinates
+  -m occupancy <prop> 	 map prop to occupancy
+  -m bvalue <prop> 	 map prop to B-value
+
+  *special case: "-m atomname PDB" invents PDB-style names
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., cex2pdb -help.
+<bugs>
+Except for molecular identity and atomic coordinates,
+virtually all information in the CEX stream is lost
+when written to a .pdb file.
+
+In the following, out.pdb is not necessarily identical to in.pdb:
+
+   $ cat in.pdb | pdb2cex | cex2pdb > out.pdb
+<seealso>
+pdb2cex(1cx)

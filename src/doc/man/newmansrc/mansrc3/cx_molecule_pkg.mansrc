@@ -1,0 +1,41 @@
+<fn>
+cx_molecule_pkg \- initialize molecule package
+<fp>
+cx_Integer cx_e_molecule_pkg(void);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_e_molecule_pkg(void);
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 ok, cx_f_molecule_pkg()
+.br
+ok = cx_f_molecule_pkg()
+<description>
+This function initializes the CX molecule package.
+Every program that uses CX molecules should call this function once.
+
+CX packages are required to declare their object types and methods.
+Until this is done, functions like cx_receive() don't know what to
+do with a MOL-rooted datatree comes in off the CEX stream.
+
+In fact, package initialization is only required if molecules are created
+first via cx_receive().  The other molecule-creation functions,
+cx_create_molecule() and cx_smilin(), are non-polymorphic and
+initialize the molecule package automatically.
+Even so, CX programmers are strongly encouraged
+to initialize all CX packages to be used as a defensive measure
+(in this release, the molecule package is the only one).
+<returns>
+Returns TRUE on success, FALSE on failure.
+In this release, always returns TRUE unless out of memory.
+<diagnostics>
+FALSE is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_molecule(3cx)
+<bugs>
+None known.
+<objects>
+molecule

@@ -1,0 +1,36 @@
+<fn>
+cx_error_count \- count errors of requisite severity
+<fp>
+cx_Integer cx_error_count(cx_String)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_error_count(cx_String severity)
+<ff>
+include 'cx_f.inc'
+.br
+character*() severity
+.br
+integer*4    count, cx_f_error_count()
+.br
+count = cx_f_error_count(severity)
+<description>
+Returns the number of errors queued which are at least as severe as
+the given `severity' (flags as per include file, e.g., CX_ERR_WARN).
+Counts all errors if `severity' is NULL, none if CX_ERR_NONE.
+
+This is one of the three high level CX error functions which are designed
+to work together, i.e., cx_err_count, cx_error_save, cx_error_spew.
+<returns>
+Returns a cx_Integer.
+<diagnostics>
+None needed or possible: correctly returns 0 if errorqueue has not been
+initialized (i.e., no error messages have ever been generated).
+<seealso>
+cx_error_save(3cx)
+cx_error_spew(3cx)
+cx_errorqueue(3cx)
+<bugs>
+None known.
+<objects>
+errorqueue

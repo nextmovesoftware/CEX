@@ -1,0 +1,93 @@
+<HTML><HEAD>
+<TITLE>CEX Installation README</TITLE>
+<CENTER>
+<H2>CEX Installation README</H2>
+Updated: 23 Oct 1995
+<P>
+The <A HREF=cex-home.html>CEX Home Page</A>
+and a <A HREF=cex-doclist.html>documentation list</A> are available.
+</CENTER>
+<P>
+</HEAD>
+<BODY>
+
+<HR>
+The following top-level README file is provided with the current release.
+<HR>
+
+<PRE>
+CEX RELEASE 0.33 -- $CX_ROOT/README
+
+This top-level README is a short note outlining the distribution contents,
+avaliable documentation, and installation procedures.
+
+This is a developmental release of the CEX software for chemical information
+exchange.  It's starting to look pretty good, but nothing is finalized yet.
+Please send comments, critiques, and kudos to dave@daylight.com.
+
+There are two ways you might have gotten this release: either as a clean
+source directory, e.g., cex033clean.tar.gz, or as a prebuilt binary for a
+single architecture e.g., cex033sun54bin.tar.gz.  In either case, gunzipping
+and untaring the file will produce a single directory, cex033.  This is how
+it's typically installed:
+
+   First time only, make a directory to hold cex releases:
+   
+      $ su
+      Password:
+      # mkdir /usr/local/cex
+      # chown username /usr/local/cex
+      # exit
+      $
+
+   Install the release:
+   
+      $ cd /usr/local/cex
+      $ gzip -cdq cex033clean.tar.gz | tar xf -
+      ...
+      $ ls
+      cex033
+
+   Define CX_ROOT (typically done in .profile) and update your paths:
+   
+      $ CX_ROOT=/usr/local/cex/cex033
+      $ export CX_ROOT
+      $ PATH=$PATH:$CX_ROOT/bin
+      $ export PATH
+      $ MANPATH=$MANPATH:$CX_ROOT/doc/man
+      $ export MANPATH
+
+If you have a binary release, you're ready to go, everything is preinstalled
+in $CX_ROOT subdirectories: bin (programs), data (datatypes), doc (documents),
+include (headers) and lib (libraries),
+
+If you have a clean source release, you'll need to make the system:
+
+      $ cd $CX_ROOT
+      $ make
+      installing /usr/local/cex/cex033/src/cobweb
+      ... make reports a lot of stuff here ...
+      +---------------------------------------------------
+      | All CX source is compiled, linked, and installed.
+      +---------------------------------------------------
+
+If you have installed clean source but *only* want the binary release,
+you can save space by deleting all source files with:
+
+      $ rm -rf $CX_ROOT/src
+
+The prebuilt releases have PostScript versions of the reference manuals in
+$CX_ROOT/doc/postman, e.g., man3cx.ps.  These are pretty big and can be
+deleted if you want to save space.  The PostScript files can be created
+from a clean source release on Solaris only:
+
+     $ cd $CX_ROOT/src/doc/man
+     $ make postman
+
+That's about it.  Check out the documents in $CX_ROOT/doc for more info.
+
+Have fun.
+</PRE>
+<HR>
+</BODY>
+</HTML>

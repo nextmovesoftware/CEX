@@ -1,0 +1,21 @@
+<fn>
+cx_free \- robust memory deallocation
+<fp>
+void cx_free(void *)
+<fc>
+#include "cx.h"
+.br
+void cx_free(void *ptr)
+<ff>
+(not applicable)
+<description>
+Deallocates the memory pointed to by `ptr'
+(typically allocated by malloc(3)).
+
+This function is similar to the C library function free(3),
+differing only in how it handles NULL arguments.
+<diagnostics>
+Successful no-op if argument `ptr' is NULL.
+<bugs>
+None known.
+<objects>

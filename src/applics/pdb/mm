@@ -1,0 +1,21 @@
+# make testpdbin && testpdbin -0 aab.pdb
+# make testpdbin && testpdbin -0 a16.pdb
+#  testpdbin && testpdbin -3 aab.pdb | more
+# make testpdbout && testpdbout -0
+# make testpdbout && cat cas10.smi | testpdbout -0
+# make testpdbin && make testpdbout && cat cas10.smi | testpdbout | testpdbin | cansmi
+# make testpdbin && time testpdbin -7 SAMPLE.pdb
+# make testpdbin && testpdbin -71 jeff.pdb
+# make testpdbout && cat old/cas10.smi | testpdbout -7
+# make pdb2cex && pdb2cex $* SAMPLE.pdb SAMPLE.cex
+# make cex2pdb && cex2pdb $* SAMPLE.cex
+# make pdb2cex cex2pdb
+# pdb2cex $* ../data/pdb/trimethoprim.pdb | cex2pdb
+# make pdb2cex && ./pdb2cex $* ../data/pdb/trimethoprim.pdb > z
+# make cex2pdb && cex2pdb z
+
+infile=../../data/pdb/trimethoprim.pdb
+make pdb2cex cex2pdb \
+&& ./pdb2cex $* $infile > z.cex \
+&& ./cex2pdb z.cex > z.pdb \
+&& sdiff -w78 $infile z.pdb

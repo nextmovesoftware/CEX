@@ -1,0 +1,37 @@
+<fn>
+cx_strcmp \- robust comparison of cx_Strings
+<fp>
+cx_Integer cx_strcmp(cx_String, cx_String)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_strcmp(cx_String s1, cx_String s2)
+<ff>
+(not applicable)
+<description>
+Compares its arguments and returns an
+integer greater than, equal to, or less than 0, according as `s1' is
+lexicographically greater than, equal to, or less than `s2'.
+The NULL string is treated as lexicographically less than
+any non-NULL string (including the empty string).
+
+This function is similar to the C library function strcmp(3),
+differing only in how it handles NULL arguments.
+<returns>
+Returns a cx_Integer.
+<diagnostics>
+None.
+<seealso>
+cx_strcat(3cx)
+cx_strdup(3cx)
+cx_strlen(3cx)
+cx_strncmp(3cx)
+cx_strndup(3cx)
+cx_strqbrk(3cx)
+<bugs>
+The treatment of NULL by cx_strcmp() is robust and semantically consistent
+but is sometimes inconvenient, e.g, NULLs compare equal to each other
+but a NULL is not equal to the empty string.
+
+A Fortran wrapper for this function should be available.
+<objects>

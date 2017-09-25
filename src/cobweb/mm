@@ -1,0 +1,11 @@
+. /usr3/people/guest/cex/cex101/defs.sh
+echo $CX_ROOT
+
+# make helloworld && helloworld
+# make helloworlds && helloworlds $*
+make testcexrw && testcexrw ../data/cextest/bbb.cex
+# make testcextd && testcextd $*
+# make testcexdt && testcexdt ../data/cextest/bbb.cex
+
+# make testbin2cex && testbin2cex > y.cex
+# make testcex2bin && testcex2bin y.cex

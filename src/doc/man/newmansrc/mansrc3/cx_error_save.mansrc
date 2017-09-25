@@ -1,0 +1,37 @@
+<fn>
+cx_error_save \- save an message in the error queue
+<fp>
+cx_Integer cx_error_save(cx_String, cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_error_save(cx_String msg, cx_String sev, cx_String src);
+<ff>
+include 'cx_f.inc'
+.br
+character*() msg, sev, src
+.br
+integer*4    ok
+.br
+ok = cx_f_error_save(msg, sev, src)
+<description>
+Save message `msg' in the errorqueue with severity `sev' and source `src'.
+Severity should be a standard error level, e.g., CX_ERR_WARN.
+
+This is one of the three high level CX error functions which are designed
+to work together, i.e., cx_err_count, cx_error_save, cx_error_spew.
+<returns>
+Returns TRUE if successful, FALSE if not.
+<diagnostics>
+Returns FALSE if `msg' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_error_count(3cx)
+cx_error_spew(3cx)
+cx_errorqueue(3cx)
+<bugs>
+None known.
+<objects>
+errorqueue

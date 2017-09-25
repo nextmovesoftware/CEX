@@ -1,0 +1,20 @@
+<on>
+camera \- object representing a camera
+<description>
+A camera object represents a set of viewing parameters for a
+scene and currently does not contain any internal structure.
+
+The camera object type is CU_OB_CAMERA
+and its typename is "Camera".
+
+A camera's stringvalue is always the empty string.
+Standard camera properties (with symbolic names) include
+"camera position" (CU_PROP_CAMERA_POSITION),
+"scene center" (CU_PROP_SCENE_CENTER),
+"focal length" (CU_PROP_FOCAL_LENGTH),
+"clip hither" (CU_PROP_CLIP_HITHER),
+"clip yon" (CU_PROP_CLIP_YON),
+"view area" (CU_PROP_VIEW_AREA),
+"render size" (CU_PROP_RENDER_SIZE)
+and "background color" (CU_PROP_BG_COLOR).
+All locations and distances have units of Angstroms.

@@ -1,0 +1,49 @@
+<fn>
+cx_set_rprop \- set the real value of a named property
+<fp>
+cx_Object cx_set_rprop(cx_Object, cx_String, cx_Real);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_set_rprop(cx_Object ob, cx_String pname, cx_Real rval);
+<ff>
+include 'cx_f.inc'
+.br
+real*8        rval
+.br
+integer*4     ob, prop
+.br
+character*(*) pname, cx_f_set_rprop()
+.br
+prop = cx_f_set_rprop(ob, pname, rval)
+<description>
+Sets the real value of the object's property with the
+given property name using the sprintf(3) format cx_realfmt().
+If the property exists, its old value is replaced by `rval';
+if not, the property is created with the value `rval'.
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+<returns>
+Returns a handle to the property object or NULL on error.
+<diagnostics>
+NULL is quietly returned if either of the first two arguments are NULL.
+<seealso>
+sprintf(3)
+cx_iprop(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+The returned property object is not particularly useful to the high-level
+CX programmer and should be used only for an indication of success.
+The interface could be simplified (slightly) by making this function
+return TRUE or FALSE.
+<objects>
+property
+string

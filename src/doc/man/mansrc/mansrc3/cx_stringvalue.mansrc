@@ -1,0 +1,55 @@
+<fn>
+cx_stringvalue \- return the stringvalue of an object
+<fp>
+cx_String cx_stringvalue(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_stringvalue(cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4     ob
+.br
+character*(*) str, cx_f_stringvalue()
+.br
+str = cx_f_stringvalue(ob)
+<description>
+Returns the ASCII string value of the given object `ob'.
+
+The contents of the string value are dependent on the type of object
+as well as its state, e.g.,
+the stringvalue of a string is the string itself,
+the stringvalue of a binary object is an encoded string of printable ASCII,
+the stringvalue of a molecule is its generated XSMILES,
+the stringvalue of a datatype table is its name,
+the stringvalue of a atomtuple or bondtyple is the semicolon-delimited
+values of the corresponding properties in XSMILES order.
+<returns>
+Returns a cx_String or NULL on error.
+<diagnostics>
+NULL is quietly returned if object `ob' is NULL or
+if its object type does not have a defined stringvalue
+(e.g., ob is a sequence).
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_binaryvalue(3cx)
+cx_create_binary(3cx)
+cx_create_string(3cx)
+cx_parse_binary(3cx)
+<bugs>
+It would be more consistent if all object types had defined stringvalues,
+e.g., streams and sequences.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+string

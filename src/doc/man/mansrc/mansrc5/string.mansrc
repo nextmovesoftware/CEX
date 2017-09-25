@@ -1,0 +1,15 @@
+<on>
+string \- object representing an ASCII character string
+<description>
+A string object is a simple object that holds a string of ASCII characters
+and (implicitly) its length.
+
+The string object type is CX_OB_STRING
+and its typename is "String".
+
+The related object type `binary' represents a string of arbitrary
+characters with explicit length.
+<seealso>
+binary(5cx)
+cx_Binary(5cx)
+cx_String(5cx)

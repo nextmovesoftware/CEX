@@ -1,0 +1,117 @@
+MOL{C=O{CAS{50-00-0{NAM{Formaldehyde}}}}}
+
+MOL:C=O
+{ MF:CH2O }
+{ CAS:50-00-0
+  { NAM:Formaldehyde }
+  { P: 0.66
+    { SOLP:CHCl3 }
+    { REF:Harris (1978) }
+    { FOOT:Not ion-corrected }
+    { FOOT:Phosphate buffer }
+    { PH:7.0 }
+  }
+}
+
+MOL:C=O{MF:CH2O}{CAS:50-00-0{NAM:Formaldehyde}{P:0.66{SOLP:CHCl3}{REF:Harris (1978)}{FOOT:Not ion-corrected}{FOOT:Phosphate buffer}{PH:7.0}}}
+
+MOL{C=O}
+{ MF{CH2O} }
+{ CAS{50-00-0}
+  { NAM{Formaldehyde} }
+  { P{ 0.66}
+    { SOLP{CHCl3} }
+    { REF{Harris (1978)} }
+    { FOOT{Not ion-corrected} }
+    { FOOT{Phosphate buffer} }
+    { PH{7.0} }
+  }
+}
+
+MOL{C=O}{MF{CH2O}}{CAS{50-00-0}{NAM{Formaldehyde}}{P{0.66}{SOLP{CHCl3}}{REF{Harris (1978)}}{FOOT{Not ion-corrected}}{FOOT{Phosphate buffer}}{PH{7.0}}}}
+
+$SMI<C=O>
+  MF<CH2O>
+  $CAS<50-00-0>
+     NAM<Formaldehyde>
+     P<0.66;CHCl3;Harris (1978);;Not ion-corrected~Phosphate buffer;7.0>
+|
+
+$SMI<C=O>MF<CH2O>$CAS<50-00-0>NAM<Formaldehyde>P<0.66;CHCl3;Harris (1978);;Not ion-corrected~Phosphate buffer;7.0>|
+
+$MOL<C=O>
+  /MF<CH2O>
+  $CAS<50-00-0>
+    /NAM<Formaldehyde>
+    P<0.66>
+      /SOLP<CHCl3>
+      /REF<Harris (1978)>
+      /FOOT<Not ion-corrected>
+      /FOOT<Phosphate buffer>
+      /PH<7.0>
+|
+
+$MOL<C=O>/MF<CH2O>$CAS<50-00-0>/NAM<Formaldehyde>P<0.66>/SOLP<CHCl3>/REF<Harris (1978)>/FOOT<Not ion-corrected>/FOOT<Phosphate buffer>/PH<7.0>|
+
+$MOL<C=O>
+  MF<CH2O>
+  $CAS<50-00-0>
+    NAM<Formaldehyde>
+    P<0.66>
+      /SOLP<CHCl3>
+      /REF<Harris (1978)>
+      /FOOT<Not ion-corrected>
+      /FOOT<Phosphate buffer>
+      /PH<7.0>
+|
+
+$MOL<C=O>MF<CH2O>$CAS<50-00-0>NAM<Formaldehyde>P<0.66>/SOLP<CHCl3>/REF<Harris (1978)>/FOOT<Not ion-corrected>/FOOT<Phosphate buffer>/PH<7.0>|
+
+$MOL<C=O>
+  /MF<CH2O>
+  $CAS<50-00-0>
+    /NAM<Formaldehyde>
+    /P<0.66>
+      +SOLP<CHCl3>
+      +REF<Harris (1978)>
+      +FOOT<Not ion-corrected>
+      +FOOT<Phosphate buffer>
+      +PH<7.0>
+|
+
+$MOL<C=O>/MF<CH2O>$CAS<50-00-0>/NAM<Formaldehyde>/P<0.66>+SOLP<CHCl3>+REF<Harris (1978)>+FOOT<Not ion-corrected>+FOOT<Phosphate buffer>+PH<7.0>|
+
+$MOL<C=O>(MF<CH2O>)($CAS<50-00-0>(NAM<Formaldehyde>)P<0.66>(SOLP<CHCl3>REF<Harris (1978)>FOOT<Not ion-corrected>FOOT<Phosphate buffer>PH<7.0>)
+|
+
+$MOL<C=O>/MF<CH2O>$CAS<50-00-0>/NAM<Formaldehyde>/P<0.66>+SOLP<CHCl3>+REF<Harris (1978)>+FOOT<Not ion-corrected>+FOOT<Phosphate buffer>+PH<7.0>|
+
+------
+
+/* chemical data tree */
+
+$MOL<C=O>
+  MF<CH2O>
+
+  /* cas number */
+
+  $CAS<50-00-0>
+    NAM<Formaldehyde>
+
+    /* property */
+
+    P<0.66>
+      /SOLP<CHCl3>
+      /REF<Harris (1978)>
+      /FOOT<Not ion-corrected>
+      /FOOT<Phosphate buffer>
+      /PH<7.0>
+|
+
+----
+
+how about:
+
+property->pname
+property->object = string OR stream
+cx_stringvalue(property->object = stream) = "a,b,c,d"

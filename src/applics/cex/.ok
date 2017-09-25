@@ -1,0 +1,202 @@
+/*****************************************************************************
+*  catcex.c -- a non-standard test program
+*----------------------------------------------------------------------------
+*  Contributing author and institution: Dave Weininger, Daylight CIS, Inc.
+*
+*  This source code is contributed to the public domain and may be freely
+*  copied and redistributed for research, profit, fun or any other reason,
+*  with these restrictions: (1) unmodified or functionally equivalent code
+*  derived from CX code must contain this notice, (2) all derived code must
+*  acknowledge the author and institution, and (3) the functional definition
+*  of symbols starting CX_ or cx_ may not be changed (if you need to change
+*  a function, CHANGE THE NAME: prefixes CU_ and cu_ are suggested).
+*****************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+#include "cx.h"
+#include "cx_molecule.h"
+#include "cx_surface.h"
+#include "cu_camera.h"
+
+/*** Handy macro. ***/
+
+#define NOTE(msg)  cx_error_save(msg, CX_ERR_NOTE,  *av0)
+#define FATAL(msg) cx_error_save(msg, CX_ERR_FATAL, *av0)
+
+/*============================================================================
+ *  proginit() -- interpret arguments, initialize program
+ *
+ *  On error, writes usage summary and exits.
+ */
+
+static void proginit(int *pac, char **argv, cx_String *mlev,
+                     int *oa, int *od, int *ot)
+{
+   int    ia, ac;
+   char  *fn, *oops, *oops2, *a, **av, **av0 = argv;
+   FILE  *fp;
+
+   /*** Set default values. ***/
+
+   *oa   = FALSE;
+   *od   = FALSE;
+   *ot   = FALSE;
+   *mlev = CX_ERR_ERROR;
+    oops = NULL;
+
+   /*** Consume options leaving only file names as arguments. ***/
+
+   for (*pac = 1, av = ++argv; *av; av++) {
+
+      /*** Consume known options. ***/
+
+      if ('-' == **av) {
+         if      (0 == cx_strcmp(*av, "-fd")) cx_cex_set_listfmt(CX_FMT_DUMP);
+         else if (0 == cx_strcmp(*av, "-fl")) cx_cex_set_listfmt(CX_FMT_LIST);
+         else if (0 == cx_strcmp(*av, "-fr")) cx_cex_set_listfmt(CX_FMT_RAW );
+         else if (0 == cx_strcmp(*av, "-me")) *mlev = CX_ERR_ERROR;
+         else if (0 == cx_strcmp(*av, "-mn")) *mlev = CX_ERR_NOTE;
+         else if (0 == cx_strcmp(*av, "-mw")) *mlev = CX_ERR_WARN;
+         else if (0 == cx_strcmp(*av, "-oa")) *oa   = TRUE;
+         else if (0 == cx_strcmp(*av, "-od")) *od   = TRUE;
+         else if (0 == cx_strcmp(*av, "-ot")) *ot   = TRUE;
+         else if (0 == cx_strcmp(*av, "-"  )) { *argv++ = *av; *pac += 1; }
+         else { oops = "unknown option"; oops2 = *av; }
+
+      /*** Leaving other arguments in NULL-terminated list argv. ***/
+
+      } else {
+         *argv++  = *av;
+         *pac    += 1;
+      }
+   }
+   *argv = NULL;
+
+   /*** Open and close input file(s) to prove we can do it. ***/
+
+   for (av = av0 + 1; *av; av++) {
+      if      (0 == strcmp("-", *av)         ) continue;
+      else if (NULL != (fp = fopen(*av, "r"))) fclose(fp);
+      else { oops  = "Can't open file:"; oops2 = *av; break; }
+   }
+
+   /*** Reject request if incompatible options are specified. ***/
+
+   if (*od && *ot) {
+      oops  = "both -od and -ot specified";
+      oops2 = "(all output would be suppressed)";
+   } else if (*oa && *od) {
+      oops  = "both -oa and -od specified";
+      oops2 = "(can't `write all' & `suppress all' datatypes)";
+   }
+
+   /*** Initialize known packages. ***/
+
+   cx_molecule_pkg();
+   cx_surface_pkg();
+   cu_camera_pkg();
+
+   /*** Exit on syntax error. ***/
+
+   if (oops) {
+      NOTE ("catcex -- concatenate and reformat cex streams"     );
+      NOTE (""                                                   );
+      FATAL(oops                                                 );
+      FATAL(oops2                                                );
+      NOTE (""                                                   );
+      NOTE ("Usage:  catcex [options] [in.cex [in.cex...]]"      );
+      NOTE (""                                                   );
+      NOTE ("Standard input used if file spec(s) are omitted"    );
+      NOTE ("or where \"-\" is encountered in the list of files.");
+      NOTE ("Output is combined and sent to standard output."    );
+      NOTE (""                                                   );
+      NOTE ("Error message control options (at most one of):"    );
+      NOTE ("  -me: show ERROR messages only (default)"          );
+      NOTE ("  -mn: show NOTE, WARNING and ERROR messages"       );
+      NOTE ("  -mw: show WARNING and ERROR messages"             );
+      NOTE (""                                                   );
+      NOTE ("Format control options (at most one of):"           );
+      NOTE ("  -fd: dump format, eot newlines"                   );
+      NOTE ("  -fl: list format, eod & eod newlines (default)"   );
+      NOTE ("  -fr: raw  format, no newlines"                    );
+      NOTE (""                                                   );
+      NOTE ("Datatype control options:"                          );
+      NOTE ("  -oa: write all (even unreferenced) datatypes"     );
+      NOTE ("  -od: output (d)ata only, suppress datatypes"      );
+      NOTE ("  -ot: output data(t)ypes only, suppress data"      );
+      cx_error_spew(stderr, NULL);
+      exit(1);
+   }
+}
+
+/*============================================================================
+ *  main() non-standard test program
+ */
+
+int main(int argc, char **argv)
+{
+   int         oa, od, ot;
+   char      **av, *mlev;
+   cx_Object   ob, table, ins, outs;
+
+   /*** Initialize program (consumes option arguments). ***/
+
+   proginit(&argc, argv, &mlev, &oa, &od, &ot);
+
+   /*** Get default datatype table. ***/
+
+   table = cx_default_datatypetable();
+
+   /*** Loop over remaining file name arguments. ***/
+
+   outs = cx_create_iostream("-", CX_IO_WRITE);
+
+   for (av = argv + 1; *av; av++) {
+      if (NULL == (ins = cx_create_iostream(*av, CX_IO_READ))) {
+         cx_error_save("Can't open file!", CX_ERR_FATAL, *argv);
+         cx_error_save(*av,                CX_ERR_FATAL, *argv);
+	 continue;
+      }
+
+      /*** Loop over objects on input stream. ***/
+
+      while (NULL != (ob = cx_receive(NULL, ins, outs))) {
+
+         /*** If datatype output suppressed, fool table. ***/
+
+         if (od) cx_e_dt_table_setmarks(table, TRUE);
+
+	 /*** Add datatype to root object. ***/
+
+         cx_set_datatype(ob, cx_tag2datatype(table, "MOL"));
+
+         /*** Write data to output if not suppressed. ***/
+
+         if (!ot) cx_append(outs, ob);
+
+         /*** Toss object. ***/
+
+         cx_destroy(ob);
+      }
+
+      /*** Close file and show errors. ***/
+
+      cx_error_spew(stderr, mlev);
+      cx_destroy(ins);
+   }
+
+   /*** If required (-oa), write remaining datatypes to output. ***/
+
+   if (oa) cx_append(outs, table);
+
+   /*** Spew errors to stderr. ***/
+ 
+   cx_error_spew(stderr, NULL);
+ 
+   /*** Clean up and exit with 0. ***/
+ 
+   cx_destroy(outs);
+   cx_cleanup();
+   exit(0);
+}

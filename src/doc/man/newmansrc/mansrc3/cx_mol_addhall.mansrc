@@ -1,0 +1,33 @@
+<fn>
+cx_e_mol_addhall() \- make all implicit hydrogens explicit
+<fp>
+void cx_e_mol_addhall(cx_Object);
+<fc>
+#include "cx.h"
+.br
+void cx_e_mol_addhall(cx_Object mol);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, cx_f_addhall()
+.br
+call cx_f_addhall(mol)
+<description>
+Creates explicit hydrogen atoms connected to each atom with a non-zero
+atomic property "implicit hcount"
+and sets the "implicit hcount" to zero.
+This leaves the molecule in a "hydrogen complete" representation.
+<returns>
+No return value.
+<diagnostics>
+None.  No-op if argument is NULL.
+<seealso>
+cx_mol_addhall(3cx)
+cx_mol_setimph(3cx)
+cx_mol_zaph(3cx)
+<bugs>
+None known.
+<objects>
+atom
+molecule
+property

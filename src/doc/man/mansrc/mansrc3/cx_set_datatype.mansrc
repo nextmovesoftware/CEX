@@ -1,0 +1,41 @@
+<fn>
+cx_set_datatype \- associate a datatype with an object
+<fp>
+cx_Object cx_set_datatype(cx_Object, cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_set_datatype(cx_Object ob, cx_Object datatype);
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 ok
+.br
+integer*4 ob, dt, cx_f_set_datatype()
+.br
+ok = cx_f_set_datatype(ob, dt)
+<description>
+Associates the datatype `dt' with the object `ob' and returns success.
+
+Associating a datatype with an object makes it visible,
+i.e., specifies that it should be (and how it should be) written to output.
+
+Setting an object's datatype to NULL makes it invisible.
+<returns>
+Returns TRUE if successful, FALSE if not.
+<diagnostics>
+FALSE is quietly returned on error
+(i.e., `dt' is neither NULL nor a datatype).
+<seealso>
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_datatype(3cx)
+cx_default_datatypetable(3cx)
+cx_pname2datatype(3cx)
+cx_reset(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

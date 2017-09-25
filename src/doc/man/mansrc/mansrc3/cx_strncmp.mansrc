@@ -1,0 +1,36 @@
+<fn>
+cx_strncmp \- robust comparison of length-delimited strings
+<fp>
+cx_Integer cx_strncmp(cx_String, cx_String, cx_Integer);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_strncmp(cx_String s1, cx_String s2, cx_Integer n);
+<ff>
+(not applicable)
+<description>
+Compares at most `n' characters of its arguments and returns an
+integer greater than, equal to, or less than 0, according as `s1' is
+lexicographically greater than, equal to, or less than `s2'.
+The NULL string is treated as lexicographically less than
+any non-NULL string (including the empty string).
+
+This function is similar to the C library function strncmp(3),
+differing only in how it handles NULL arguments.
+<returns>
+Returns a cx_Integer.
+<diagnostics>
+None.
+<seealso>
+cx_strcat(3cx)
+cx_strcmp(3cx)
+cx_strdup(3cx)
+cx_strlen(3cx)
+cx_strndup(3cx)
+cx_strqbrk(3cx)
+<bugs>
+The treatment of NULL by cx_strncmp() is robust and semantically consistent
+but inconvenient if onw wants to treat NULL as equal to the empty string.
+
+A Fortran wrapper for this function should be available.
+<objects>

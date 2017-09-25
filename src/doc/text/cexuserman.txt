@@ -1,0 +1,49 @@
+
+
+                               CEX User's Guide
+                                 Version 0.33
+
+
+                                    AUTHOR
+
+                                Dave Weininger
+                              Daylight CIS, Inc.
+
+
+                                   ABSTRACT
+
+	This guide contains an introduction to the CEX utilities
+	oriented to the end-user, provides an overview of the CEX
+        applications supplied in this release and illustrates the
+        intended usage of these applications.
+
+	In this release, the user guide is just a stub, which will be
+	filled out after the initial set of applications settles down.
+
+
+                                    NOTICE
+
+        This document is contributed to the public domain and may
+        be freely copied, modified, and redistributed for research,
+        profit, fun or any other reason.  Proper acknowlegement of
+        the author and institution is expected in accordance with
+        normal academic standards.
+
+
+                               TABLE OF CONTENTS
+
+        (just a stub)
+
+
+
+This guide hasn't been written yet.
+
+The application programs provided in this release are:
+
+   amw .......... adds AMW (ave mol wt) to molecules on CEX stream
+   catcex ....... concatenate and reformat CEX streams
+   cex2pdb ...... convert molecules on CEX stream to Brookhaven PDB format
+   hydrogenate .. add (or remove) CEX molecule hydrogens
+   pdb2cex ...... interpret Brookhaven PDB format, generate CEX molecule
+   printcex ..... print CEX stream objects as datatrees
+   printmol ..... print molecules on cex stream

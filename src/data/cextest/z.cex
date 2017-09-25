@@ -1,0 +1,56 @@
+$D<$MOL>
+_P<molecule>
+_V<Molecule>
+_S<1M>
+_L<XSMILES>
+_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<REM>
+_P<remark>
+_V<Remark>
+_S<1M>
+_L<STRING>
+_X<General purpose ASCII text>
+|
+$D<XYZ>
+_P<coordinates>
+_V<Conformation>
+_S<3A>
+_L<REAL>
+_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<RESNO>
+_P<resno>
+_V<Residue number>
+_S<1A>
+_L<INTEGER>
+_X<Residue number>
+|
+$D<RESNA>
+_P<resname>
+_V<Residue name>
+_S<1A>
+_L<STRING>
+_X<Residue number, typically three upper case letters>
+|
+$D<NAM>
+_P<name>
+_V<Name>
+_S<1M>
+_L<STRING>
+_X<Name as arbitrary ASCII text>
+|
+$D<ALAB>
+_P<Alabel>
+_V<Atomic label>
+_S<1A>
+_L<STRING>
+_X<Atom name as arbitrary ASCII text>
+|
+$MOL<[C]1([C]([C]=N[C]([N]1)[N])[C]C=2[C]=C(C(=C([C]2)O[C])O[C])O[C])[N]>
+REM<TRIMETHOPRIM>
+XYZ<6.222,0.27,-8.799,6.464,1.141,-7.691,5.69,2.329,-7.677,4.81,2.599,-8.634,4.682,1.712,-9.601,5.332,0.575,-9.732,6.87,-0.873,-8.952,3.808,1.993,-10.536,7.472,0.895,-6.537,10.266,3.472,-6.042,9.06,2.783,-5.914,8.8,1.653,-6.692,9.756,1.223,-7.615,10.949,1.925,-7.778,11.219,3.041,-6.972,11.896,1.465,-8.753,11.819,2.107,-10.044,12.424,3.804,-7.149,13.634,3.229,-6.61,10.482,4.667,-5.277,10.997,4.483,-3.942>
+RESNO<1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1>
+RESNA<RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES>
+ALAB< C1 , C2 , C3 , NH1, C4 , N<2, N3 , NH4, C5 , C6 , C7 , C8 , C9 , C10, C11, O1 , C12, O2 , C13, O3 , C14>
+|

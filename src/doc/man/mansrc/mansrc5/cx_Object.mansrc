@@ -1,0 +1,12 @@
+<pt>
+cx_Object \- CX primitive object handle
+<description>
+A cx_Object primitive represents an opaque reference to an object.
+A cx_Object representation always has at least 32 significant bits.
+In the CX system, all complex (i.e., non-primitive) types of information 
+are objects which are referred to exclusively by cx_Object handles.
+
+In the ANSI-C interface, cx_Object is typedef'd to (void *).
+
+In the Fortran interface, a cx_Object is an INTEGER*4.
+<seealso>

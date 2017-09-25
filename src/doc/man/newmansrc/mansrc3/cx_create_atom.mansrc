@@ -1,0 +1,32 @@
+<fn>
+cx_create_atom \- create an atom in a molecule
+<fp>
+cx_Object cx_create_atom(cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_atom(cx_Object mol)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 atom, mol, cx_f_create_atom()
+.br
+atom = cx_f_create_atom(mol)
+<description>
+Creates a new atom in the given molecule.
+The returned atom is has no preset properties:
+they must be set explicitly.
+In general, at least the "atomic number" property should be set
+(typically with cx_set_iprop(3cx)).
+<returns>
+Returns a newly-created atom object or NULL.
+<diagnostics>
+Returns NULL quietly if argument is not a molecule.
+<seealso>
+cx_create_bond(3cx)
+cx_create_molecule(3cx)
+<bugs>
+None known.
+<objects>
+atom
+molecule

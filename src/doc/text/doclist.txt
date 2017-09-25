@@ -1,0 +1,144 @@
+
+
+                            CEX Documentation List
+                                 Version 0.33
+
+
+
+The following documents are supplied with this distribution:
+
+   1. CEX Documentation List
+
+      This is the document you are currently reading.  It mainly
+      provides a place to keep track of all the documentation for
+      a given release.
+
+      source:  $CX_ROOT/src/doc/doclist.txt
+      product: $CX_ROOT/doc/doclist.txt
+      status:  done
+
+
+   2. Orientation README
+
+      The top-level README is a short note to the initial installer
+      outlining the distribution contents, avaliable documentation,
+      and installation procedures.
+
+      source:  $CX_ROOT/README
+      product: $CX_ROOT/README
+      status:  not done
+
+
+   3. CEX User's Guide
+
+      The user guide is intended to contain an introduction to the CEX
+      utilities oriented to the end-user, provide an overview of the
+      CEX applications supplied in this release and to illustrate the
+      intended usage of these applications.  In this release, the user
+      guide is just a stub, which will be filled out after the initial
+      set of applications settles down.
+
+      source:  $CX_ROOT/src/doc/guides/cexuserman.txt
+      product: $CX_ROOT/doc/guides/cexuserman.txt
+      status:  not done
+
+
+   4. CEX Programmer's Guide
+
+      The programmer's guide is intended to provide information and
+      guidance needed to port an existing application to use CEX I/O
+      or to write a native CEX filter.  The current incarnation is
+      kind of heavy on philosophy and a bit light on complex examples.
+      By design, it contains no reference information.
+
+      source:  $CX_ROOT/src/doc/guides/cexprogman.txt
+      product: $CX_ROOT/doc/guides/cexprogman.txt
+      status:  done
+
+
+   5. CEX Developer's Guide
+
+      The developer's guide contains information about the CX development
+      system itself and instructions for programmers who are interested
+      in doing low-level things like inventing their own object classes.
+      Some of the information contained here probably belongs in the
+      programmer's guide.
+
+      source:  $CX_ROOT/src/doc/guides/cexdevman.txt
+      product: $CX_ROOT/doc/guides/cexdevman.txt
+      status:  mostly done
+
+
+   6. man(1cx) pages
+
+      Section 1cx manual pages provide reference for CEX application
+      programs.  The manual pages provided for CEX applications in this
+      release are complete, but the set of applications itself is far
+      from complete.
+
+      source:  $CX_ROOT/src/doc/man/mansrc/mansrc1/*.mansrc
+      product: $CX_ROOT/doc/man/man1cx/*.1cx        (man pages)
+               $CX_ROOT/doc/man/postman/man1cx.ps   (postscript version)
+      status:  done
+
+
+   7. man(3cx) pages
+
+      Section 3cx manual pages provide reference for CX library functions
+      in libcx.a and an example function in libcu.a.  These man pages
+      form the bulk of the documentation needed to create CEX-compatible
+      programs.  Only high-level CX-interface functions used at the
+      application-level are described in detail (one per page).
+      Low-level functions are all described on the lowelevel(3cx) page.
+
+      source:  $CX_ROOT/src/doc/man/mansrc/mansrc3/*.mansrc
+      product: $CX_ROOT/doc/man/man3cx/*.3cx        (man pages)
+               $CX_ROOT/doc/man/postman/man3cx.ps   (postscript version)
+      status:  done
+
+
+   8. man(5cx) pages
+
+      Section 5cx manual pages provide reference for CX primitive and
+      object types.
+
+      source:  $CX_ROOT/src/doc/man/mansrc/mansrc5/*.mansrc
+      product: $CX_ROOT/doc/man/man5cx/*.5cx        (man pages)
+               $CX_ROOT/doc/man/postman/man5cx.ps   (postscript version)
+      status:  done
+
+
+   9. STATUS
+
+      A synopsis of the status of the current release.
+
+      source:  $CX_ROOT/doc/STATUS
+      product: $CX_ROOT/doc/STATUS
+      status:  done
+
+
+  10. CREDITS
+
+      This file contains two lists: contributor's names by contribution
+      and contributor's institutions by contributor name.
+
+      source:  $CX_ROOT/doc/CREDITS
+      product: $CX_ROOT/doc/CREDITS
+      status:  done
+
+  11. PROJECTS
+
+      A list of outstanding CEX system tasks that need doing.  Volunteer!
+
+      source:  $CX_ROOT/doc/PROJECTS
+      product: $CX_ROOT/doc/PROJECTS
+      status:  done
+
+  12. CHANGELOG
+
+      This is a cumulative list of changes to previous versions for the
+      benefit of CEX system developers.
+
+      source:  $CX_ROOT/doc/CHANGELOG
+      product: $CX_ROOT/doc/CHANGELOG
+      status:  done

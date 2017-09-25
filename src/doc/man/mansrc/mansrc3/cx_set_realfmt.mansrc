@@ -1,0 +1,47 @@
+<fn>
+cx_set_realfmt \- set the format used by cx_set_rprop()
+<fp>
+void cx_set_realfmt(cx_String);
+<fc>
+#include "cx.h"
+.br
+void cx_set_realfmt(cx_String fmt);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) fmt;
+.br
+call cx_f_set_realfmt(fmt)
+<description>
+Set the format that cx_set_rprop() uses to write cx_Real numbers.
+The format is interpreted as per C's sprintf(3), and is initially "%g".
+If called with NULL, sets the default value.
+
+If you are processing real-valued properties with variable precision,
+consider creating them via cx_set_sprop() with the correct precision
+rather than using general or fixed floating point formats.
+See the program amw(1cx) for an example.
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+<returns>
+No return value.
+<diagnostics>
+None.
+<seealso>
+amw(1cx)
+sprintf(3)
+cx_iprop(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_rprop(3cx)
+cx_set_sprop(3cx)
+cx_sprop(3cx)
+<bugs>
+None known.
+<objects>
+property
+string

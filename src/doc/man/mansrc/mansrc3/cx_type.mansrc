@@ -1,0 +1,43 @@
+<fn>
+cx_type \- return an object's type (class)
+<fp>
+cx_Integer cx_type(cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_type(cx_Object ob)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 ob, typ, cx_f_type()
+.br
+typ = cx_f_type(ob)
+<description>
+Returns an object's type as an integer flag as per header file.
+<returns>
+Returns one of the integer type flags in cx_types.h.
+<diagnostics>
+CX_OB_INVALID is quietly returned if `ob' is NULL.
+<seealso>
+cx_typename(3cx)
+cx_typename2type(3cx)
+cx_type2typename(3cx)
+<bugs>
+The use of the word "type" is intended to avoid the use of the word "class"
+which is a keyword in most C++ capable debuggers.
+Unfortunately, "type" is a reserved word in some languages also
+(e.g., VMS Fortran).  Awkward, huh?
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

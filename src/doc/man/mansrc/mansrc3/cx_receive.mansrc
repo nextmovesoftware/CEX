@@ -1,0 +1,45 @@
+<fn>
+cx_receive \- get object from CEX input stream
+<fp>
+cx_Object cx_receive(cx_Object, FILE *, FILE *);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_receive(cx_Object table, FILE *fpin, FILE *fpout)
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 uin, uout, table, ob, cx_f_receive()
+.br
+ob = cx_f_receive(table, uin, uout)
+<description>
+This returns the first available object on the given CEX input stream
+which is of a registered type (but not a datatype).
+Datatypes on input are installed in the specified datatype `table'.
+If `fpout' is not NULL, copies unexpected (unregistered) CEX objects to
+that output stream.
+
+The returned object is complete with children, properties, and associated
+datatypes as per the input stream.
+
+In the current release there is only one kind of registered
+object (a molecule), so this function always returns a molecule (or NULL).
+<returns>
+Returns an object handle or NULL on EOF or error.
+<diagnostics>
+NULL is quietly returned if at EOF (can be checked with cx_cex_eof()).
+Error messages are written in all other cases:
+
+   ERROR   non-identifier root dataitem: <tag> <data>
+   ERROR   unknown root datatype:        <tag> <data>
+   ERROR   datatype missing language:    <tag> <data>
+   NOTE    CEX object of unregistered type copied to output
+   WARNING CEX object of unregistered type encountered
+<seealso>
+cx_send(3cx)
+cx_cex_eof(3cx)
+cx_molecule_pkg(3cx);
+<bugs>
+None known.
+<objects>
+molecule

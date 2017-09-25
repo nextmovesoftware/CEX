@@ -1,0 +1,29 @@
+<pn>
+hydrogenate \- add (or remove) CEX molecule hydrogens
+<ps>
+hydrogenate [-ha|-hc|-hr|-hx] [-me|-mn|-mw] [in.cex [out.cex]]
+<description>
+hydrogenate adds (or removes) hydrogens from molecules on a CEX stream,
+using the standard CX methods cx_mol_addhall(3cx), cx_mol_setimph(3cx),
+and/or cx_mol_zaph(3cx), depending on the option selected.
+
+Standard input is used if `in.cex' is not specified.
+Standard output used if `out.cex' is not specified.
+(hydrogenate is a standard CEX file if neither are specified.)
+Error messages are always written to standard error.
+<options>
+Options may include one of:
+   -ha: convert hydrogen counts to hydrogen atoms
+   -hc: invent hydrogen counts from scratch
+   -hr: remove normal hydrogens, update counts
+   -hx: make explicit hydrogens, like -hc then -ha (default)
+
+and one of:
+   -me: show ERROR messages only (default)
+   -mn: show NOTE, WARNING & ERROR messages
+   -mw: show WARNING and ERROR messages
+<diagnostics>
+A usage summary is written to standard error on calling syntax error,
+e.g., hydrogenate -help.
+<bugs>
+None known.

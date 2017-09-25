@@ -1,0 +1,34 @@
+<fn>
+cx_strqbrk \- robust unquoted character finding
+<fp>
+cx_String cx_strqbrk(cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_strqbrk(cx_String s1, cx_String s2);
+<ff>
+(not applicable)
+<description>
+strpbrk() returns a pointer to the first unquoted occurrence in string `s1'
+of any character from string `s2',
+or a NULL pointer if no character from `s2'
+exists in the unquoted portion(s) of `s1'.
+Portions of `s1' between matching double quotes are considered to be quoted.
+
+This function is similar to the C library function strpbrk(3),
+differing in that it ignores quoted portions of the string
+and in how it handles NULL arguments.
+<returns>
+Returns a pointer to a character inside `s1' as a cx_String.
+<diagnostics>
+NULL is quietly returned if either argument is NULL.
+<seealso>
+cx_strlen(3cx)
+cx_strdup(3cx)
+cx_strndup(3cx)
+cx_strcat(3cx)
+cx_strcmp(3cx)
+cx_strncmp(3cx)
+<bugs>
+None known.
+<objects>

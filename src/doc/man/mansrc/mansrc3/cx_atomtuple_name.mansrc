@@ -1,0 +1,32 @@
+<fn>
+cx_atomtuple_name \- return atomtuple's property name
+<fp>
+cx_String cx_atomtuple_name(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_atomtuple_name(cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) name, cx_f_atomtuple_name()
+.br
+integer*4     ob;
+.br
+name = cx_f_atomtuple_name(ob)
+<description>
+Returns the name of the atomic property that the given atomtuple represents.
+<returns>
+Returns a cx_String or NULL.
+<diagnostics>
+Returns NULL quietly on error (`ob' is not an atomtuple).
+<seealso>
+cx_bondtuple_name(3cx)
+cx_create_atomtuple(3cx)
+cx_prefix2atuples(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+string

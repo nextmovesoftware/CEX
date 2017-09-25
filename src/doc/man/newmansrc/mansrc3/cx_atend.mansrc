@@ -1,0 +1,45 @@
+<fn>
+cx_atend \- test if a stream or sequence is at the end
+<fp>
+cx_Integer cx_atend(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_atend(cx_Object ss)
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 atend
+.br
+logical*4 cx_f_atend()
+.br
+atend = cx_f_atend(ss)
+<description>
+Returns TRUE if and only if the given stream or sequence `ss'
+is at the end, e.g., if the next call to cx_next() would return
+a NULL due to end-of-sequence.
+
+dt_atend() is primarily to enumerate sequences which might contain NULL, e.g.,
+
+   cx_reset(seq);
+   while (!cx_atend(seq) && ob = cx_next(seq))
+      /* process object ob which is possibly NULL */
+
+Although dt_atend() works on streams, it is never really needed since
+streams do not contain NULL objects.
+<returns>
+Returns TRUE if at the end of stream or sequence, FALSE otherwise.
+<diagnostics>
+FALSE is quietly returned if argument `ss' is not a sequence or stream.
+<seealso>
+cx_append(3cx)
+cx_create_sequence(3cx)
+cx_delete(3cx)
+cx_next(3cx)
+cx_reset(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+sequence
+stream

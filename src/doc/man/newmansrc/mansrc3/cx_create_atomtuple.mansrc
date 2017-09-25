@@ -1,0 +1,41 @@
+<fn>
+cx_create_atomtuple \- create an atomtuple for molecule
+<fp>
+cx_Object cx_create_atomtuple(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_create_atomtuple(cx_Object mol, cx_String name);
+<ff>
+include 'cx_f.inc'
+.br
+character*(*) name
+.br
+integer*4     atuple, mol, cx_f_create_atomtuple()
+.br
+atuple = cx_f_create_atomtuple(mol, name)
+<description>
+Creates an atomtuple object with given parent molecule and property name.
+
+Note that atom properties don't "need" atomtuples ... atomtuples exist
+only when one needs to refer to a given atomic property for all atoms in
+a molecule (e.g., to delete them or output them as a molecule property).
+<returns>
+Returns a newly-created atomtuple object or NULL.
+<diagnostics>
+Returns NULL quietly if `mol' is not a molecule
+or if `name' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_atomtuple_name(3cx)
+cx_create_bondtuple(3cx)
+cx_prefix2atuples(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+molecule
+property

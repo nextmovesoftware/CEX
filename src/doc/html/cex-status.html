@@ -1,0 +1,301 @@
+<HTML><HEAD>
+<TITLE>CEX Status</TITLE>
+<CENTER>
+<H2>CEX Status</H2>
+<P>
+Current status of CEX distribution.
+<P>
+Last modified: 23 Oct 1995
+</P>
+</CENTER>
+The <A HREF=cex-home.html>CEX Home Page</A>
+and a <A HREF=cex-doclist.html>documentation list</A> are available.
+</HEAD>
+<BODY>
+<HR>
+
+<H2>Current version and availability</H2>
+
+The current version is 0.33.
+<P>
+The intention is to make this available for development purposes as ftp
+archives under /pub/cex/cex033:  The clean (unmade) source code will be
+archived as:
+<PRE>
+   cex033.clean.tar.gz
+</PRE>
+Binary versions for specific environments contain object libraries and
+executables.  They will be added as they become available and include:
+<PRE>
+   cex033.sun4bin.tar.gz ......... SunOS 4.x
+   cex033.sun5bin.tar.gz ......... SunOS 5.4, Solaris 2.4
+   cex033.sgi4bin.tar.gz ......... Irix 4.x
+   cex033.sgi5bin.tar.gz ......... Irix 5.x
+   cex033.osf1bin.tar.gz ......... OSF-1 (Alpha)
+   cex033.hpuxbin.tar.gz ......... HP/UX
+   cex033.macbin.tar.gz .......... MacOS
+   cex033.winbin.tar.gz .......... Windows-3.1, Windows-95
+</PRE>
+
+<BR>
+<H2>Executable components</H2>
+<DL>
+   <DT><B>amw</B>
+   <DD>A filter which adds "ave mol wt" (amw) property to each molecule in
+       a CEX stream.   amw is defined to be the average molecular weight
+       as the sum of average atomic weights with natural isotope abundances.
+       The atomic mass of the most stable isotope is used for elements which
+       have no natural abundances.  Real, variable precision results are
+       produced, with precision dictated by natural variation.
+<P>
+       The program amw is intended to be an archetype cex filter.
+<P>
+   <DT><B>bondage</B>
+   <DD>Deduces connectivity and bond order from geometry (atom coordinates).
+       Current (033) version is operational but adds bond order only.
+       Future versions are expected to add hydrogens and hybridization props.
+<P>
+   <DT><B>catcex</B>
+   <DD>Reads multiple cex streams, writes a single cex stream.  Doesn't do
+       anything that /usr/bin/cat can't do, but the output stream is smaller.
+<P>
+   <DT><B>cex2pdb</B>
+   <DD>Converts molecules on a cex stream to Brookhaven PDB format.
+<P>
+   <DT><B>chains</B>
+   <DD>Deduces peptide chain and residues for molecules in a cex stream,
+       adds them as atom properties.  A work in progress.
+<P>
+   <DT><B>checksum</B>
+   <DD>A checksum program used for self-validation of released source code.
+<P>
+   <DT><B>connect</B>
+   <DD>Deduces connectivity (adds single bonds) from interatomic distances
+       (atom coordinates) for molecules in a cex stream.
+<P>
+   <DT><B>countcode</B>
+   <DD>A simple utility which counts and classifies C source code by line.
+<P>
+   <DT><B>hydrogenate</B>
+   <DD>Adds (or removes) hydrogens to (from) molecules on a cex stream.
+<P>
+   <DT><B>pdb2cex</B>
+   <DD>Converts a Brookhaven PDB format to a cex stream.
+<P>
+   <DT><B>printcex</B>
+   <DD>Prints visible components in a cex stream as formatted text.
+<P>
+   <DT><B>printmol</B>
+   <DD>Prints molecules in a cex stream as formatted text, including all visible
+       and invisible properties and properties of children (atoms, bonds).
+<P>
+   <DT><B>rasmol</B>
+   <DD>A version of rasmol (2.6) which reads and writes cex streams.
+<P>
+</DL>
+
+<BR>
+<H2>Library components</H2>
+
+<DL>
+   <DT><B>libcu.a</B>
+   <DD>User-level (non-core) functions.
+<P>
+   <DD>The function cu_mol_setpart() sets a property based on membership
+   in disconnected molecular components.  It is a sample implementation
+   of a CU-level function.
+<P>
+   Support for the CX_CAMERA and CX_SURFACE objects
+   are included in this library.
+<P>
+   <DT><B>libcx.a</B>
+   <DD>Support for the CEX object environment, polymorphic functions,
+   datatype and molecule objects.
+<P>
+   <DT><B>libcx_f.a</B>
+   <DD>Fortran wrappers for all functions, all packages, all objects.
+<P>
+   <DT><B>libpdb.a</B>
+   <DD>Support for Brookhaven PDB format.  Read/write CX_MOLECULEs from/to
+   .PDB files, invent PDB-like atom labels.
+<P>
+   <DT><B>rasmol</B>
+   <DD>Directory containing rasmol's support files.
+   Currently contains only rasmol.hlp.
+<P>
+</DL>
+
+
+<BR>
+<H2>Object components</H2>
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION>
+<B>CEX root objects</B><BR>
+Root objects are those transmitted directly on a CEX stream.
+</CAPTION>
+
+<TR>
+<TH>class name</TH>
+<TH>class symbol</TH>
+<TH>class description</TH>
+</TR>
+
+<TR>
+<TD>datatype</TD>
+<TD><TT>CX_OB_DATATYPE</TT></TD>
+<TD>info mapping internal/external representation of objects, props</TD>
+</TR>
+
+<TR>
+<TD>molecule</TD>
+<TD><TT>CX_OB_MOLECULE</TT></TD>
+<TD>molecule, contains ATOMs & BONDs, all with properties</TD>
+</TR>
+
+<TR>
+<TD>surface</TD>
+<TD><TT>CX_OB_SURFACE</TT></TD>
+<TD>vertices & optional triangular faces representing a surface</TD>
+</TR>
+
+<TR>
+<TD>camera</TD>
+<TD><TT>CX_OB_CAMERA</TT></TD>
+<TD>a visual, 3-D point-of-view</TD>
+</TR>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+<TABLE BORDER>
+<CAPTION>
+<B>CEX base objects</B><BR>
+Base objects implement the CEX object model and are used internally.
+</CAPTION>
+
+<TR>
+<TH>class name</TH>
+<TH>class symbol</TH>
+<TH>class description</TH>
+</TR>
+
+<TR>
+<TD>invalid</TD>
+<TD><TT>CX_OB_INVALID</TT></TD>
+<TD>NULL, a valid pseudo-object</TD>
+</TR>
+
+<TR>
+<TD>any</TD>
+<TD><TT>CX_OB_ANY</TT></TD>
+<TD>represents any class of object</TD>
+</TR>
+
+<TR>
+<TD>string</TD>
+<TD><TT>CX_OB_STRING</TT></TD>
+<TD>a 0-terminated ASCII string</TD>
+</TR>
+
+<TR>
+<TD>errorqueue</TD>
+<TD><TT>CX_OB_ERRORQUEUE</TT></TD>
+<TD>a sequence of error strings</TD>
+</TR>
+
+<TR>
+<TD>stream</TD>
+<TD><TT>CX_OB_STREAM</TT></TD>
+<TD>an ordered collection of objects as an immutable container object</TD>
+</TR>
+
+<TR>
+<TD>sequence</TD>
+<TD><TT>CX_OB_SEQUENCE</TT></TD>
+<TD>an ordered collection of objects as a modifiable container object</TD>
+</TR>
+
+<TR>
+<TD>property</TD>
+<TD><TT>CX_OB_PROPERTY</TT></TD>
+<TD> a named, string-valued attribute of another object</TD>
+</TR>
+
+<TR>
+<TD>binary</TD>
+<TD><TT>CX_OB_BINARY</TT></TD>
+<TD>length-delimited string of bytes</TD>
+</TR>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION>
+<B>Primitive types</B><BR>
+Primitive types are used to communicate with calling programs.
+</CAPTION>
+
+<TR>
+<TH>type name</TH>
+<TH>C-typedef</TH>
+<TH><TT>FORTRAN<TT></TH>
+<TH>type description</TH>
+</TR>
+
+<TR>
+<TD>integer</TD>
+<TD>cx_Integer</TD>
+<TD><TT>INTEGER</TT></TD>
+<TD>NULL, a valid pseudo-object</TD>
+</TR>
+
+<TR>
+<TD>real</TD>
+<TD>cx_Real</TD>
+<TD><TT>REAL</TT></TD>
+<TD>represents any class of object</TD>
+</TR>
+
+<TR>
+<TD>binary</TD>
+<TD>cx_Binary</TD>
+<TD><TT>CHARACTER</TT></TD>
+<TD>an ASCII string with implicit length</TD>
+</TR>
+
+<TR>
+<TD>string</TD>
+<TD>cx_String</TD>
+<TD><TT>CHARACTER</TT></TD>
+<TD>an ASCII string with implicit length</TD>
+</TR>
+
+<TR>
+<TD>object</TD>
+<TD>cx_Object</TD>
+<TD><TT>INTEGER</TT></TD>
+<TD>an opaque handle to an object</TD>
+</TR>
+
+<TR>
+<TD>method</TD>
+<TD>cx_Method</TD>
+<TD><TT>INTEGER</TT></TD>
+<TD>an opaque handle to function</TD>
+</TR>
+
+</TABLE>
+</CENTER>
+
+</PRE>
+</BODY>
+<HR>
+</HTML>

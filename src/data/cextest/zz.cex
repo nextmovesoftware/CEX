@@ -1,0 +1,162 @@
+$D<$MOL>_P<molecule>_V<Molecule>_S<1M>_L<XSMILES>_X<Molecule represented in XSMILES (Exchange SMILES)>|
+$D<REM>
+_P<remark>
+_V<Remark>
+_S<1M>
+_L<STRING>
+_X<General purpose ASCII text>
+|
+$D<XYZ>
+_P<coordinates>
+_V<Conformation>
+_S<3A>
+_L<REAL>
+_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<XYZ>
+_P<coordinates>
+_V<Conformation>
+_S<3A>
+_L<REAL>
+_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<RESNO>
+_P<resno>
+_V<Atom residue number>
+_S<1A>
+_L<INTEGER>
+_X<Atom residue number>
+|
+$D<RESNA>
+_P<resname>
+_V<Atom residue name>
+_S<1A>
+_L<STRING>
+_X<Atom residue name, typically three upper case letters>
+|
+$D<NAM>
+_P<name>
+_V<Name>
+_S<1M>
+_L<STRING>
+_X<Name as arbitrary ASCII text>
+|
+$D<ANAM>
+_P<atomname>
+_V<Atom name>
+_S<1A>
+_L<STRING>
+_X<Atom name as arbitrary ASCII text>
+|
+$MOL<[C]1([C]([C]=N[C]([N]1)[N])[C]C=2[C]=C(C(=C([C]2)O[C])O[C])O[C])[N]>REM<TRIMETHOPRIM>XYZ<6.222,0.27,-8.799,6.464,1.141,-7.691,5.69,2.329,-7.677,4.81,2.599,-8.634,4.682,1.712,-9.601,5.332,0.575,-9.732,6.87,-0.873,-8.952,3.808,1.993,-10.536,7.472,0.895,-6.537,10.266,3.472,-6.042,9.06,2.783,-5.914,8.8,1.653,-6.692,9.756,1.223,-7.615,10.949,1.925,-7.778,11.219,3.041,-6.972,11.896,1.465,-8.753,11.819,2.107,-10.044,12.424,3.804,-7.149,13.634,3.229,-6.61,10.482,4.667,-5.277,10.997,4.483,-3.942>RESNO<1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1>RESNA<RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES,RES>ANAM< C1 , C2 , C3 , NH1, C4 , N<2, N3 , NH4, C5 , C6 , C7 , C8 , C9 , C10, C11, O1 , C12, O2 , C13, O3 , C14>
+|
+$D<XYZ>
+_P<coordinates>
+_V<Conformation>
+_S<3A>
+_L<REAL>
+_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<P>
+_P<logp>
+_V<Measured log(P)>
+_S<1M>
+_L<REAL>
+_X<Measured hydrophobicity as log10([organic]/[aqueous])>
+|
+$D<SOLP>
+_P<solventpair>
+_V<Solvent pair>
+_S<1>
+_L<STRING>
+_X<Solvent pair name(s); if only one present, the other is water>
+|
+$D<REF>
+_P<reference>
+_V<Reference>
+_S<1>
+_L<STRING>
+_X<Solvent name>
+|
+$D<FOOT>
+_P<footnote>
+_V<Footnote>
+_S<1>
+_L<STRING>
+_X<Useful standardized remarks>
+|
+$D<QAM>
+_P<qamark>
+_V<QA mark>
+_S<1>
+_L<STRING>
+_X<Quality assurance mark, typically one character>
+|
+$D<PH>
+_P<ph>
+_V<pH>
+_S<1>
+_L<REAL>
+_X<pH, -log10([H+])>
+|
+$D<F>
+_P<molform>
+_V<Molecular formula>
+_S<1M>
+_L<STRING>
+_X<Molecular formula, format [C#][H#]others alphabetically#,  e.g., C17H20N2S>
+|
+$D<COM>
+_P<comment>
+_V<Comment, free text like "Remark">
+_S<1>
+_L<STRING>
+_X<General purpose ASCII text -- for testing only>
+|
+$MOL<COC1=CC=C(OC)C(=C1)C(O)C(C)NC(C)(C)C>
+NAM<BUTOXAMINE>
+NAM<NSC106565>
+F<C15H25NO3>
+P<0.66>
+SOLP<CHCl3>
+REF<Harris, W. E. & Stahl, W. L., Biochem. Pharmacol., (1978) 27, 2015>
+FOOT<NOT ion-corrected~Phosphate buffer>
+PH<7.0>
+COM<ThisCommentHasNoSpacesInItxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.>
+COM<This is a long COMMENT which is used for testing text breaking and justification ... the idea is that it is mainly composed of short words but that it goes on for a while, e.g., several lines, and it should be broken up correctly!>
+REM<This is a long REMARK which is used for testing text breaking and justification ... the idea is that it is mainly composed of short words but that it goes on for a while, e.g., several lines, and it should be broken up correctly!>
+REM<ThisREMARKHasNoSpacesInItxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.>
+COM<This is a long COMMENT which is used for testing text breaking and justification ... the idea is that it is mainly composed of short words but that it goes on for a while, e.g., several lines, and it should be broken up correctly!>
+REM<a b c d e f g h i j k l m n o p q r s t u v w x y z>
+REM<a b c d e f g h i j k l m n o p q r s t u v w x y z1>
+REM<a b c d e f g h i j k l m n o p q r s t u v w x y z12>
+REM<a b c d e f g h i j k l m n o p q r s t u v w x y z123>
+REM<This one has breaks in the middle oftheremarkandshouldbesplit.>
+REM<This one has breaks onlyinthebeginningoftheremarkandshouldbetruncated.>
+REM<This one has breaks onlyinthebeginningoftheremarkandshouldbetruncated.  This islikethelastoneexceptthatitislongenoughtocheckcontinuations.>
+REM<This one has breaks onlyinthebeginningoftheremarkandshouldbetruncated.  This islikethelastone,exceptthatitcontainsacommawhichshouldbreak.>
+REM<This one has at least one word break in a "pretty good place", which is double-quoted.>
+REM<This one has at least one word break in a 'pretty good place', which is not double-quoted.>
+|
+$D<$CAS>
+_P<casno>
+_V<CAS Registry Number>
+_S<1M>
+_L<STRING>
+_X<Chemical Abstracts Registry Number>
+|
+$MOL<C=O>
+NAM<Formaldehyde>
+F<C2H2O>
+P<1.00>
+SOLP<CCCCCCCO>
+REF<Peter Pan, JIR (1908)>
+FOOT<Wierd>
+PH<7.0>
+$CAS<50-00-0>
+NAM<Formaldehyde>
+P<2.00>
+SOLP<CCCCCCCO>
+REF<Tinker Bell, JIR (1909)>
+PH<7.4>
+|

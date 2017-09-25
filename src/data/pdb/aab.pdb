@@ -1,0 +1,37 @@
+COMPND DIACETONE (PDB)
+REMARK Two acetones, in part order, numbered TERs
+ATOM      1  C1  RES     1       0.930   0.090   0.000
+ATOM      2  C2  RES     1      -0.500  -0.350  -0.100
+ATOM      3  O3  RES     1      -0.800  -1.540   0.120
+ATOM      4  O4  RES     1      -1.460   0.540  -0.410
+ATOM      5 1H1  RES     1       0.980   1.120   0.370
+ATOM      6 2H1  RES     1       1.400   0.040  -1.000
+ATOM      7 3H1  RES     1       1.470  -0.580   0.690
+ATOM      8  H4  RES     1      -2.020   0.680   0.340
+TER       9
+ATOM     10  C5  RES     1       0.930   0.090   6.000
+ATOM     11  C6  RES     1      -0.500  -0.350   5.900
+ATOM     12  O7  RES     1      -0.800  -1.540   6.120
+ATOM     13  O8  RES     1      -1.460   0.540   5.590
+ATOM     14 1H10 RES     1       0.980   1.120   6.370
+ATOM     15 2H10 RES     1       1.400   0.040   5.000
+ATOM     16 3H10 RES     1       1.470  -0.580   6.690
+ATOM     17  H13 RES     1      -2.020   0.680   6.340
+TER
+CONECT    1    2    5    6    7
+CONECT    2    1    3    3    4
+CONECT    3    2    2
+CONECT    4    2    8
+CONECT    5    1
+CONECT    6    1
+CONECT    7    1
+CONECT    8    4
+CONECT   10   11   14   15   16
+CONECT   11   10   12   12   13
+CONECT   12   11   11
+CONECT   13   11   17
+CONECT   14   11
+CONECT   15   11
+CONECT   16   11
+CONECT   17   13
+END

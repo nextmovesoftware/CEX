@@ -1,0 +1,47 @@
+<fn>
+cx_type2typename \- return the name of an object type
+<fp>
+cx_String cx_type2typename(cx_Integer)
+<fc>
+#include "cx.h"
+.br
+cx_String cx_type2typename(cx_Integer type)
+<ff>
+include 'cx_f.inc'
+.br
+character*() typename, cx_f_type2typename()
+.br
+integer*4    typ
+.br
+typename = cx_f_type2typename(typ)
+<description>
+Return the (string) name of an integer object type.
+This is not a critical function (but handy for debugging).
+
+For example:
+
+   "molecule" <= cx_type2typename(CX_OB_MOLECULE)
+<returns>
+Returns the name of an object type as a cx_String.
+<diagnostics>
+"Invalid" is returned if `type' is not a known type.
+<seealso>
+cx_type(3cx)
+cx_typename(3cx)
+cx_typename2type(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

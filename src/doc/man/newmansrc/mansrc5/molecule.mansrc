@@ -1,0 +1,32 @@
+<on>
+molecule \- object representing a molecule
+<description>
+A molecule object represents a valence model of molecule and contains
+atoms (with formal charges), bonds (with formal bond orders) and other
+information such as chirality, double bond orientation, and isotopic
+specifications.
+
+The molecule object type is CX_OB_MOLECULE
+and its typename is "Molecule".
+
+Molecule constituents include atoms, bonds,
+atomtuples (represent atom properties), and
+bondtuples (represent bond properties).
+
+A molecule can be created from an XSMILES with cx_smilin() or from scratch
+with cx_create_molecule().
+A molecule's stringvalue is its XSMILES.
+Standard molecule properties include "input smiles" (CX_PROP_INSMI)
+and "molecule name" (CX_PROP_MOLNAME).
+
+CX molecules do not have to be fully specified to be used as objects \-
+information is retained as to what is (and is not) known.
+However, to be useful for chemical information exchange, all heavy
+atoms must be specified and enough information must be provided to deduce
+hybridization and hydrogen presence (e.g., atomic coordinates with
+reasonably good geometry or hydrogen counts and bond orders).
+<seealso>
+atom(5cx)
+atomtuple(5cx)
+bond(5cx)
+bondtuple(5cx)

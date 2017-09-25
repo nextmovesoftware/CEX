@@ -1,0 +1,3 @@
+make whips && cat aa.cex | whips
+# make fellow && fellow
+# make felloworlds && felloworlds

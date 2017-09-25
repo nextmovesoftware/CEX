@@ -1,0 +1,63 @@
+<fn>
+cx_reset \- reset stream, sequence, or datatype table
+<fp>
+cx_Integer cx_reset(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_reset(cx_Object sst)
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 ok
+.br
+integer*4 cx_f_reset()
+.br
+ok = cx_f_reset(sst)
+<description>
+cx_reset() is polymorphic over streams, sequences, and datatypetables.
+
+When called with a stream or sequence,
+cx_reset repositions it to the beginnning,
+i.e. the first object in the stream or sequence will be returned
+by the next cx_next() call.
+
+When called with a datatypetable, resets all datatype marks
+used by cx_send() to implement the def-before-ref
+protocol on a CEX output stream, i.e., a marked datatype is one that has
+already been written to the stream.
+The datatype property "_mark" is used for this purpose.
+
+This function can be used to force cx_send() to unconditionally put all
+datatypes in `table' to stream 'fp':
+
+   cx_reset(table);
+   cx_send(table, table, fp);
+
+It should also be used when opening a new output stream,
+e.g., when reusing the default datatype table:
+   ...
+   fclose(fp)
+   fp = cx_fopen("newfile.cex", "w")
+   cx_reset(cx_default_datatypetable());
+   cx_send(mol, table, NULL)
+<returns>
+Returns TRUE if succeessful, FALSE if not.
+<diagnostics>
+FALSE is quietly returned if argument `ss' is not a sequence, stream,
+or datatypetable.
+<seealso>
+cx_append(3cx)
+cx_atend(3cx)
+cx_create_datatypetable(3cx)
+cx_create_sequence(3cx)
+cx_default_datatypetable(3cx)
+cx_delete(3cx)
+cx_next(3cx)
+cx_send(3cx)
+cx_stream(3cx)
+<bugs>
+None known.
+<objects>
+sequence
+stream

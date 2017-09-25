@@ -1,0 +1,30 @@
+<fn>
+cx_panic \- generate a panic message
+<fp>
+void cx_panic(cx_String, cx_String);
+<fc>
+#include "cx.h"
+.br
+void cx_panic(cx_String msg, cx_String src);
+<ff>
+include 'cx_f.inc'
+.br
+character*() msg, src
+.br
+call cx_f_panic(msg, src)
+<description>
+Prints a PANIC-level error message using only low level calls.
+This does not use the normal error queue and is suitable for
+reporting out-of-memory conditions.
+<returns>
+No return value.
+<diagnostics>
+None.
+<seealso>
+cx_error_save(3cx)
+cx_error_spew(3cx)
+cx_malloc(3cx)
+cx_realloc(3cx)
+<bugs>
+None known.
+<objects>

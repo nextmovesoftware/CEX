@@ -1,0 +1,381 @@
+<HTML><HEAD>
+<TITLE>CEX Projects List</TITLE>
+<CENTER>
+<H2>CEX Projects List</H2>
+<P>
+The following documents are supplied with the CEX 0.33 distribution.
+<P>
+Updated: 23 Oct 1995
+<P>
+</CENTER>
+<HR>
+The <A HREF=cex-home.html>CEX Home Page</A>
+and a <A HREF=cex-doclist.html>documentation list</A> are available.
+<HR>
+
+</HEAD><BODY>
+
+<B>Key:</B>
+[ ] = "not started",
+[o] = "in progress",
+[?] = "questionable task",
+[x] = "complete".
+<HR>
+
+<H3>Distribution</H3>
+<DL>
+<P><DT>
+[ ] Establish an internet address, register it as www.cex.org (or whatever)
+
+<P><DT>
+[o] Establish an FTP site, get it to respond to ftp://www.cex.org
+<DD>
+(Conrad Huang) For now, we're using ftp://cgl.ucsf.edu/pub/cex
+
+<P><DT>
+[o] Establish a CEX home page
+<DD>
+(Frank Brown) For now it's on www.cgl.ucsf.edu somewhere...
+
+<P><DT>
+[ ] Link releases to CEX home page
+<DD>
+(Dave Weininger) Will provide basic tars when needed.
+
+<P><DT>
+[ ] Find or hire an archiver, i.e., person to maintain/document releases
+
+</DL>
+
+
+<H3>Documentation</H3>
+<DL>
+
+<P><DT>
+[ ] document cx_tag2roottype(tag)
+
+<P><DT>
+[ ] document changes to surface and camera objects
+
+<P><DT>
+[o] document interchange languages
+<DD>
+(Dave Weininger) Adapt earlier documentation with language specifications.
+
+<P><DT>
+[ ] Convert man pages to HTML, link to home page
+
+<P><DT>
+[o] Convert documents to HTML, link to home page
+<DD>
+(Dave Weininger) Partially complete.
+
+<P><DT>
+[ ] Document programs in man(1cx) and or <I>CEX User's Guide</I>.
+
+</DL>
+
+
+<H3>Object interface</H3>
+<DL>
+<P><DT>
+[x] Add shapes for surface tuples.
+<DD>
+(Dave Weininger) Changed surface MAB to SVF (in 0.33).
+
+<P><DT>
+[ ] Consider IO object or FILE primitive.
+
+<P><DT>
+[ ] Build comprehensive fortran wrapper test program.
+
+</DL>
+
+
+<H3>Interoperability</H3>
+<DL>
+
+<P><DT>
+[ ] Decide on standard datatype source.
+<DD>
+Standard datatypes are in two places, $CX_ROOT/src/data/datatypes.cex
+and in functions such as cx_surface_create_datatypes(), which must agree
+with eachother.  There should be only authoritative source for standard
+datatypes.  Some choices might be:
+<P>
+<UL>
+<LI>Use $CX_ROOT/src/data/datatypes.cex exclusively.<P>
+
+<LI>Divide up $CX_ROOT/src/data/datatypes.cex into sections,
+e.g. molecule-dts.cex, surface-dts.cex, camera-dts.cex, etc.,
+and use catcex to insert them in a stream.<P>
+
+<LI>Create functions such as cx_surface_create_datatypes() for all
+packages and require their use.<P>
+</UL>
+
+<P><DT>
+[ ] Decide how to register datatypes and implement solution.
+<DD>
+By champion, committee, automatic database?
+
+</DL>
+
+
+<H3>Programs</H3>
+<DL>
+
+<P><DT>
+[ ] Resolve DGEOM license issue.
+<DD>
+<I>(Jeff Blaney, David Spellmeyer?)</I>
+
+<P><DT>
+[ ] Resolve COMPARE license issue.
+<DD>
+<I>(Jeff Blaney, David Spellmeyer?)</I>
+
+<P><DT>
+[ ] Document camera object in man(5)
+<DD>
+<I>(Conrad Huang?)</I>
+
+<P><DT>
+[ ] Document surface object in man(5)
+<DD>
+<I>(Dave Weininger?)</I>
+
+<P><DT>
+[ ] cex2surf -- create surface of CEX molecule
+<DD>
+<I>(Anthony Nichols?)</I>
+
+<P><DT>
+[ ] cex2gif2d -- create gif containing 2D depiction of CEX molecule
+
+<P><DT>
+[o] bring pdb directory up to standard
+<DD>
+(Dave Weininger) Updated library but needs checking.
+In particular, is the color representation acceptable?
+
+<P><DT>
+[o] Implement cex-stream servers: amw_cex, rasmol_cex, etc.
+<DD>
+Roger Sayle will have a crack at this.
+
+</DL>
+
+
+
+<H3>Ports and testing</H3>
+</DL>
+<P><DT>
+[o] Find champions for various architectures who will port/test O/S's
+<DD>
+Dave Weininger .... SunOS 4 and 5 (Solaris)
+<DD>
+Conrad Huang ...... OSF-1
+
+<P><DT>
+[ ] Do ports, build binary versions, and test:
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION><B>cex033 porting status</B></CAPTION>
+
+<TR>
+<TH COLSPAN=1 ROWSPAN=2></TH>
+<TH COLSPAN=2>SunOS</TH>
+<TH COLSPAN=3>Irix</TH>
+<TH COLSPAN=1>HP</TH>
+<TH COLSPAN=1>IBM</TH>
+<TH COLSPAN=2>DEC</TH>
+<TH COLSPAN=3>Macintosh</TH>
+<TH COLSPAN=2>Windows</TH>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD>4.1</TD>
+<TD>5.4</TD>
+<TD>4.x</TD>
+<TD>5.x</TD>
+<TD>6.x</TD>
+<TD>hp/ux</TD>
+<TD>aix</TD>
+<TD>osf-1</TD>
+<TD>vms</TD>
+<TD>mpw</TD>
+<TD>metro</TD>
+<TD>sym</TD>
+<TD>3.1</TD>
+<TD>-95</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>amw</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>o</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>basics</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>o</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>bondage<BR>compare<BR>dgeom<BR></TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>o<BR>o<BR>o</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>catcex<BR>printcex<BR>printmol<BR></TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>x<BR>x<BR>x</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>o<BR>o<BR>o</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+<TD>-<BR>-<BR>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>chains<BR>connect<BR></TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>o<BR>o</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>hydrogenate</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>o</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>mdl2cex<BR>cex2mdl<BR></TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>o<BR>o</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>pdb2cex<BR>cex2pdb<BR></TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>x<BR>x</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>o<BR>o</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+<TD>-<BR>-</TD>
+</TR>
+
+<TR ALIGN=CENTER>
+<TD ALIGN=LEFT>rasmol</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>x</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>o</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+<TD>-</TD>
+</TR>
+
+</TABLE>
+</CENTER>
+<HR>
+</BODY>
+</HTML>

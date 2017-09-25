@@ -1,0 +1,41 @@
+<fn>
+cx_mol_copy \- copy molecule
+<fp>
+cx_Object cx_mol_copy(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_mol_copy(cx_Object mol);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 mol, copy, cx_f_mol_copy()
+.br
+copy = cx_f_mol_copy(mol)
+<description>
+Returns a copy of the molecule, including copies of
+all atoms and their standard properties,
+all bonds and their standard properties,
+and the standard molecular properties "molname" (CX_PROP_MOLNAME)
+and "input smiles" (CX_PROP_INSMI).
+Other children and attributes (e.g., associated datatype) are not copied.
+<returns>
+Returns a handle to a new molecule or NULL.
+<diagnostics>
+Returns NULL quietly if `mol' is not a molecule.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_atom(3cx)
+cx_create_bond(3cx)
+cx_create_molecule(3cx)
+cx_mol_heavycopy(3cx)
+cx_smilin(3cx)
+<bugs>
+None known.
+<objects>
+atom
+bond
+molecule
+property

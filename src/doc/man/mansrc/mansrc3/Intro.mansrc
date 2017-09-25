@@ -1,0 +1,206 @@
+<fn>
+Intro \- introduction to CX library functions (3cx)
+<description>
+The CX library provides a complete machine-, language-, and
+program-independent interface for chemical information exchange.
+
+CX functions fall into five categories:
+internal CX functions,
+low-level CX object support,
+high-level CX object support,
+CX utilities, and
+user-level CU functions.
+These are described by category below.
+
+(1) INTERNAL CX FUNCTIONS
+
+The basis of the CX interface is a small set of functions which provide a
+limited object-orientation to programs written in non-object-oriented
+languages such as ANSI-C and Fortran.
+Examples are newclass() which creates a new object class
+and prop_destroy() which destroys a property and its children.
+Such functions are not accessible at all (they are static functions)
+are not documented here.
+
+(2) LOW-LEVEL CX OBJECT SUPPORT 
+
+Support for all kinds of CX objects is built on top of the internal
+function layer.
+Examples include cx_e_set_typename()
+which declares a new object type and its name,
+and cx_e_base_setproperty() which creates a generic property.
+Such functions are *not* intended to be used (or needed)
+by high-level CX programmers;
+they should be needed only by low-level programmers creating new object
+classes in ANSI-C.
+Low-level functions are accessible only by their raw entry point
+(names starting "cx_e_") \- language-independent wrappers are not provided.
+All low level object support functions are described on the
+lowlevel(3cx) man page and are not documented individually.
+
+(3) HIGH-LEVEL CX OBJECT SUPPORT 
+
+The high-level CX object support functions are the ones most
+CX programmers will use for virtually all CX-oriented tasks, e.g.,
+creating CEX interfaces to programs
+and creating CEX chemical information processing filters.
+Examples include cx_type() which returns an object's type,
+cx_set_sprop() which creates a property by string value,
+and cx_destroy() which deallocates any object.
+High-level functions are accessed by their language-dependent name
+(the name of the wrapper), i.e., names starting "cx_" from ANSI-C
+or "cx_f_" from Fortran.
+All high-level object support functions are described on their own
+man page, e.g., cx_type(3cx).
+
+The following library functions (in libcx.a)
+comprise the high-level CX object interface:
+
+   cx_ancestor \- return ancestor of object of a given type
+   cx_append \- append object to a sequence
+   cx_atend \- test if a stream or sequence is at the end
+   cx_binaryvalue \- return the binaryvalue of an object
+   cx_cex_eof \- is CEX input stream at EOF?
+   cx_cex_listfmt \- return current CEX output format
+   cx_cex_set_listfmt \- (re)set CEX output format
+   cx_cleanup \- recover resources used by all CX utilities
+   cx_count \- count object's children of a given type
+   cx_create_binary \- create binary object from binary data
+   cx_create_datatype \- create a datatype object
+   cx_create_datatypetable \- create a new datatypetable
+   cx_create_sequence \- create a new, empty sequence object
+   cx_create_string \- create a string object
+   cx_datatype \- return datatype associated with an object
+   cx_default_datatypetable \- return default datatype table
+   cx_destroy \- deallocate an object
+   cx_errorqueue \- return the errorqueue object
+   cx_error_count \- count errors of requisite severity
+   cx_error_save \- save an message in the error queue
+   cx_error_spew \- print formatted error messages
+   cx_iprop \- return a named property as an integer
+   cx_next \- return the next object in a stream or sequence
+   cx_parent \- return parent of object
+   cx_parse_binary \- create a binary object from ASCII data
+   cx_pname2datatype \- find datatype by property name
+   cx_prop_name \- return the name of a property object
+   cx_realfmt \- get format used by cx_set_rprop()
+   cx_receive \- get object from CEX input stream
+   cx_reset \- reset stream, sequence, or datatype table
+   cx_rprop \- return a named property as a real number
+   cx_send \- put object on CEX output stream
+   cx_set_datatype \- associate a datatype with an object
+   cx_set_iprop \- set the integer value of a named property
+   cx_set_parent \- define an object's parent
+   cx_set_realfmt \- set the format used by cx_set_rprop()
+   cx_set_rprop \- set the real value of a named property
+   cx_set_sprop \- set the string value of a named property
+   cx_spewob \- print object as a formatted datatree
+   cx_sprop \- return a named property as a string
+   cx_stream \- ennumerate object's children of given type
+   cx_stringvalue \- return the stringvalue of an object
+   cx_tag2datatype \- find datatype by tag
+   cx_type \- return an object's type (class)
+   cx_type2typename \- return the name of an object type
+   cx_typename \- return the name of object's type (class)
+   cx_typename2type \- return type given object typename
+
+The following additional library functions (also in libcx.a)
+are provided by the molecule package:
+
+   cx_atomtuple_name \- return atomtuple's property name
+   cx_bond \- return bond joining two atoms
+   cx_bondtuple_name \- return bondtuple's property name
+   cx_create_atom \- create an atom in a molecule
+   cx_create_atomtuple \- create an atomtuple for molecule
+   cx_create_bond \- create a bond between two atoms
+   cx_create_bondtuple \- create an bondtuple for molecule
+   cx_create_molecule \- create an empty molecule
+   cx_mol_addhall \- add all hyrdogens as explicit atoms
+   cx_mol_copy \- copy molecule
+   cx_mol_heavycopy \- copy heavy atoms in molecule
+   cx_mol_setimph \- invent implicit hydrogen counts
+   cx_mol_zaph \- remove explicit normal hydrogens
+   cx_molecule_pkg \- initialize molecule package
+   cx_prefix2atuples \- return atomtuples with given prefix
+   cx_smilin \- create a molecule by parsing XSMILES
+   cx_xatom \- return atom across bond from another atom
+
+(4) CX NON-OBJECT-ORIENTED UTILITIES
+
+A number of useful non-object-oriented functions are provided to make
+the CX programmer's life easier.  The motivation for most
+of these functions is that the object-oriented CX interface uses NULL
+to represent missing objects, strings, and binary data whereas
+procedure-oriented languages such as C and Fortran treat NULL as
+invalid.
+
+For example, cx_strlen(3cx) returns the length of a string, much like
+the C library function strlen(3) and the Fortran intrinsic function LEN(3F).
+However, cx_strlen(NULL) returns zero, whereas strlen(NULL) and LEN(0)
+produce undefined results (i.e., your program will crash if you're lucky).
+
+The CX utilities are provided for convenience only.
+By definition, they don't use CX objects and aren't really needed,
+e.g., the C code fragment:
+
+   ob = cx_create_binary(parent, cx_strlen(dat), dat);
+
+could always be replaced by something like:
+
+   if (NULL == dat)
+      ob = cx_create_binary(parent, 0, NULL):
+   else
+      ob = cx_create_binary(parent, strlen(dat), dat);
+
+The following library functions (in libcx.a)
+comprise the CX utility package:
+
+   cx_atof \- robust conversion of string to real
+   cx_atoi \- robust conversion of string to integer
+   cx_fopen \- open a file
+   cx_free \- robust memory deallocation
+   cx_malloc \- robust memory allocation
+   cx_panic \- generate a panic message
+   cx_realloc \- robust memory reallocation
+   cx_scratchpad \- efficient string concatenation utility
+   cx_strcat \- robust string concatenation
+   cx_strcmp \- robust comparison of cx_Strings
+   cx_strdup \- robust duplication of zero-terminated string
+   cx_strlen \- robust measurement of string length
+   cx_strncmp \- robust length-delimited string comparison
+   cx_strndup \- robust length-delimited string duplication
+   cx_strqbrk \- robust unquoted character finding
+
+(5) USER-LEVEL FUNCTIONS
+
+User-written functions using CX library are special in several ways:
+their names start "cu_" rather than "cx_",
+they are built on top of the officially-supported high-level CX interface
+(they don't use low-level "cx_e_" functions),
+and they are kept in the library libcu.a rather than libcx.a.
+CU-level functions are more robust than CX-level functions in some ways \-
+they will continue to operate correctly because they are based on the
+stable high-level CX interface
+(even though the low-level CX interface may change).
+
+The flip side of this guarantee of stability is that users may *never*
+change the functionality of officially defined cx_ functions
+(or cx_ typedefs or CX_ constants), not even a little.
+This isn't a problem: if you need to change a how a "cx_" function works,
+change the name (typically create a new, modified function with the
+"cx_" prefix changed to "cu_").
+
+User-written functions "cu_" can be promoted to officially supported
+"cx_" functions by being contributed.
+We heartily encourage such contributions.
+
+This release contains only one user-level function, intended to be an
+example of how such a function is written:
+
+   cu_mol_setpart \- find disconnected parts of molecule
+<seealso>
+CX Programmers Guide
+<bugs>
+Some of the non-object-oriented utilities aren't useful in Fortran
+(e.g., cx_free()) and in any case, the Fortran wrappers haven't been
+created for this release.

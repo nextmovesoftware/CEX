@@ -1,0 +1,37 @@
+<fn>
+cx_tag2datatype \- find datatype by tag
+<fp>
+cx_Object cx_tag2datatype(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_tag2datatype(cx_Object table, cx_String tag);
+<ff>
+include 'cx_f.inc'
+.br
+character*() tag;
+.br
+integer*4    dt, table, cx_f_tag2datatype()
+.br
+dt = cx_f_tag2datatype(table, tag)
+<description>
+Finds and returns the datatype object with given tag in the
+given datatype table (or default table, if NULL).
+There will be at most one such datatype (only one datatype with a
+given tag can be in a given datatype table).
+<returns>
+Returns a datatype handle or NULL.
+<diagnostics>
+NULL is quietly returned if no such datatype exists in the table
+or on error (i.e., `table' is neither NULL nor a datatype table).
+<seealso>
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_datatype(3cx)
+cx_default_datatypetable(3cx)
+cx_set_datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

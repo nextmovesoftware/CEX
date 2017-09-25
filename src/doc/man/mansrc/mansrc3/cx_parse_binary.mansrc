@@ -1,0 +1,50 @@
+<fn>
+cx_parse_binary \- create a binary object from ASCII data
+<fp>
+cx_Object cx_parse_binary(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_parse_binary(cx_Object parent, cx_String str);
+<ff>
+include 'cx_f.inc'
+.br
+character*() str
+.br
+integer*4    parent, ob, cx_f_parse_binary()
+.br
+ob = cx_f_parse_binary(parent, str)
+<description>
+Creates a binary object with value given by encoded ASCII string `str'
+and `parent' (or NULL parent).
+Binary objects created with cx_parse_binary() or cx_create_binary() are
+identical, they have both stringvalues and binaryvalues,
+and may be deallocated with cx_destroy().
+
+Note that the high-level CX interface does not provide a direct
+method for converting between binary and encoded ASCII.
+Such a method shouldn't be needed,
+since methods are provided which use both binary and encoded ASCII
+for both input and output.  If required, it is possible to do the
+conversion via an object, e.g.:
+
+ 	cx_stringvalue(cx_create_binary(parent, len, bin));
+   or
+ 	cx_binaryvalue(&len, cx_parse_binary(parent, str));
+<returns>
+Returns the handle of a newly-allocated object or NULL on error.
+<diagnostics>
+NULL is returned on error:
+quietly for normal reasons (i.e., `str' is NULL),
+with an error message for abnormal reasons (i.e., invalid encoding),
+or with panic message if the process is out of memory.
+<seealso>
+cx_binaryvalue(3cx)
+cx_destroy(3cx)
+cx_create_binary(3cx)
+cx_stringvalue(3cx)
+<bugs>
+None known.
+<objects>
+binary
+string

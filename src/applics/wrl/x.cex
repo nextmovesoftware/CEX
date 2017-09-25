@@ -1,0 +1,65 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<ANAM>
+/_P<atomname>
+/_V<Atom name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom name as arbitrary ASCII text>
+|
+$D<RESNA>
+/_P<resname>
+/_V<Atom residue name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom residue name, typically three upper case letters>
+|
+$D<CHAIN>
+/_P<chain>
+/_V<Atom chain ID>
+/_S<1A>
+/_L<STRING>
+/_X<Atom chain membership as ID>
+|
+$D<RESNO>
+/_P<resno>
+/_V<Atom residue number>
+/_S<1A>
+/_L<INTEGER>
+/_X<Atom residue number>
+|
+$D<XYZ>
+/_P<coordinates>
+/_V<Atomic coordinates>
+/_S<3A>
+/_L<REAL>
+/_X<Atomic (X,Y,Z) coordinates in Angstroms>
+|
+$D<OCCUP>
+/_P<occupancy>
+/_V<Atom occupancy>
+/_S<1A>
+/_L<REAL>
+/_X<Atom occupancy>
+|
+$D<BVAL>
+/_P<bvalue>
+/_V<Atom B-value>
+/_S<1A>
+/_L<REAL>
+/_X<Atom B-value>
+|
+$MOL<C=1(N=C([N])N=[C]C1[C]C=2[C]=C(C(=C([C]2)O[C])O[C])O[C])[N]>
+ANAM<" C1; N<2; C4; NH4; NH1; C3; C2; C5; C8; C7; C6; C11; C10; C9; O1; C12; O2; C13; O3; C14; N3">
+RESNA<"RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES;RES">
+CHAIN<";;;;;;;;;;;;;;;;;;;;">
+RESNO<"1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1">
+XYZ<"6.222,0.270,-8.799;5.332,0.575,-9.732;4.682,1.712,-9.601;3.808,1.993,-10.536;4.810,2.599,-8.634;5.690,2.329,-7.677;6.464,1.141,-7.691;7.472,0.895,-6.537;8.800,1.653,-6.692;9.060,2.783,-5.914;10.266,3.472,-6.042;11.219,3.041,-6.972;10.949,1.925,-7.778;9.756,1.223,-7.615;11.896,1.465,-8.753;11.819,2.107,-10.044;12.424,3.804,-7.149;13.634,3.229,-6.610;10.482,4.667,-5.277;10.997,4.483,-3.942;6.870,-0.873,-8.952">
+OCCUP<"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0">
+BVAL<"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0">
+|

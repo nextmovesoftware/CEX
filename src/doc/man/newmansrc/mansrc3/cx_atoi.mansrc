@@ -1,0 +1,41 @@
+<fn>
+cx_atoi \- robust conversion of string to integer
+<fp>
+cx_Integer cx_atoi(cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_atoi(cx_String str);
+<ff>
+include 'cx_f.inc'
+.br
+character*() str
+.br
+integer*4    ival, cx_f_atoi()
+.br
+ival = cx_f_atoi(str)
+<description>
+Interprets given string as an integer
+(skipping leading whitespace if present)
+and returns the resultant integer value.
+
+The language accepted for integers is:
+
+   integer: [whitespace] [sign] digs
+   sign:    '+' | '-'
+   digs:    (one or more digits)
+
+This function is similar to the C library function atoi(3),
+differing only in how it handles NULL arguments and exceptions.
+<returns>
+Returns a cx_Integer.
+<diagnostics>
+0 quietly returned if the argument is NULL or on error
+(e.g., `str' contains no digits).
+<bugs>
+Overflow conditions are ignored.
+<seealso>
+atof(3cx)
+atoi(3)
+cx_iprop(3cx)
+<objects>

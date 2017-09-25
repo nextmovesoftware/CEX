@@ -1,0 +1,22 @@
+<on>
+sequence \- object representing an ordered set of objects
+<description>
+A sequence object contains an ordered set of object handles.
+cx_create() is used to create an empty sequence,
+objects are added to a sequence by cx_append(),
+a sequence is reset to the beginning by cx_reset(), and
+the next object in a sequence (or NULL if at the end)
+is returned by cx_next().
+
+Sequences can contain any object handle whatsoever,
+including NULL, themselves, or repeated objects.
+cx_atend() returns TRUE if a sequence is at the end
+(useful when a sequence contains NULL objects).
+
+The sequence object type is CX_OB_SEQUENCE
+and its typename is "Sequence".
+
+The related object type `stream' represents an ordered set of children
+of a given parent.
+<seealso>
+stream(5cx)

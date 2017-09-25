@@ -1,0 +1,54 @@
+<fn>
+cx_set_parent \- define an object's parent
+<fp>
+cx_Integer cx_set_parent(cx_Object, cx_Object)
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_set_parent(cx_Object ob, cx_Object parent)
+<ff>
+include 'cx_f.inc'
+.br
+logical*4 ok;
+.br
+integer*4 ob, parent, cx_f_set_parent()
+.br
+ok = cx_f_set_parent(ob, parent)
+<description>
+Resets object's parent object (which may be NULL).
+
+This is rarely used in high-level CX programming,
+since parents are almost always assigned when objects are created.
+<returns>
+Returns TRUE if successful, FALSE if not.
+<diagnostics>
+NULL is quietly returned if `ob' is NULL.
+
+NULL is returned and a panic message is generated
+if the process is out of memory.
+<seealso>
+cx_create_binary(3x)
+cx_create_datatype(3x)
+cx_create_datatypetable(3x)
+cx_create_errorqueue(3x)
+cx_create_molecule(3x)
+cx_create_property(3x)
+cx_create_sequence(3x)
+cx_create_string(3x)
+cx_parent(3cx)
+<bugs>
+None known.
+<objects>
+atom
+atomtuple
+binary
+bond
+bondtuple
+datatype
+datatypetable
+errorqueue
+molecule
+property
+sequence
+stream
+string

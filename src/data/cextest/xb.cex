@@ -1,0 +1,34 @@
+$D<MOL>
+/_P<molecule>
+/_V<Molecule>
+/_S<1M>
+/_L<XSMILES>
+/_X<Molecule represented in XSMILES (Exchange SMILES)>
+|
+$D<REM>
+/_P<remark>
+/_V<Remark>
+/_S<1M>
+/_L<STRING>
+/_X<General purpose ASCII text>
+|
+$D<ANAM>
+/_P<atomname>
+/_V<Atom name>
+/_S<1A>
+/_L<STRING>
+/_X<Atom name as arbitrary ASCII text>
+|
+$D<BNAM>
+/_P<bondname>
+/_V<Bond name>
+/_S<1B>
+/_L<STRING>
+/_X<Bond name as arbitrary ASCII text>
+|
+$MOL<C1N=C.S.O1>
+ANAM<C1,N,C,S,O>
+BNAM<b1,b2,b3,b4>
+BNAM<b1,,b2>
+/REM<Remarkable!>
+|

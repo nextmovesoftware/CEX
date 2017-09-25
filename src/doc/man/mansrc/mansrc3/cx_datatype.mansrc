@@ -1,0 +1,36 @@
+<fn>
+cx_datatype \- return datatype associated with an object
+<fp>
+cx_Object cx_datatype(cx_Object);
+<fc>
+#include "cx.h"
+.br
+cx_Object cx_datatype(cx_Object ob);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 dt, ob, cx_f_datatype()
+.br
+dt = cx_f_datatype(ob)
+<description>
+Returns the datatype associated with given object.
+Datatypes are automatically associated with objects
+when read in by cx_receive()
+or may be manually set with cx_set_datatype().
+<returns>
+Returns a datatype handle or NULL.
+<diagnostics>
+NULL is returned if object `ob' is NULL
+or if no datatype is associated with the object.
+<seealso>
+cx_create_datatype(3cx)
+cx_create_datatypetable(3cx)
+cx_default_datatypetable(3cx)
+cx_pname2datatype(3cx)
+cx_set_datatype(3cx)
+cx_tag2datatype(3cx)
+<bugs>
+None known.
+<objects>
+datatype
+datatypetable

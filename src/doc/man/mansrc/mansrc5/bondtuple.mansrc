@@ -1,0 +1,17 @@
+<on>
+bondtuple \- object representing a property of all bonds
+<description>
+A bondtuple object represents a given property of all bonds in a molecule \-
+the bond property name is the name of the bondtuple.
+The string value of a bondtuple is the semicolon-delimited string values of
+the corresponding bond properties in generated XSMILES order.
+Bondtuples are always children of a molecule.
+Destroying bondtuples destroys the corresponding bond properties.
+Associating a datatype with an bondtuple makes the corresponding bond
+properties visible.
+
+The bondtuple object type is CX_OB_BONDTUPLE and its typename is "Bondtuple".
+<seealso>
+atomtuple(5cx)
+bond(5cx)
+molecule(5cx)

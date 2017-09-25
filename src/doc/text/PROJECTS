@@ -1,0 +1,132 @@
+==============================================================================
+PROJECTS that need doing ..
+------------------------------------------------------------------------------
+[ ] = not done  [o] = in progress  [?] = questionable  [x] = complete
+==============================================================================
+
+DISTRIBUTION
+
+[ ] Establish an internet address, register it as www.cex.org (or whatever)
+
+[o] Establish an FTP site, get it to respond to ftp://www.cex.org
+    (Conrad Huang) For now, we're using ftp://cgl.ucsf.edu/pub/cex
+
+[o] Establish a CEX home page
+    (Frank Brown) For now it's on www.cgl.ucsf.edu somewhere...
+
+[ ] Link releases to CEX home page
+    (Dave Weininger) Will provide basic tars when needed.
+
+[ ] Find or hire an archiver, i.e., person to maintain/document releases
+
+
+DOCUMENTATION
+
+[ ] document cx_tag2roottype(tag)
+
+[ ] document changes to surface and camera objects
+
+[o] document interchange languages
+    (Dave Weininger) Adapt earlier documentation with language specifications.
+
+[ ] Convert man pages to HTML, link to home page
+
+[ ] Convert documents to HTML, link to home page
+
+
+OBJECT INTERFACE
+
+[x] Add shapes for surface tuples.
+    (Dave Weininger) Changed surface MAB to SVF (in 0.33).
+
+[ ] Consider IO object or FILE primitive.
+
+[ ] Build comprehensive fortran wrapper test program.
+
+INTEROPERABILITY
+
+[ ] Decide on standard datatype source.
+
+    Standard datatypes are in two places, $CX_ROOT/src/data/datatypes.cex
+    and in functions such as cx_surface_create_datatypes(), which must agree
+    with eachother.  There should be only authoritative source for standard
+    datatypes.  Some choices might be:
+
+       o  use $CX_ROOT/src/data/datatypes.cex exclusively
+
+       o  divide up $CX_ROOT/src/data/datatypes.cex into sections,
+	  e.g. molecule-dts.cex, surface-dts.cex, camera-dts.cex, etc.,
+	  and use catcex to insert them in a stream.
+
+       o  Create functions such as cx_surface_create_datatypes() for all
+	  packages and require their use.
+
+[ ] Decide how to register datatypes and implement solution.
+    By champion, committee, automatic database?
+
+
+PROGRAMS
+
+[ ] Resolve DGEOM license issue.
+    (Jeff Blaney, David Spellmeyer?)
+
+[ ] Resolve COMPARE license issue.
+    (Jeff Blaney, David Spellmeyer?)
+
+[ ] Document camera object in man(5)
+    (Conrad Huang?)
+
+[ ] Document surface object in man(5)
+    (Dave Weininger?)
+
+[ ] cex2surf -- create surface of CEX molecule
+    (Anthony Nichols?)
+
+[ ] cex2gif2d -- create gif containing 2D depiction of CEX molecule
+
+[o] bring pdb directory up to standard
+    (Dave Weininger) Updated library but needs checking.
+    In particular, is the color representation acceptable?
+
+[o] Implement cex-stream servers: amw_cex, rasmol_cex, etc.
+    Roger Sayle will have a crack at this.
+
+
+PORTS AND TESTING
+
+[o] Find champions for various architectures who will port/test O/S's
+    Dave Weininger .... SunOS 4 and 5
+    Conrad Huang ...... OSF-1
+
+[ ] Do ports, build binary versions, and test:
+
+                +-------+-----------+---+---+---+-----------+-------+
+                | SunOS |   Irix    |OSF|HP/|IBM| Macintosh |Windows|
+                +---+---+---+---+---+---+---+---+---+---+---+---+---+
+                |4.1|5.4|4.x|5.x|6.x| -1|/UX|AIX|MPW|Met|Sym|3.1|-95|
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | amw        | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | basics     | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | bondage    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | compare    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | dgeom      | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | catcex     | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | printcex   | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | printmol   | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | chains     | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | connect    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | hydrogenate| o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | mdl2cex    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | cex2mdl    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | pdb2cex    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   | cex2pdb    | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+
+   | rasmol     | o | o | o | o | o | o | o | o | o | o | o | o | o |
+   +------------+---+---+---+---+---+---+---+---+---+---+---+---+---+

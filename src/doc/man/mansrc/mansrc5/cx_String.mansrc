@@ -1,0 +1,14 @@
+<pt>
+cx_String \- CX primitive character string
+<description>
+A cx_String primitive is a string of ASCII characters with an implicit length.
+
+In the ANSI-C interface, a cx_String is a (char *) pointing to
+a zero-terminated string.
+
+In the Fortran interface, a cx_String is a CHARACTER*() variable which has
+an implicit length.
+<seealso>
+binary(5cx)
+string(5cx)
+cx_Binary(5cx)

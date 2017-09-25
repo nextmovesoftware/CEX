@@ -1,0 +1,41 @@
+<fn>
+cx_sprop \- return a named property as a string
+<fp>
+cx_String cx_sprop(cx_Object, cx_String);
+<fc>
+#include "cx.h"
+.br
+cx_String cx_sprop(cx_Object ob, cx_String pname);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4     ob
+.br
+character*(*) str, pname, cx_f_sprop()
+.br
+str = cx_f_sprop(ob, pname)
+<description>
+Returns the string value of the object's property with
+the given property name.
+
+This is one of the 8 functions designed to provide a high-level
+interface to CX properties (cx_sprop, cx_set_sprop, cx_iprop, cx_set_iprop,
+cx_rprop, cx_set_rprop, cx_realfmt and cx_set_realfmt).
+<returns>
+Returns a cx_String or NULL on error.
+<diagnostics>
+NULL is quietly returned if either argument is NULL
+or if requested property does not exist.
+<seealso>
+cx_iprop(3cx)
+cx_prop_name(3cx)
+cx_realfmt(3cx)
+cx_rprop(3cx)
+cx_set_iprop(3cx)
+cx_set_realfmt(3cx)
+cx_set_rprop(3cx)
+<bugs>
+None known.
+<objects>
+property
+string

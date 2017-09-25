@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# usage: new_version cx_version.c
+#
+# Generates a C file (e.g., cx_version.c) containing a global string
+# with the current CEX (cobweb) system's directory (e.g., cex100)
+
+VERSION=`echo $CX_ROOT | sed -e 's|^.*/||'`
+
+echo '/* THIS FILE IS AUTOMAGICALLY GENERATED -- DO NOT EDIT */'
+
+echo "char *cx_e_version(void) { return \"$VERSION\"; }"

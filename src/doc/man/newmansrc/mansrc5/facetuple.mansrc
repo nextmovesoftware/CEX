@@ -1,0 +1,17 @@
+<on>
+facetuple \- object representing a property of all faces
+<description>
+A facetuple object represents a given property of all faces in a surface \-
+the face property name is the name of the facetuple.
+The string value of a facetuple is the semicolon-delimited string values of
+the corresponding face properties in object creation order.
+Bondtuples are always children of a surface.
+Destroying facetuples destroys the corresponding face properties.
+Associating a datatype with an facetuple makes the corresponding face
+properties visible.
+
+The facetuple object type is CX_OB_FACETUPLE and its typename is "Facetuple".
+<seealso>
+vertextuple(5cx)
+face(5cx)
+surface(5cx)

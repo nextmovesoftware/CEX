@@ -1,0 +1,34 @@
+<fn>
+cx_cex_listfmt \- return current CEX output format
+<fp>
+cx_Integer cx_cex_listfmt(void);
+<fc>
+#include "cx.h"
+.br
+cx_Integer cx_cex_listfmt(void);
+<ff>
+include 'cx_f.inc'
+.br
+integer*4 listfmt, cx_f_cex_listfmt()
+.br
+listfmt = cx_f_listfmt()
+<description>
+Returns the current CEX output format (used by cx_send())
+as per the flags in cx.h:
+
+   CX_FMT_RAW 	 no newlines written to output
+   CX_FMT_DUMP 	 newline written after each datatree
+   CX_FMT_LIST 	 newline written after each dataitem
+
+Returns the default value, CX_FMT_LIST, if the listfmt value has never
+been set via cx_cex_set_listfmt().
+<returns>
+Returns a cx_Integer flag.
+<diagnostics>
+None.
+<seealso>
+cx_cex_set_listfmt(3cx)
+cx_send(3cx)
+<bugs>
+None known.
+<objects>
